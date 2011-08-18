@@ -9,7 +9,7 @@
 AC_PREREQ([2.59])
 
 # Initialize with name, version, and support email address. 
-AC_INIT([netCDF-cxx4], [4.2-beta1], [support-netcdf@unidata.ucar.edu])
+AC_INIT([netCDF-cxx4], [4.2-beta2], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
@@ -152,30 +152,13 @@ dnl AC_CHECK_SIZEOF(double)
 dnl AC_CHECK_SIZEOF(off_t)
 dnl AC_CHECK_SIZEOF(size_t)
 
+# See if these functions are in the library.
+AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level nc_use_parallel_enabled])
+
 # Automake conditionals need to be called, whether the answer is yes
 # or no.
-dnl AM_CONDITIONAL(BUILD_PARALLEL, [test x$enable_parallel = xyes])
-dnl AM_CONDITIONAL(TEST_PARALLEL, [test "x$enable_parallel" = xyes -a "x$enable_parallel_tests" = xyes])
-dnl AM_CONDITIONAL(BUILD_DAP, [test "x$enable_dap" = xyes])
-dnl AM_CONDITIONAL(USE_DAP, [test "x$enable_dap" = xyes]) # Alias
-dnl AM_CONDITIONAL(ENABLE_DAP_REMOTE_TESTS, [test "x$enable_dap_remote_tests" = xyes])
-dnl AM_CONDITIONAL(ENABLE_DAP_LONG_TESTS, [test "x$enable_dap_long_tests" = xyes])
-dnl AM_CONDITIONAL(BUILD_CXX4, [test x$enable_cxx_4 = xyes])
-dnl AM_CONDITIONAL(EXTRA_EXAMPLE_TESTS, [test "x$enable_extra_example_tests" = xyes])
-dnl AM_CONDITIONAL(USE_SZIP, [test "x$ac_cv_func_H5Z_SZIP" = xyes])
-dnl AM_CONDITIONAL(USE_PNETCDF_DIR, [test ! "x$PNETCDFDIR" = x])
-dnl AM_CONDITIONAL(USE_LOGGING, [test "x$enable_logging" = xyes])
-dnl AM_CONDITIONAL(BUILD_UDUNITS, [test "x$with_udunits" = xyes])
-dnl AM_CONDITIONAL(BUILD_LIBCF, [test "x$with_libcf" = xyes])
-dnl AM_CONDITIONAL(CROSS_COMPILING, [test "x$cross_compiling" = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 AM_CONDITIONAL(USE_NETCDF4, [test x$enable_netcdf_4 = xyes])
-dnl AM_CONDITIONAL(USE_HDF4, [test x$enable_hdf4 = xyes])
-dnl AM_CONDITIONAL(USE_HDF4_FILE_TESTS, [test x$enable_hdf4_file_tests = xyes])
-dnl AM_CONDITIONAL(USE_RENAMEV3, [test x$enable_netcdf_4 = xyes -o x$enable_dap = xyes])
-dnl AM_CONDITIONAL(USE_PNETCDF, [test x$enable_pnetcdf = xyes])
-dnl AM_CONDITIONAL(USE_DISPATCH, [test x$enable_dispatch = xyes])
-dnl AM_CONDITIONAL(BUILD_CDMREMOTE, [test "x$enable_cdmremote" = xyes]) # Alias
 
 dnl # Flags for nc-config script; by design $prefix, $includir, $libdir,
 dnl # etc.  are left as shell variables in the script so as to facilitate
