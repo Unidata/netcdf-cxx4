@@ -9,7 +9,7 @@
 AC_PREREQ([2.59])
 
 # Initialize with name, version, and support email address. 
-AC_INIT([netCDF-cxx4], [4.2], [support-netcdf@unidata.ucar.edu])
+AC_INIT([netCDF-cxx4], [4.2-beta3], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
@@ -151,6 +151,15 @@ dnl AC_CHECK_SIZEOF(float)
 dnl AC_CHECK_SIZEOF(double)
 dnl AC_CHECK_SIZEOF(off_t)
 dnl AC_CHECK_SIZEOF(size_t)
+
+AC_SEARCH_LIBS([deflate], [zlib1 z], [], [])
+AC_SEARCH_LIBS([SZ_Compress], [szip sz], [], [])
+# Check for the main hdf5 and hdf5_hl library.
+AC_SEARCH_LIBS([H5Fflush], [hdf5dll hdf5], [], [])
+AC_SEARCH_LIBS([H5DSis_scale], [hdf5_hldll hdf5_hl], [], [])
+AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
+AC_CHECK_HEADERS([hdf5.h], [], [])
+AC_CHECK_FUNCS([H5Pset_deflate H5Z_SZIP])
 
 # See if these functions are in the library.
 AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level nc_use_parallel_enabled])
