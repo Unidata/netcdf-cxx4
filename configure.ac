@@ -130,6 +130,8 @@ nc_build_v2=$ac_cv_func_nccreate
 nc_build_v4=$ac_cv_func_nc_def_opaque
 if test "x$nc_build_v4" = xyes; then
    AC_DEFINE([USE_NETCDF4], [1], [if true, build netCDF-4])
+else
+   AC_ERROR([NetCDF must be built with netCDF-4 enabled.])
 fi
 
 AC_MSG_CHECKING([netCDF v2 API present])
