@@ -1,15 +1,9 @@
 #                                               -*- Autoconf -*-
-## Process this file with autoconf to produce a configure script.
-
 # This is part of Unidata's netCDF package. Copyright 2005-2011, see
 # the COPYRIGHT file for more information.
 
-# Running autoconf on this file will trigger a warning if 
-# autoconf is not at least the specified version.
-AC_PREREQ([2.59])
-
-# Initialize with name, version, and support email address. 
-AC_INIT([netCDF-cxx4], [4.2-beta3], [support-netcdf@unidata.ucar.edu])
+AC_PREREQ([2.66])
+AC_INIT([netCDF-cxx4], [4.2-beta4], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
@@ -21,17 +15,15 @@ AC_MSG_NOTICE([netCDF-cxx4 AC_PACKAGE_VERSION])
 # Keep libtool macros in an m4 directory.
 AC_CONFIG_MACRO_DIR([m4])
 
-# Find out about the host we're building on.
+# Find out about the host/target we're building on/for.
 AC_CANONICAL_HOST
-
-# Find out about the target we're building for.
 AC_CANONICAL_TARGET
 
 # We will output a config.h.
 AC_CONFIG_HEADERS([config.h])
 
 # This call is required by automake.
-AM_INIT_AUTOMAKE([foreign dist-bzip2 dist-zip dist-tarZ subdir-objects])
+AM_INIT_AUTOMAKE([foreign dist-tarZ subdir-objects])
 
 # Check for the existance of this file before proceeding.
 AC_CONFIG_SRCDIR([cxx4/ncByte.cpp])
@@ -88,144 +80,105 @@ AC_MSG_RESULT($TEMP_LARGE)
 #AC_SUBST(TEMP_LARGE)
 AC_DEFINE_UNQUOTED([TEMP_LARGE], ["$TEMP_LARGE"], [Place to put very large netCDF test files.])
 
-AC_MSG_NOTICE([finding C++ compiler (will not be used if C++ API is not desired)])
-AC_PROG_CXX
-
-# Set up libtool.
-AC_MSG_NOTICE([setting up libtool])
-LT_PREREQ([2.2])
-LT_INIT
-
 # Valgrind tests don't work with shared builds because of some libtool
 # weirdness.
 if test "x$enable_shared" = xyes; then
-   if test $enable_valgrind_tests = yes; then
+   if test "x$enable_valgrind_tests" = xyes; then
       AC_MSG_ERROR([No valgrind tests with shared libraries])
    fi
 fi
 
 AC_MSG_NOTICE([finding other utilities])
 
-# Find the install program.
+# Set up libtool.
+AC_MSG_NOTICE([setting up libtool])
+LT_PREREQ([2.2])
+LT_INIT
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
 AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+# Checks for header files.
+AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_TYPE_SIZE_T
+AC_CHECK_TYPES([ptrdiff_t])
+
+# Checks for library functions.
+AC_FUNC_MALLOC
 
 # Check to see if any macros must be set to enable large (>2GB) files.
 AC_SYS_LARGEFILE
 
-# For nightly build testing, output CC, FC, etc.
-#echo "CPPFLAGS=$CPPFLAGS CC=$CC CFLAGS=$CFLAGS CXX=$CXX CXXFLAGS=$CXXFLAGS FC=$FC FCFLAGS=$FCFLAGS F77=$F77 FFLAGS=$FFLAGS LDFLAGS=$LDFLAGS LIBS=$LIBS FLIBS=$FLIBS F90LIBS=$F90LIBS" >> comps.txt
-
-AC_MSG_NOTICE([checking types, headers, and functions])
-
-dnl AC_CHECK_HEADER(stdlib.h, ,AC_DEFINE([NO_STDLIB_H], [], [no stdlib.h]))
-dnl AC_CHECK_HEADER(sys/types.h, ,AC_DEFINE([NO_SYS_TYPES_H], [], [no sys_types.h]))
-dnl AC_CHECK_HEADERS([sys/param.h])
-dnl #AC_CHECK_HEADERS([locale.h])
-dnl AC_HEADER_DIRENT
-dnl AC_HEADER_STDC
-dnl AC_HEADER_SYS_WAIT
-dnl AC_HEADER_TIME
-dnl AC_CHECK_HEADERS([locale.h stdio.h stdarg.h errno.h ctype.h fcntl.h malloc.h stdlib.h string.h \
-dnl 			   strings.h unistd.h sys/stat.h getopt.h sys/time.h sys/resource.h])
-dnl AC_FUNC_VPRINTF
-
-dnl # Check for <stdbool.h> that conforms to C99 requirements
-dnl AC_HEADER_STDBOOL
-
-dnl # Check for these functions...
-dnl AC_CHECK_FUNCS([strlcat strerror snprintf strchr strrchr mktemp strcat strcpy strdup \
-dnl 			strcasecmp strtod strtoll strtoull getrlimit gettimeofday fsync MPI_Comm_f2c])
-dnl AC_FUNC_ALLOCA
-dnl AC_CHECK_DECLS([isnan, isinf, isfinite, signbit],,,[#include <math.h>])
-dnl AC_STRUCT_ST_BLKSIZE
-dnl UD_CHECK_IEEE
-dnl AC_TYPE_SIZE_T
-dnl AC_TYPE_OFF_T
-dnl AC_CHECK_TYPES([ssize_t, ptrdiff_t, uchar, longlong])
-dnl AC_C_CHAR_UNSIGNED
-dnl AC_C_BIGENDIAN
-dnl AC_CHECK_SIZEOF(short)
-dnl AC_CHECK_SIZEOF(int)
-dnl AC_CHECK_SIZEOF(long)
-dnl AC_CHECK_SIZEOF(float)
-dnl AC_CHECK_SIZEOF(double)
-dnl AC_CHECK_SIZEOF(off_t)
-dnl AC_CHECK_SIZEOF(size_t)
-
-AC_SEARCH_LIBS([deflate], [zlib1 z], [], [])
-AC_SEARCH_LIBS([SZ_Compress], [szip sz], [], [])
-# Check for the main hdf5 and hdf5_hl library.
-AC_SEARCH_LIBS([H5Fflush], [hdf5dll hdf5], [], [])
-AC_SEARCH_LIBS([H5DSis_scale], [hdf5_hldll hdf5_hl], [], [])
-AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
-AC_CHECK_HEADERS([hdf5.h], [], [])
-AC_CHECK_FUNCS([H5Pset_deflate H5Z_SZIP])
-
 # See if these functions are in the library.
-AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level nc_use_parallel_enabled])
+AC_CHECK_HEADERS([netcdf.h], [], [AC_MSG_ERROR([netcdf.h could not be found. Please set CPPFLAGS.])])
+AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
+AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled])
+test "x$ac_cv_func_oc_open" = xyes && nc_has_dap=yes || nc_has_dap=no
 
-# Automake conditionals need to be called, whether the answer is yes
-# or no.
+# Whether we build/test some functionality depends on what we found in
+# the C library.
+nc_build_v2=$ac_cv_func_nccreate
+nc_build_v4=$ac_cv_func_nc_def_opaque
+if test "x$nc_build_v4" = xyes; then
+   AC_DEFINE([USE_NETCDF4], [1], [if true, build netCDF-4])
+fi
+
+AC_MSG_CHECKING([netCDF v2 API present])
+AC_MSG_RESULT([$nc_build_v2])
+AC_MSG_CHECKING([netCDF-4 present])
+AC_MSG_RESULT([$nc_build_v4])
+
+AM_CONDITIONAL([USE_NETCDF4], [test "x$ac_cv_func_nc_def_opaque" = xyes])
+AM_CONDITIONAL([BUILD_V2], [test "x$ac_cv_func_nccreate" = xyes])
+AM_CONDITIONAL([USE_LOGGING], [test "x$ac_cv_func_nc_set_log_level" = xyes])
+AM_CONDITIONAL([BUILD_DAP], [test "x$ac_cv_func_oc_open" = xyes])
+AM_CONDITIONAL([BUILD_PARALLEL], [test "x$ac_cv_func_nc_use_parallel_enabled" = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
-AM_CONDITIONAL(USE_NETCDF4, [test x$enable_netcdf_4 = xyes])
 
-dnl # Flags for nc-config script; by design $prefix, $includir, $libdir,
-dnl # etc.  are left as shell variables in the script so as to facilitate
-dnl # relocation
-dnl if test "x$with_netcdf_c_lib" = x ; then 
-dnl    NC_LIBS="-lnetcdf"
-dnl else
-dnl    NC_LIBS="$with_netcdf_c_lib"
-dnl fi
-dnl if test "x$enable_shared" != xyes; then
-dnl    NC_LIBS="$LDFLAGS $NC_LIBS $LIBS"
-dnl fi	 
+# Flags for ncxx4-config script; by design $prefix, $includir, $libdir,
+# etc.  are left as shell variables in the script so as to facilitate
+# relocation
+NC_LIBS="-lnetcdf"
+if test "x$enable_shared" != xyes; then
+   NC_LIBS="$LDFLAGS $NC_LIBS $LIBS"
+fi	 
 
-dnl case "x$target_os" in
-dnl xsolaris*) 
-dnl   NEWNCLIBS=""
-dnl   for x in $NC_LIBS ; do
-dnl     case "$x" in
-dnl     -L*) r=`echo "$x" | sed -e 's|^-L|-R|'`
-dnl 	 NEWNCLIBS="$NEWNCLIBS $x $r"
-dnl 	 ;;
-dnl     *)	 NEWNCLIBS="$NEWNCLIBS $x" ;;
-dnl     esac
-dnl   done
-dnl   NC_LIBS="$NEWNCLIBS"
-dnl   ;;
-dnl *);;
-dnl esac
+case "x$target_os" in
+xsolaris*) 
+  NEWNCLIBS=""
+  for x in $NC_LIBS ; do
+    case "$x" in
+    -L*) r=`echo "$x" | sed -e 's|^-L|-R|'`
+	 NEWNCLIBS="$NEWNCLIBS $x $r"
+	 ;;
+    *)	 NEWNCLIBS="$NEWNCLIBS $x" ;;
+    esac
+  done
+  NC_LIBS="$NEWNCLIBS"
+  ;;
+*);;
+esac
 
-dnl NC_FLIBS="-lnetcdff $NC_LIBS"
-
-dnl AC_SUBST(NC_LIBS,[$NC_LIBS])
-dnl AC_SUBST(NC_FLIBS,[$NC_FLIBS])
-dnl AC_SUBST(HAS_DAP,[$enable_dap])
-dnl AC_SUBST(HAS_NC2,[$nc_build_v2])
-dnl AC_SUBST(HAS_NC4,[$enable_netcdf_4])
-dnl AC_SUBST(HAS_HDF4,[$enable_hdf4])
-dnl AC_SUBST(HAS_PNETCDF,[$enable_pnetcdf])
-dnl AC_SUBST(HAS_HDF5,[$enable_netcdf_4])
-dnl AC_SUBST(HAS_F77,[$nc_build_f77])
-dnl AC_SUBST(HAS_F90,[$nc_build_f90])
-dnl AC_SUBST(HAS_CXX,[$nc_build_cxx])
-dnl AC_SUBST(HAS_SZLIB,[$nc_has_szlib])
-
-# Access netcdf specific version of config.h
-#AH_BOTTOM([#include "ncconfigure.h"])
-
-##################################################
-# Uncomment this to keep a copy of autoconf defines at this point, for
-# debugging purposes.
-# cp confdefs.h my_config.h
+AC_SUBST(NC_LIBS,[$NC_LIBS])
+AC_SUBST(HAS_DAP,[$nc_has_dap])
+AC_SUBST(HAS_NC2,[$nc_build_v2])
+AC_SUBST(HAS_NC4,[$nc_build_v4])
 
 AC_MSG_NOTICE([generating header files and makefiles])
 AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
-                 examples/Makefile])
-#                 nc-config
-#                 [test -f  nc-config && chmod 755 nc-config ]
+                 examples/Makefile
+                 ncxx4-config],
+                 [test -f  ncxx4-config && chmod 755 ncxx4-config ])
 
 AC_OUTPUT()
 

@@ -1,6 +1,14 @@
-# These files get added to the distribution.
-EXTRA_DIST = COPYRIGHT
+# This is the main automake file for the netCDF CXX4 C++ library.
 
+# These files get added to the distribution.
+EXTRA_DIST = COPYRIGHT ncxx4-config.in
+
+ACLOCAL_AMFLAGS = -I m4
+
+# The nc-config script helps the user build programs with netCDF.
+bin_SCRIPTS = ncxx4-config
+
+# Build and test in these directories.
 SUBDIRS = cxx4 examples
 
 # Remove these generated files, for a distclean.
@@ -10,7 +18,7 @@ install-data-hook:
 	@echo ''
 	@echo '+-------------------------------------------------------------+'
 	@echo '| Congratulations! You have successfully installed the        |'
-	@echo '| new netCDF-4 C++ Libaray                                                 |'
+	@echo '| new netCDF-4 C++ Libaray                                    |'
 	@echo '|                                                             |'
 	@echo '| CAUTION:                                                    |'
 	@echo '|                                                             |'
@@ -19,9 +27,6 @@ install-data-hook:
 	@echo '|                                                             |'
 	@echo '| Before using netCDF to store important data, test your      |'
 	@echo '| build with "make check".                                    |'
-	@echo '|                                                             |'
-	@echo '| NetCDF is tested nightly on many platforms at Unidata       |'
-	@echo '| but your platform is probably different in some ways.       |'
 	@echo '|                                                             |'
 	@echo '| If any tests fail, please see the netCDF web site:          |'
 	@echo '| http://www.unidata.ucar.edu/software/netcdf/                |'
