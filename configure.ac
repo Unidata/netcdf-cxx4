@@ -179,7 +179,8 @@ AC_MSG_NOTICE([generating header files and makefiles])
 AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
                  examples/Makefile
-                 ncxx4-config],
+                 ncxx4-config
+                 netcdf-cxx4.pc],
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])
 
 AC_OUTPUT()

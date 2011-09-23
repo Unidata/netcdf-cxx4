@@ -9,8 +9,9 @@ LDADD = $(top_builddir)/cxx4/libnetcdf_c++4.la  -lnetcdf
 # This is our output library. 
 lib_LTLIBRARIES = libnetcdf_c++4.la
 
-# See comments in libsrc/Makefile.am about the version number.
-libnetcdf_c__4_la_LDFLAGS = -version-info 1:1:0 
+# For rules updating the version info, see
+# http://www.gnu.org/s/libtool/manual/html_node/Updating-version-info.html
+libnetcdf_c__4_la_LDFLAGS = -version-info 1:2:0 
 
 # These headers will be installed in the users header directory.
 include_HEADERS = netcdf ncAtt.h ncCheck.h ncDim.h ncException.h	\

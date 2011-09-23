@@ -3,7 +3,12 @@
 # These files get added to the distribution.
 EXTRA_DIST = COPYRIGHT ncxx4-config.in
 
+# Directory for autotools to put scripts during build.
 ACLOCAL_AMFLAGS = -I m4
+
+# Pkgconfig is some data about how the package was built.
+pkgconfigdir=$(libdir)/pkgconfig
+pkgconfig_DATA = netcdf-cxx4.pc
 
 # The nc-config script helps the user build programs with netCDF.
 bin_SCRIPTS = ncxx4-config
