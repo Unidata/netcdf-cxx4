@@ -149,7 +149,7 @@ AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 # Flags for ncxx4-config script; by design $prefix, $includir, $libdir,
 # etc.  are left as shell variables in the script so as to facilitate
 # relocation
-NC_LIBS="-lnetcdf"
+NC_LIBS="-lnetcdf_c++4"
 if test "x$enable_shared" != xyes; then
    NC_LIBS="$LDFLAGS $NC_LIBS $LIBS"
 fi	 
