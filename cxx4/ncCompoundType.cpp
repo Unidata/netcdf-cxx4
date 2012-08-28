@@ -66,6 +66,15 @@ NcCompoundType::NcCompoundType(const NcGroup& grp, const string& name):
   NcType(grp,name)
 {
 }
+
+// constructor
+// The copy constructor.
+NcCompoundType::NcCompoundType(const NcType& rhs): 
+  NcType()
+{
+  // assign base class parts
+  NcType::operator=(rhs);
+}
   
 //  Inserts a named field.
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType,size_t offset)
