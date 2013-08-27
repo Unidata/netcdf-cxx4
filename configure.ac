@@ -3,7 +3,7 @@
 # the COPYRIGHT file for more information.
 
 AC_PREREQ([2.66])
-AC_INIT([netCDF-cxx4], [4.2], [support-netcdf@unidata.ucar.edu])
+AC_INIT([netCDF-cxx4], [4.2.1], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
@@ -24,7 +24,7 @@ AC_CONFIG_HEADERS([config.h])
 
 # This call is required by automake.
 AM_INIT_AUTOMAKE([foreign dist-tarZ subdir-objects])
-
+AM_MAINTAINER_MODE()
 # Check for the existance of this file before proceeding.
 AC_CONFIG_SRCDIR([cxx4/ncByte.cpp])
 
