@@ -7,7 +7,7 @@ Official GitHub repository for netCDF-4 C++ library.
 
 Lynton Appel, of the Culham Centre for Fusion Energy (CCFE) in
 Oxfordshire, has developed and contributed a
-Oxfordshire, has developed and contributed a new <a
+Oxfordshire, has developed and contributed a
 [netCDF-4 C++ library][netcdf-cxx4] that depends on an installed
 netCDF-4 C library.  The netCDF-4 C++ API was developed for use in
 managing fusion research data from CCFE's innovative MAST (Mega Amp
