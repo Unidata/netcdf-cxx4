@@ -7,17 +7,25 @@ using namespace netCDF::exceptions;
 
 // Default object thrown if a netCDF exception is encountered.
 NcException::NcException(const string& exceptionNameIn,const string& complaintIn,const char* fileNameIn,int lineNumberIn)
-  :exceptionName(exceptionNameIn), complaint(complaintIn),fileName(fileNameIn), lineNumber(lineNumberIn)
-{}
+  : what_msg(nullptr)
+{
+	try{
+		std::ostringstream oss;
+		oss << lineNumberIn;
+		what_msg = new std::string(exceptionNameIn+": "+complaintIn+"\nfile: "+fileNameIn+"  line:"+oss.str());
+	}catch(...){
+		what_msg = nullptr;
+	}
+}
 
-NcException::~NcException()throw() {}
+NcException::~NcException()throw() {
+	delete what_msg;
+}
+
 
 const char* NcException::what() const throw()
 {
-  std::ostringstream oss;
-  oss << lineNumber;
-  string message(exceptionName+": "+complaint+"\nfile: "+fileName+"  line:"+oss.str());
-  return message.c_str();
+  return what_msg==nullptr ? "" : what_msg->c_str();
 }
 
 

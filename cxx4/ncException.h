@@ -27,8 +27,7 @@ namespace netCDF
       virtual ~NcException() throw();
       const char* what() const throw();
     private:
-      std::string exceptionName, complaint, fileName;
-      int lineNumber;
+      std::string* what_msg;
     };
 
 
