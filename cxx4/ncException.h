@@ -24,6 +24,8 @@ namespace netCDF
     class NcException : public std::exception {
     public:
       NcException(const std::string& exceptionName,const std::string& complaint,const char* fileName,int lineNumber);
+	  NcException(const NcException& e) throw();
+	  NcException& operator=(const NcException& e) throw();
       virtual ~NcException() throw();
       const char* what() const throw();
     private:

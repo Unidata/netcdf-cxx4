@@ -18,6 +18,28 @@ NcException::NcException(const string& exceptionNameIn,const string& complaintIn
 	}
 }
 
+NcException::NcException(const NcException& e) throw()
+	: what_msg(nullptr)
+{
+	try{
+		what_msg = new std::string(*(e.what_msg));
+	}catch(...){
+		what_msg = nullptr;
+	}
+}
+
+NcException& NcException::operator=(const NcException& e) throw(){
+	if (this != &e){
+		delete what_msg;
+		try{
+			what_msg = new std::string(*(e.what_msg));
+		}catch(...){
+			what_msg = nullptr;
+		}
+	}
+	return *this;
+}
+
 NcException::~NcException()throw() {
 	delete what_msg;
 }
