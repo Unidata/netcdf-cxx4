@@ -35,15 +35,7 @@ namespace netCDF
 	    nc4classic  //!< netCDF-4/HDF5 format, classic data model
          };
     
-      /*! assignment operator  */
-      NcFile& operator =(const NcGroup & rhs);
-
-      /*! 
-	The copy constructor. */
-      NcFile(const NcGroup& rhs);
-
-
-    
+         
       /*! Constructor generates a \ref isNull "null object". */
       NcFile();
 
@@ -69,7 +61,12 @@ namespace netCDF
     
       /*! destructor */
       virtual ~NcFile(); //closes file and releases all resources
-    
+
+   private:
+	   NcFile& operator =(const NcGroup & rhs);
+	   NcFile& operator =(const NcFile & rhs);
+	   NcFile(const NcGroup& rhs);
+	   NcFile(const NcFile& rhs);
    };
   
 }
