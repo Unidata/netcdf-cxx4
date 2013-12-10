@@ -427,7 +427,7 @@ try
       if(var_4.isNull()) throw NcException("NcException","Error in test 28.1",__FILE__,__LINE__);
       struct3 dummyStruct3[2];
       var_4.getVar(dummyStruct3);
-
+	  
       if(dummyStruct3[1].mem1 != 1)  throw NcException("NcException","Error in test 28.2",__FILE__,__LINE__);
       if(dummyStruct3[1].mem2 != -1.23456)  throw NcException("NcException","Error in test 28.3",__FILE__,__LINE__);
       if(dummyStruct3[1].mem3[0] != 1)  throw NcException("NcException","Error in test 28.4",__FILE__,__LINE__);
@@ -559,6 +559,6 @@ try
 catch (NcException& e)
   {
     cout << "unknown error"<<endl;
-    e.what();
+    cout << e.what();
   }
 }
