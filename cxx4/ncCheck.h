@@ -13,7 +13,7 @@ namespace netCDF
     \param file    The name of the file from which this call originates.
     \param line    The line number in the file from which this call originates.
   */
-  void ncCheck(int retCode,char* file,int line);
+  void ncCheck(int retCode, const char* file, int line);
 
 };
 
