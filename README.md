@@ -46,6 +46,10 @@ installation, for example enter
 
       ./configure --enable-cxx-4 [plus other options]
 
+Note that the "configure" script must be generated using
+
+      autoreconf -if
+    
 To build the C++ interface guide, change to the cxx4 directory of the
 distribution and enter
 
