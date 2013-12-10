@@ -7,24 +7,24 @@ using namespace netCDF::exceptions;
 
 // Default object thrown if a netCDF exception is encountered.
 NcException::NcException(const string& exceptionNameIn,const string& complaintIn,const char* fileNameIn,int lineNumberIn)
-  : what_msg(nullptr)
+  : what_msg(NULL)
 {
 	try{
 		std::ostringstream oss;
 		oss << lineNumberIn;
 		what_msg = new std::string(exceptionNameIn+": "+complaintIn+"\nfile: "+fileNameIn+"  line:"+oss.str());
 	}catch(...){
-		what_msg = nullptr;
+		what_msg = NULL;
 	}
 }
 
 NcException::NcException(const NcException& e) throw()
-	: what_msg(nullptr)
+	: what_msg(NULL)
 {
 	try{
 		what_msg = new std::string(*(e.what_msg));
 	}catch(...){
-		what_msg = nullptr;
+		what_msg = NULL;
 	}
 }
 
@@ -34,7 +34,7 @@ NcException& NcException::operator=(const NcException& e) throw(){
 		try{
 			what_msg = new std::string(*(e.what_msg));
 		}catch(...){
-			what_msg = nullptr;
+			what_msg = NULL;
 		}
 	}
 	return *this;
@@ -47,7 +47,7 @@ NcException::~NcException()throw() {
 
 const char* NcException::what() const throw()
 {
-  return what_msg==nullptr ? "" : what_msg->c_str();
+  return what_msg==NULL ? "" : what_msg->c_str();
 }
 
 
