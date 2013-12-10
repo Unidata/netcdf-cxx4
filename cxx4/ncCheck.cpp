@@ -7,7 +7,7 @@ using namespace netCDF::exceptions;
 namespace netCDF
 {
   // function checks error code and if necessary throws appropriate exception.
-  void ncCheck(int retCode,char* file,int line){
+  void ncCheck(int retCode, const char* file, int line){
     switch(retCode) {
       
     case NC_NOERR           : return; /* No Error */
