@@ -15,11 +15,6 @@ NcFile::~NcFile()
   ncCheck(nc_close(myId),__FILE__,__LINE__);
 }
 
-/*//! The copy constructor.
-NcFile::NcFile(const NcGroup& rhs):
-    NcGroup(rhs)                   // intialize base class parts
-{}*/
-
 // Constructor generates a null object.
 NcFile::NcFile() : 
     NcGroup()  // invoke base class constructor
