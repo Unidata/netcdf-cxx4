@@ -140,7 +140,8 @@ vector<int> NcCompoundType::getMemberShape(int memberIndex) const
 {
   vector<int> dim_size;
   dim_size.resize(getMemberDimCount(memberIndex));
-  ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
+  if(!dim_size.empty())
+	  ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
   return dim_size;
 }
  
