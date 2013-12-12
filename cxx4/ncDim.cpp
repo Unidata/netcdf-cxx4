@@ -89,13 +89,16 @@ bool NcDim::isUnlimited() const
   int* unlimdimidsp=NULL;
   // get the number of unlimited dimensions
   ncCheck(nc_inq_unlimdims(groupId,&numlimdims,unlimdimidsp),__FILE__,__LINE__);
-  // get all the unlimited dimension ids in this group
-  vector<int> unlimdimid(numlimdims);
-  ncCheck(nc_inq_unlimdims(groupId,&numlimdims,&unlimdimid[0]),__FILE__,__LINE__);
-  vector<int>::iterator it;
-  // now look to see if this dimension is unlimited
-  it = find(unlimdimid.begin(),unlimdimid.end(),myId);
-  return it != unlimdimid.end();
+  if (numlimdims){
+	  // get all the unlimited dimension ids in this group
+	  vector<int> unlimdimid(numlimdims);
+	  ncCheck(nc_inq_unlimdims(groupId,&numlimdims,&unlimdimid[0]),__FILE__,__LINE__);
+	  vector<int>::iterator it;
+	  // now look to see if this dimension is unlimited
+	  it = find(unlimdimid.begin(),unlimdimid.end(),myId);
+	  return it != unlimdimid.end();
+  }
+  return false;
 }
 
 
