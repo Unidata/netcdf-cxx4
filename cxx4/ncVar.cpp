@@ -518,9 +518,9 @@ void NcVar::setChunking(ChunkMode chunkMode, vector<size_t>& chunksizes) const {
 // Gets the chunking parameters
 void NcVar::getChunkingParameters(ChunkMode& chunkMode, vector<size_t>& chunkSizes) const {
   int chunkModeInt;
-  chunkSizes.reserve(getDimCount());
-    
-  ncCheck(nc_inq_var_chunking(groupId,myId,&chunkModeInt, &chunkSizes[0]),__FILE__,__LINE__);
+  chunkSizes.resize(getDimCount());
+  size_t *chunkSizesPtr = chunkSizes.empty() ? 0 : &chunkSizes[0];
+  ncCheck(nc_inq_var_chunking(groupId,myId, &chunkModeInt, chunkSizesPtr),__FILE__,__LINE__);
   chunkMode = static_cast<ChunkMode> (chunkModeInt);
 }
   
