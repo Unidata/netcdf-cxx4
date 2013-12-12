@@ -194,15 +194,15 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
     // get the number of groups
     int groupCount = getGroupCount();
     if (groupCount){
-		vector<int> ncids(groupCount);
-		int* numgrps=NULL;
-		// now get the id of each NcGroup and populate the ncGroups container.
-		ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
-		for(int i=0; i<groupCount;i++){
-		  NcGroup tmpGroup(ncids[i]);
-		  ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
-		}
-	}
+      vector<int> ncids(groupCount);
+      int* numgrps=NULL;
+      // now get the id of each NcGroup and populate the ncGroups container.
+      ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
+      for(int i=0; i<groupCount;i++){
+        NcGroup tmpGroup(ncids[i]);
+        ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
+      }
+    }
   }
 
   // search in parent groups.
@@ -319,13 +319,15 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
     // get the number of variables.
     int varCount = getVarCount();
-    // now get the name of each NcVar object and populate the ncVars container.
-    int* nvars=NULL;
-    vector<int> varids(varCount);
-    ncCheck(nc_inq_varids(myId, nvars,&varids[0]),__FILE__,__LINE__);
-    for(int i=0; i<varCount;i++){
-      NcVar tmpVar(*this,varids[i]);
-      ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+    if (varCount){
+      // now get the name of each NcVar object and populate the ncVars container.
+      int* nvars=NULL;
+      vector<int> varids(varCount);
+      ncCheck(nc_inq_varids(myId, nvars,&varids[0]),__FILE__,__LINE__);
+      for(int i=0; i<varCount;i++){
+        NcVar tmpVar(*this,varids[i]);
+        ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+      }
     }
   }
 
@@ -336,13 +338,15 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
     while(!tmpGroup.isNull()) {
       // get the number of variables
       int varCount = tmpGroup.getVarCount();
-      // now get the name of each NcVar object and populate the ncVars container.
-      int* nvars=NULL;
-      vector<int> varids(varCount);
-      ncCheck(nc_inq_varids(tmpGroup.getId(), nvars,&varids[0]),__FILE__,__LINE__);
-      for(int i=0; i<varCount;i++){
-	NcVar tmpVar(tmpGroup,varids[i]);
-	ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+      if (varCount){
+        // now get the name of each NcVar object and populate the ncVars container.
+        int* nvars=NULL;
+        vector<int> varids(varCount);
+        ncCheck(nc_inq_varids(tmpGroup.getId(), nvars,&varids[0]),__FILE__,__LINE__);
+        for(int i=0; i<varCount;i++){
+          NcVar tmpVar(tmpGroup,varids[i]);
+          ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+        }
       }
       // continue loop with the parent.
       tmpGroup=tmpGroup.getParentGroup();
@@ -452,7 +456,8 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
 
   // finally define a new netCDF variable
   int varId;
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(),&dimIds[0],&varId),__FILE__,__LINE__);
+  int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
@@ -552,10 +557,10 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
       int attCount = tmpGroup.getAttCount();
       // now get the name of each NcAtt and populate the ncAtts container.
       for(int i=0; i<attCount;i++){
-	char charName[NC_MAX_NAME+1];
-	ncCheck(nc_inq_attname(tmpGroup.getId(),NC_GLOBAL,i,charName),__FILE__,__LINE__);
-	NcGroupAtt tmpAtt(tmpGroup.getId(),i);
-	ncAtts.insert(pair<const string,NcGroupAtt>(string(charName),tmpAtt));
+        char charName[NC_MAX_NAME+1];
+        ncCheck(nc_inq_attname(tmpGroup.getId(),NC_GLOBAL,i,charName),__FILE__,__LINE__);
+        NcGroupAtt tmpAtt(tmpGroup.getId(),i);
+        ncAtts.insert(pair<const string,NcGroupAtt>(string(charName),tmpAtt));
       }
       // continue loop with the parent.
       tmpGroup=tmpGroup.getParentGroup();
@@ -907,15 +912,15 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
   // search in current group
   if(location == Current || location == ParentsAndCurrent || location == ChildrenAndCurrent || location == All ) {
     int dimCount = getDimCount();
-	if (dimCount){
-		vector<int> dimids(dimCount);
-		ncCheck(nc_inq_dimids(getId(), &dimCount, &dimids[0], 0),__FILE__,__LINE__);
-		// now get the name of each NcDim and populate the nDims container.
-		for(int i=0; i<dimCount;i++){
-		  NcDim tmpDim(*this,dimids[i]); 
-		  ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
-		}
-	}
+    if (dimCount){
+      vector<int> dimids(dimCount);
+      ncCheck(nc_inq_dimids(getId(), &dimCount, &dimids[0], 0),__FILE__,__LINE__);
+      // now get the name of each NcDim and populate the nDims container.
+      for(int i=0; i<dimCount;i++){
+        NcDim tmpDim(*this,dimids[i]); 
+        ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
+      }
+    }
   }
 
   // search in parent groups.
@@ -1048,11 +1053,13 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
     int ntypesp;
     int* typeidsp=NULL;
     ncCheck(nc_inq_typeids(getId(), &ntypesp,typeidsp),__FILE__,__LINE__);
-    vector<int> typeids(ntypesp);
-    ncCheck(nc_inq_typeids(getId(), &ntypesp,&typeids[0]),__FILE__,__LINE__);
-    for (int i=0; i<ntypesp;i++){
-      NcType tmpType(*this,typeids[i]);
-      if(tmpType.getTypeClass() == enumType) ntypes++;
+    if (ntypesp){
+      vector<int> typeids(ntypesp);
+      ncCheck(nc_inq_typeids(getId(), &ntypesp,&typeids[0]),__FILE__,__LINE__);
+      for (int i=0; i<ntypesp;i++){
+        NcType tmpType(*this,typeids[i]);
+        if(tmpType.getTypeClass() == enumType) ntypes++;
+      }
     }
   }
 
@@ -1086,12 +1093,14 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
   // search in current group
   if(location == Current || location == ParentsAndCurrent || location == ChildrenAndCurrent || location == All ) {
     int typeCount = getTypeCount();
-    vector<int> typeids(typeCount);
-    ncCheck(nc_inq_typeids(getId(), &typeCount,&typeids[0]),__FILE__,__LINE__);
-    // now get the name of each NcType and populate the nTypes container.
-    for(int i=0; i<typeCount;i++){
-      NcType tmpType(*this,typeids[i]); 
-      ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
+    if (typeCount){
+      vector<int> typeids(typeCount);
+      ncCheck(nc_inq_typeids(getId(), &typeCount,&typeids[0]),__FILE__,__LINE__);
+      // now get the name of each NcType and populate the nTypes container.
+      for(int i=0; i<typeCount;i++){
+        NcType tmpType(*this,typeids[i]); 
+        ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
+      }
     }
   }
 
