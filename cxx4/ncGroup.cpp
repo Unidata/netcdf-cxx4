@@ -193,14 +193,16 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
   if(location == ChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     // get the number of groups
     int groupCount = getGroupCount();
-    vector<int> ncids(groupCount);
-    int* numgrps=NULL;
-    // now get the id of each NcGroup and populate the ncGroups container.
-    ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
-    for(int i=0; i<groupCount;i++){
-      NcGroup tmpGroup(ncids[i]);
-      ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
-    }
+    if (groupCount){
+		vector<int> ncids(groupCount);
+		int* numgrps=NULL;
+		// now get the id of each NcGroup and populate the ncGroups container.
+		ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
+		for(int i=0; i<groupCount;i++){
+		  NcGroup tmpGroup(ncids[i]);
+		  ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
+		}
+	}
   }
 
   // search in parent groups.
@@ -476,7 +478,8 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
 
   // finally define a new netCDF variable
   int varId;
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(),&dimIds[0],&varId),__FILE__,__LINE__);
+  int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
@@ -904,13 +907,15 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
   // search in current group
   if(location == Current || location == ParentsAndCurrent || location == ChildrenAndCurrent || location == All ) {
     int dimCount = getDimCount();
-    vector<int> dimids(dimCount);
-    ncCheck(nc_inq_dimids(getId(),&dimCount,&dimids[0],0),__FILE__,__LINE__);
-    // now get the name of each NcDim and populate the nDims container.
-    for(int i=0; i<dimCount;i++){
-      NcDim tmpDim(*this,dimids[i]); 
-      ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
-    }
+	if (dimCount){
+		vector<int> dimids(dimCount);
+		ncCheck(nc_inq_dimids(getId(), &dimCount, &dimids[0], 0),__FILE__,__LINE__);
+		// now get the name of each NcDim and populate the nDims container.
+		for(int i=0; i<dimCount;i++){
+		  NcDim tmpDim(*this,dimids[i]); 
+		  ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
+		}
+	}
   }
 
   // search in parent groups.
