@@ -15,19 +15,6 @@ NcFile::~NcFile()
   ncCheck(nc_close(myId),__FILE__,__LINE__);
 }
 
-
-// assignment operator
-  NcFile& NcFile::operator=(const NcGroup & rhs)
-{
-  NcGroup::operator=(rhs);      // assign base class parts
-  return *this;
-}
-
-//! The copy constructor.
-NcFile::NcFile(const NcGroup& rhs):
-    NcGroup(rhs)                   // intialize base class parts
-{}
-
 // Constructor generates a null object.
 NcFile::NcFile() : 
     NcGroup()  // invoke base class constructor
