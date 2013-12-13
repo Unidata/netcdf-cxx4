@@ -87,7 +87,7 @@ void NcCompoundType::addMember(const string& memberName, const NcType& newMember
 //  Inserts a named array field.
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType, size_t offset, const vector<int>& shape)
 {
-  ncCheck(nc_insert_array_compound(groupId, myId,const_cast<char*>(memberName.c_str()), offset, newMemberType.getId(), shape.size(), const_cast<int*>(&shape[0])),__FILE__,__LINE__);
+  ncCheck(nc_insert_array_compound(groupId, myId,const_cast<char*>(memberName.c_str()), offset, newMemberType.getId(), shape.size(), (shape.empty()?0:const_cast<int*>(&shape[0]))),__FILE__,__LINE__);
 }
 
 
@@ -141,7 +141,7 @@ vector<int> NcCompoundType::getMemberShape(int memberIndex) const
   vector<int> dim_size;
   dim_size.resize(getMemberDimCount(memberIndex));
   if(!dim_size.empty())
-	  ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
+    ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
   return dim_size;
 }
  
