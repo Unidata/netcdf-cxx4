@@ -69,7 +69,9 @@ namespace netCDF
     
       /*! destructor */
       virtual ~NcFile(); //closes file and releases all resources
-    
+     
+      //! Synchronize an open netcdf dataset to disk
+      void sync();
    };
   
 }
