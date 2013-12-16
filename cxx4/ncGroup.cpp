@@ -94,7 +94,7 @@ bool NcGroup::operator!=(const NcGroup & rhs) const
   
 // Get the group name.
 string NcGroup::getName(bool fullName) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getName on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getName on a Null group",__FILE__,__LINE__);
   string groupName;
   if(fullName){
     // return full name of group with foward "/" separarating sub-groups.
@@ -122,29 +122,32 @@ bool NcGroup::isRootGroup()  const{
   
 // Get the parent group.
 NcGroup NcGroup::getParentGroup() const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getParentGroup on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getParentGroup on a Null group",__FILE__,__LINE__);
   try {
     int parentId;
     ncCheck(nc_inq_grp_parent(myId,&parentId),__FILE__,__LINE__);
     NcGroup ncGroupParent(parentId);
     return ncGroupParent;
   }
-  catch (NcEnoGrp& e) {
-    // no group found, so return null group
-    return NcGroup();
+  catch (NcException& e) {
+    if (e.errorCode()==NC_ENOGRP){
+      // no group found, so return null group
+      return NcGroup();
+    }
+    throw;
   }
 }
   
   
 // Get the group id.
 int  NcGroup::getId() const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getId on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getId on a Null group",__FILE__,__LINE__);
   return myId;
 }
   
 // Get the number of NcGroup objects.
 int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroupCount on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getGroupCount on a Null group",__FILE__,__LINE__);
   // initialize group counter
   int ngroups=0;
 
@@ -180,7 +183,7 @@ int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
   
 // Get the set of child NcGroup objects.
 multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
   // create a container to hold the NcGroup's.
   multimap<string,NcGroup> ncGroups;
 
@@ -231,7 +234,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
   
 // Get the named child NcGroup object.
 NcGroup NcGroup::getGroup(const string& name,NcGroup::GroupLocation location) const{
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroup on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getGroup on a Null group",__FILE__,__LINE__);
   multimap<string,NcGroup> ncGroups(getGroups(location));
   pair<multimap<string,NcGroup>::iterator,multimap<string,NcGroup>::iterator> ret;
   ret = ncGroups.equal_range(name);
@@ -245,7 +248,7 @@ NcGroup NcGroup::getGroup(const string& name,NcGroup::GroupLocation location) co
 
 // Get all NcGroup objects with a given name.
 set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
   // get the set of ncGroups in this group and above.
   multimap<std::string,NcGroup> ncGroups(getGroups(location));
   pair<multimap<string,NcGroup>::iterator,multimap<string,NcGroup>::iterator> ret;
@@ -260,7 +263,7 @@ set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation l
 
 // Add a new child NcGroup object.
 NcGroup NcGroup::addGroup(const string& name) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::addGroup on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::addGroup on a Null group",__FILE__,__LINE__);
   int new_ncid;
   ncCheck(nc_def_grp(myId,const_cast<char*> (name.c_str()),&new_ncid),__FILE__,__LINE__);
   return NcGroup(new_ncid);
@@ -395,11 +398,11 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const string& 
     
   // get an NcType object with the given type name.
   NcType tmpType(getType(typeName,NcGroup::ParentsAndCurrent));
-  if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
 
   // get a NcDim object with the given dimension name
   NcDim tmpDim(getDim(dimName,NcGroup::ParentsAndCurrent));
-  if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: dimName must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpDim.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: dimName must be defined in either the current group or a parent group",__FILE__,__LINE__);
 
   // finally define a new netCDF  variable
   int varId;
@@ -414,14 +417,14 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const string& 
 NcVar NcGroup::addVar(const string& name, const NcType& ncType, const NcDim& ncDim) const {
     
   // check NcType object is valid
-  if(ncType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
+  if(ncType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
   NcType tmpType(getType(ncType.getName(),NcGroup::ParentsAndCurrent));
-  if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
   
   // check NcDim object is valid
-  if(ncDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
+  if(ncDim.isNull()) throw NcException("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
   NcDim tmpDim(getDim(ncDim.getName(),NcGroup::ParentsAndCurrent));
-  if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpDim.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
   
   // finally define a new netCDF variable
   int varId;
@@ -437,14 +440,14 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
     
   // get an NcType object with the given name.
   NcType tmpType(getType(typeName,NcGroup::ParentsAndCurrent));
-  if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
 
   // get a set of NcDim objects corresponding to the given dimension names.
   vector<int> dimIds;
   dimIds.reserve(dimNames.size());
   for (size_t i=0; i<dimNames.size();i++){
     NcDim tmpDim(getDim(dimNames[i],NcGroup::ParentsAndCurrent));
-    if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: dimNames must be defined in either the current group or a parent group",__FILE__,__LINE__);
+    if(tmpDim.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: dimNames must be defined in either the current group or a parent group",__FILE__,__LINE__);
     dimIds.push_back(tmpDim.getId());
   }
 
@@ -459,18 +462,18 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
 NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcDim>& ncDimVector) const {
     
   // check NcType object is valid
-  if(ncType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
+  if(ncType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
   NcType tmpType(getType(ncType.getName(),NcGroup::ParentsAndCurrent));
-  if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
+  if(tmpType.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
   
   // check NcDim objects are valid
   vector<NcDim>::const_iterator iter;
   vector<int> dimIds;
   dimIds.reserve(ncDimVector.size());
   for (iter=ncDimVector.begin();iter < ncDimVector.end(); iter++) {
-    if(iter->isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
+    if(iter->isNull()) throw NcException("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
     NcDim tmpDim(getDim(iter->getName(),NcGroup::ParentsAndCurrent));
-    if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
+    if(tmpDim.isNull()) throw NcException("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
     dimIds.push_back(tmpDim.getId());
   }
 
@@ -862,7 +865,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, size_t len, const char** dataValu
   
 // Get the number of NcDim objects.
 int NcGroup::getDimCount(NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDimCount on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getDimCount on a Null group",__FILE__,__LINE__);
 
   // intialize counter
   int ndims=0;
@@ -897,7 +900,7 @@ int NcGroup::getDimCount(NcGroup::Location location) const {
 
 // Get the set of NcDim objects.
 multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDims on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getDims on a Null group",__FILE__,__LINE__);
   // create a container to hold the NcDim's.
   multimap<string,NcDim> ncDims;
 
@@ -940,7 +943,7 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
 
 // Get the named NcDim object.
 NcDim NcGroup::getDim(const string& name,NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDim on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getDim on a Null group",__FILE__,__LINE__);
   multimap<string,NcDim> ncDims(getDims(location));
   pair<multimap<string,NcDim>::iterator,multimap<string,NcDim>::iterator> ret;
   ret = ncDims.equal_range(name);
@@ -953,7 +956,7 @@ NcDim NcGroup::getDim(const string& name,NcGroup::Location location) const {
 
 // Get all NcDim objects with a given name.
 set<NcDim> NcGroup::getDims(const string& name,NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDims on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getDims on a Null group",__FILE__,__LINE__);
   // get the set of ncDims in this group and above.
   multimap<string,NcDim> ncDims(getDims(location));
   pair<multimap<string,NcDim>::iterator,multimap<string,NcDim>::iterator> ret;
@@ -968,7 +971,7 @@ set<NcDim> NcGroup::getDims(const string& name,NcGroup::Location location) const
 
 // Add a new NcDim object.
 NcDim NcGroup::addDim(const string& name, size_t dimSize) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::addDim on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::addDim on a Null group",__FILE__,__LINE__);
   int dimId;
   ncCheck(nc_def_dim(myId,name.c_str(),dimSize,&dimId),__FILE__,__LINE__);
   // finally return NcDim object for this new variable
@@ -977,7 +980,7 @@ NcDim NcGroup::addDim(const string& name, size_t dimSize) const {
 
 // Add a new NcDim object with unlimited size..
 NcDim NcGroup::addDim(const string& name) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::addDim on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::addDim on a Null group",__FILE__,__LINE__);
   int dimId;
   ncCheck(nc_def_dim(myId,name.c_str(),NC_UNLIMITED,&dimId),__FILE__,__LINE__);
   // finally return NcDim object for this new variable
@@ -995,7 +998,7 @@ NcDim NcGroup::addDim(const string& name) const {
 // Gets the number of type objects.
 int NcGroup::getTypeCount(NcGroup::Location location) const {
 
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypeCount on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypeCount on a Null group",__FILE__,__LINE__);
 
   // intialize counter
   int ntypes=0;
@@ -1033,7 +1036,7 @@ int NcGroup::getTypeCount(NcGroup::Location location) const {
 // Gets the number of type objects with a given enumeration type.
 int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) const {
 
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypeCount on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypeCount on a Null group",__FILE__,__LINE__);
 
   // intialize counter
   int ntypes=0;
@@ -1074,7 +1077,7 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
 
 // Gets the collection of NcType objects.
 multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
   // create a container to hold the NcType's.
   multimap<string,NcType> ncTypes;
 
@@ -1116,7 +1119,7 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
 
 // Gets the collection of NcType objects with a given name.
 set<NcType> NcGroup::getTypes(const string& name, NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
   // iterator for the multimap container.
   multimap<string,NcType>::iterator it;
   // return argument of equal_range: iterators to lower and upper bounds of the range.
@@ -1136,7 +1139,7 @@ set<NcType> NcGroup::getTypes(const string& name, NcGroup::Location location) co
 
 // Gets the collection of NcType objects with a given data type.
 set<NcType> NcGroup::getTypes(NcType::ncType enumType, NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
   // iterator for the multimap container.
   multimap<string,NcType>::iterator it;
   // get the entire collection of types.
@@ -1155,7 +1158,7 @@ set<NcType> NcGroup::getTypes(NcType::ncType enumType, NcGroup::Location locatio
 
 // Gets the collection of NcType objects with a given name and data type.
 set<NcType> NcGroup::getTypes(const string& name, NcType::ncType enumType, NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
   // iterator for the multimap container.
   multimap<string,NcType>::iterator it;
   // return argument of equal_range: iterators to lower and upper bounds of the range.
@@ -1177,7 +1180,7 @@ set<NcType> NcGroup::getTypes(const string& name, NcType::ncType enumType, NcGro
 
 // Gets the NcType object with a given name.
 NcType NcGroup::getType(const string& name, NcGroup::Location location) const {
-  if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getType on a Null group",__FILE__,__LINE__);
+  if(isNull()) throw NcException("Attempt to invoke NcGroup::getType on a Null group",__FILE__,__LINE__);
   if(name ==  "byte"    ) return ncByte;
   if(name ==  "ubyte"   ) return ncUbyte;
   if(name ==  "char"    ) return ncChar;
