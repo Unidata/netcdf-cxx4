@@ -23,13 +23,17 @@ namespace netCDF
     */
     class NcException : public std::exception {
     public:
-      NcException(const std::string& exceptionName,const std::string& complaint,const char* fileName,int lineNumber);
-	  NcException(const NcException& e) throw();
-	  NcException& operator=(const NcException& e) throw();
+      //NcException(const string& complaint,const char* fileName,int lineNumber);
+      NcException(const char* complaint,const char* fileName,int lineNumber);
+      NcException(int errorCode, const char* complaint,const char* fileName,int lineNumber);
+      NcException(const NcException& e) throw();
+      NcException& operator=(const NcException& e) throw();
       virtual ~NcException() throw();
       const char* what() const throw();
+      int errorCode() const throw();
     private:
       std::string* what_msg;
+      int ec;
     };
 
 
@@ -37,49 +41,49 @@ namespace netCDF
     class NcBadId : public NcException
     {
     public:
-      NcBadId(const std::string& complaint,const char* file,int line);
+      NcBadId(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if too many netcdf files are open. */
     class NcNFile : public NcException
     {
     public:
-      NcNFile(const std::string& complaint,const char* file,int line);
+      NcNFile(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if, having set NC_NOCLOBBER, the specified dataset already exists. */
     class NcExist : public NcException
     {
     public:
-      NcExist(const std::string& complaint,const char* file,int line);
+      NcExist(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if not a netCDF id.  */
     class NcInvalidArg : public NcException
     {
     public:
-      NcInvalidArg(const std::string& complaint,const char* file,int line);
+      NcInvalidArg(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if invalid argument. */
     class NcInvalidWrite : public NcException
     {
     public:
-      NcInvalidWrite(const std::string& complaint,const char* file,int line);
+      NcInvalidWrite(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if operation not allowed in data mode. */
     class NcNotInDefineMode : public NcException
     {
     public:
-      NcNotInDefineMode(const std::string& complaint,const char* file,int line);
+      NcNotInDefineMode(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if operation not allowed in defined mode. */
     class NcInDefineMode : public NcException
     {
     public:
-      NcInDefineMode(const std::string& complaint,const char* file,int line);
+      NcInDefineMode(const char* complaint,const char* file,int line);
     };
 
     /*! 
@@ -92,294 +96,294 @@ namespace netCDF
     class NcInvalidCoords : public NcException
     {
     public:
-      NcInvalidCoords(const std::string& complaint,const char* file,int line);
+      NcInvalidCoords(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if NC_MAX_DIMS is exceeded. */
     class NcMaxDims : public NcException
     {
     public:
-      NcMaxDims(const std::string& complaint,const char* file,int line);
+      NcMaxDims(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if string match to name is in use. */
     class NcNameInUse : public NcException
     {
     public:
-      NcNameInUse(const std::string& complaint,const char* file,int line);
+      NcNameInUse(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attribute is not found. */
     class NcNotAtt : public NcException
     {
     public:
-      NcNotAtt(const std::string& complaint,const char* file,int line);
+      NcNotAtt(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if Nc_MAX_ATTRS is exceeded. */
     class NcMaxAtts : public NcException
     {
     public:
-      NcMaxAtts(const std::string& complaint,const char* file,int line);
+      NcMaxAtts(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if not a valid netCDF data type. */
     class NcBadType : public NcException
     {
     public:
-      NcBadType(const std::string& complaint,const char* file,int line);
+      NcBadType(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if an invalid dimension id or name. */
     class NcBadDim : public NcException
     {
     public:
-      NcBadDim(const std::string& complaint,const char* file,int line);
+      NcBadDim(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if Nc_UNLIMITED is in the wrong index. */
     class NcUnlimPos : public NcException
     {
     public:
-      NcUnlimPos(const std::string& complaint,const char* file,int line);
+      NcUnlimPos(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if NC_MAX_VARS is exceeded. */
     class NcMaxVars : public NcException
     {
     public:
-      NcMaxVars(const std::string& complaint,const char* file,int line);
+      NcMaxVars(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if variable is not found. */
     class NcNotVar : public NcException
     {
     public:
-      NcNotVar(const std::string& complaint,const char* file,int line);
+      NcNotVar(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if the action is prohibited on the NC_GLOBAL varid. */
     class NcGlobal : public NcException
     {
     public:
-      NcGlobal(const std::string& complaint,const char* file,int line);
+      NcGlobal(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if not a netCDF file. */
     class NcNotNCF : public NcException
     {
     public:
-      NcNotNCF(const std::string& complaint,const char* file,int line);
+      NcNotNCF(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if in FORTRAN, string is too short. */
     class NcSts : public NcException
     {
     public:
-      NcSts(const std::string& complaint,const char* file,int line);
+      NcSts(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if NC_MAX_NAME is exceeded. */
     class NcMaxName : public NcException
     {
     public:
-      NcMaxName(const std::string& complaint,const char* file,int line);
+      NcMaxName(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if NC_UNLIMITED size is already in use. */
     class NcUnlimit : public NcException
     {
     public:
-      NcUnlimit(const std::string& complaint,const char* file,int line);
+      NcUnlimit(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if nc_rec op when there are no record vars. */
     class NcNoRecVars : public NcException
     {
     public:
-      NcNoRecVars(const std::string& complaint,const char* file,int line);
+      NcNoRecVars(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attempt to convert between text and numbers. */
     class NcChar : public NcException
     {
     public:
-      NcChar(const std::string& complaint,const char* file,int line);
+      NcChar(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if edge+start exceeds dimension bound. */
     class NcEdge : public NcException
     {
     public:
-      NcEdge(const std::string& complaint,const char* file,int line);
+      NcEdge(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if illegal stride. */
     class NcStride : public NcException
     {
     public:
-      NcStride(const std::string& complaint,const char* file,int line);
+      NcStride(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attribute or variable name contains illegal characters. */
     class NcBadName : public NcException
     {
     public:
-      NcBadName(const std::string& complaint,const char* file,int line);
+      NcBadName(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if math result not representable. */
     class NcRange : public NcException
     {
     public:
-      NcRange(const std::string& complaint,const char* file,int line);
+      NcRange(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if memory allocation (malloc) failure. */
     class NcNoMem : public NcException
     {
     public:
-      NcNoMem(const std::string& complaint,const char* file,int line);
+      NcNoMem(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if one or more variable sizes violate format constraints */
     class NcVarSize : public NcException
     {
     public:
-      NcVarSize(const std::string& complaint,const char* file,int line);
+      NcVarSize(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if invalid dimension size. */
     class NcDimSize : public NcException
     {
     public:
-      NcDimSize(const std::string& complaint,const char* file,int line);
+      NcDimSize(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if file likely truncated or possibly corrupted. */
     class NcTrunc : public NcException
     {
     public:
-      NcTrunc(const std::string& complaint,const char* file,int line);
+      NcTrunc(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if an error was reported by the HDF5 layer. */
     class NcHdfErr : public NcException
     {
     public:
-      NcHdfErr(const std::string& complaint,const char* file,int line);
+      NcHdfErr(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if cannot read. */
     class NcCantRead : public NcException
     {
     public:
-      NcCantRead(const std::string& complaint,const char* file,int line);
+      NcCantRead(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if cannot write. */
     class NcCantWrite : public NcException
     {
     public:
-      NcCantWrite(const std::string& complaint,const char* file,int line);
+      NcCantWrite(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if cannot create. */
     class NcCantCreate : public NcException
     {
     public:
-      NcCantCreate(const std::string& complaint,const char* file,int line);
+      NcCantCreate(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if file meta. */
     class NcFileMeta : public NcException
     {
     public:
-      NcFileMeta(const std::string& complaint,const char* file,int line);
+      NcFileMeta(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if dim meta. */
     class NcDimMeta : public NcException
     {
     public:
-      NcDimMeta(const std::string& complaint,const char* file,int line);
+      NcDimMeta(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attribute meta. */
     class NcAttMeta : public NcException
     {
     public:
-      NcAttMeta(const std::string& complaint,const char* file,int line);
+      NcAttMeta(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if variable meta. */
     class NcVarMeta : public NcException
     {
     public:
-      NcVarMeta(const std::string& complaint,const char* file,int line);
+      NcVarMeta(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if no compound. */
     class NcNoCompound : public NcException
     {
     public:
-      NcNoCompound(const std::string& complaint,const char* file,int line);
+      NcNoCompound(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attribute exists. */
     class NcAttExists : public NcException
     {
     public:
-      NcAttExists(const std::string& complaint,const char* file,int line);
+      NcAttExists(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attempting netcdf-4 operation on netcdf-3 file. */
     class NcNotNc4 : public NcException
     {
     public:
-      NcNotNc4(const std::string& complaint,const char* file,int line);
+      NcNotNc4(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if attempting netcdf-4 operation on strict nc3 netcdf-4 file. */
     class NcStrictNc3 : public NcException
     {
     public:
-      NcStrictNc3(const std::string& complaint,const char* file,int line);
+      NcStrictNc3(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if bad group id. */
     class NcBadGroupId : public NcException
     {
     public:
-      NcBadGroupId(const std::string& complaint,const char* file,int line);
+      NcBadGroupId(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if bad type id. */
     class NcBadTypeId : public NcException
     {
     public:
-      NcBadTypeId(const std::string& complaint,const char* file,int line);
+      NcBadTypeId(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if bad field id. */
     class NcBadFieldId : public NcException
     {
     public:
-      NcBadFieldId(const std::string& complaint,const char* file,int line);
+      NcBadFieldId(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if cannot find the field id. */
     class NcUnknownName : public NcException
     {
     public:
-      NcUnknownName(const std::string& complaint,const char* file,int line);
+      NcUnknownName(const char* complaint,const char* file,int line);
     };
 
     /*! Thrown if cannot return a netCDF group. */
     class NcEnoGrp : public NcException
     {
     public:
-      NcEnoGrp(const std::string& complaint,const char* file,int line);
+      NcEnoGrp(const char* complaint,const char* file,int line);
     };
 
     /*! 
@@ -390,7 +394,7 @@ namespace netCDF
     class NcNullGrp : public NcException
     {
     public:
-      NcNullGrp(const std::string& complaint,const char* file,int line);
+      NcNullGrp(const char* complaint,const char* file,int line);
     };
 
     /*! 
@@ -401,7 +405,7 @@ namespace netCDF
     class NcNullType : public NcException
     {
     public:
-      NcNullType(const std::string& complaint,const char* file,int line);
+      NcNullType(const char* complaint,const char* file,int line);
     };
 
     /*! 
@@ -412,7 +416,7 @@ namespace netCDF
     class NcNullDim : public NcException
     {
     public:
-      NcNullDim(const std::string& complaint,const char* file,int line);
+      NcNullDim(const char* complaint,const char* file,int line);
     };
 
     /*! 
@@ -422,7 +426,7 @@ namespace netCDF
     class NcElateDef : public NcException
     {
     public:
-      NcElateDef(const std::string& complaint,const char* file,int line);
+      NcElateDef(const char* complaint,const char* file,int line);
     };
 
   }
