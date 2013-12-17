@@ -151,12 +151,14 @@ vector<NcDim> NcVar::getDims() const
   int dimCount = getDimCount();  
   // create a vector of dimensions.
   vector<NcDim> ncDims;
-  vector<int> dimids(dimCount);
-  ncCheck(nc_inq_vardimid(groupId,myId, &dimids[0]),__FILE__,__LINE__);
-  ncDims.reserve(dimCount);
-  for (int i=0; i<dimCount; i++){
-    NcDim tmpDim(getParentGroup(),dimids[i]);
-    ncDims.push_back(tmpDim);
+  if (dimCount){
+    vector<int> dimids(dimCount);
+    ncCheck(nc_inq_vardimid(groupId,myId, &dimids[0]),__FILE__,__LINE__);
+    ncDims.reserve(dimCount);
+    for (int i=0; i<dimCount; i++){
+      NcDim tmpDim(getParentGroup(),dimids[i]);
+      ncDims.push_back(tmpDim);
+    }
   }
   return ncDims;
 }  
@@ -510,17 +512,18 @@ string NcVar::getName() const{
 
 
 // Sets chunking parameters.
-void NcVar::setChunking(ChunkMode chunkMode, vector<size_t>& chunksizes) const {
-  ncCheck(nc_def_var_chunking(groupId,myId,static_cast<int> (chunkMode), &chunksizes[0]),__FILE__,__LINE__);
+void NcVar::setChunking(ChunkMode chunkMode, vector<size_t>& chunkSizes) const {
+  size_t *chunkSizesPtr = chunkSizes.empty() ? 0 : &chunkSizes[0];
+  ncCheck(nc_def_var_chunking(groupId,myId,static_cast<int> (chunkMode), chunkSizesPtr),__FILE__,__LINE__);
 }
   
   
 // Gets the chunking parameters
 void NcVar::getChunkingParameters(ChunkMode& chunkMode, vector<size_t>& chunkSizes) const {
   int chunkModeInt;
-  chunkSizes.reserve(getDimCount());
-    
-  ncCheck(nc_inq_var_chunking(groupId,myId,&chunkModeInt, &chunkSizes[0]),__FILE__,__LINE__);
+  chunkSizes.resize(getDimCount());
+  size_t *chunkSizesPtr = chunkSizes.empty() ? 0 : &chunkSizes[0];
+  ncCheck(nc_inq_var_chunking(groupId,myId, &chunkModeInt, chunkSizesPtr),__FILE__,__LINE__);
   chunkMode = static_cast<ChunkMode> (chunkModeInt);
 }
   
