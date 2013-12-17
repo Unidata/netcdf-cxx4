@@ -77,7 +77,7 @@ int main()
       initializeVector(a7);
       initializeVector(a8);
       initializeVector(a9);
-      for(int  i=0; i<a1.size(); i++) {
+      for(size_t  i=0; i<a1.size(); i++) {
 	a1[i] *= 1;
 	a2[i] *= 2;
 	a3[i] *= 3;
@@ -85,8 +85,8 @@ int main()
 	a5[i] *= 5;
 	a6[i] *= 6;
 	a7[i] *= 7;
-	a8[i] *= 0.8;
-	a9[i] *= 9;
+	a8[i] *= 8;
+	a9[i] *= .9;
       }
 
       bool fillMode;
@@ -116,7 +116,7 @@ int main()
       //      var_2.getVar(&b2[0]);  
       //      var_2.getVar(index,&b2[0]);  
       var_2.getVar(index,index2,&b2[0]);  
-      for(int  i=0; i<b2.size(); i++) {
+      for(size_t  i=0; i<b2.size(); i++) {
 	cout << "i ="<<i<<" vector="<<b2[i]<<endl;
       }
 
