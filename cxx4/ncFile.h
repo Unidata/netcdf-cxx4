@@ -61,6 +61,9 @@ namespace netCDF
     
       /*! destructor */
       virtual ~NcFile(); //closes file and releases all resources
+     
+      //! Synchronize an open netcdf dataset to disk
+      void sync();
 
    private:
 	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.

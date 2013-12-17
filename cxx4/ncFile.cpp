@@ -77,3 +77,8 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
     }
   nullObject=false;
 }
+
+// Synchronize an open netcdf dataset to disk
+void NcFile::sync(){
+  ncCheck(nc_sync(myId),__FILE__,__LINE__);
+}
