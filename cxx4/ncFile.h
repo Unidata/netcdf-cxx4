@@ -65,6 +65,9 @@ namespace netCDF
       //! Synchronize an open netcdf dataset to disk
       void sync();
 
+      //! Leave define mode, used for classic model
+      void enddef();
+
    private:
 	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
 		  Because the destructor closes the file and releases al resources such 

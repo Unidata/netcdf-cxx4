@@ -62,8 +62,8 @@ int create_file(string filename, NcFile::FileFormat format) {
    
       // In the classic model, must explicitly leave define mode
       // before writing data.  Need a method that calls nc_enddef().
-//       if(format != NcFile::nc4)
-// 	  dataFile.
+      if(format != NcFile::nc4)
+	  dataFile.enddef();
 
       // Write the data to the file. Although netCDF supports
       // reading and writing subsets of data, in this case we write all
@@ -90,20 +90,17 @@ int main()
 	return ret;
     cout << "*** SUCCESS creating nc4 file" << endl;
 
-// The following three tests don't work yet.  Uncomment when can write
-// files of nc4classic, classic, and classic64 formats.
+    if(ret = create_file("simple_xy_nc4classic.nc", NcFile::nc4classic))
+	return ret;
+    cout << "*** SUCCESS creating nc4classic file" << endl;
 
-//     if(ret = create_file("simple_xy_nc4classic.nc", NcFile::nc4classic))
-// 	return ret;
-//     cout << "*** SUCCESS creating nc4classic file" << endl;
+    if(ret = create_file("simple_xy_classic.nc", NcFile::classic))
+ 	return ret;
+    cout << "*** SUCCESS creating classic file" << endl;
 
-//     if(ret = create_file("simple_xy_classic.nc", NcFile::classic))
-// 	return ret;
-//     cout << "*** SUCCESS creating classic file" << endl;
-
-//     if(ret = create_file("simple_xy_classic64.nc", NcFile::classic64))
-// 	return ret;
-//     cout << "*** SUCCESS creating classic64 file" << endl;
+    if(ret = create_file("simple_xy_classic64.nc", NcFile::classic64))
+ 	return ret;
+    cout << "*** SUCCESS creating classic64 file" << endl;
 
     return 0;
 }

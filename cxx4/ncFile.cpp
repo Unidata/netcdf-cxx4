@@ -82,3 +82,8 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
 void NcFile::sync(){
   ncCheck(nc_sync(myId),__FILE__,__LINE__);
 }
+
+// Leave define mode, used for classic model
+void NcFile::enddef() {
+    ncCheck(nc_enddef(myId),__FILE__,__LINE__);
+}
