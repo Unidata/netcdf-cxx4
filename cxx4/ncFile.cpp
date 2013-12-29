@@ -73,10 +73,10 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
   switch (fMode) 
     {
     case NcFile::write:
-      ncCheck(NC_EINVAL,__FILE__,__LINE__);
+      ncCheck(nc_open(filePath.c_str(), format | NC_WRITE, &myId),__FILE__,__LINE__);
       break;
     case NcFile::read:
-      ncCheck(NC_EINVAL,__FILE__,__LINE__);
+      ncCheck(nc_open(filePath.c_str(), format | NC_NOWRITE, &myId),__FILE__,__LINE__);
       break;
     case NcFile::newFile:
       ncCheck(nc_create(filePath.c_str(), format | NC_NOCLOBBER, &myId),__FILE__,__LINE__);
