@@ -395,6 +395,10 @@ NcVar NcGroup::getVar(const string& name,NcGroup::Location location) const {
     return ret.first->second;
 }
 
+// Adds a new netCDF scalar variable.
+NcVar NcGroup::addVar(const std::string& name, const NcType& ncType) const {
+  return NcGroup::addVar(name, ncType, std::vector<NcDim>());
+}   
 
 // Add a new netCDF variable.
 NcVar NcGroup::addVar(const string& name, const string& typeName, const string& dimName) const {
