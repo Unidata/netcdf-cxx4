@@ -13,7 +13,7 @@ int main()
 {
    try
    {
-      cout << "Test creation of classic format file";
+      cout << "Test creation of classic format file" << endl;
       {
 	 NcFile ncFile("test_classic.nc", NcFile::replace, NcFile::classic);
 	 NcDim dim1 = ncFile.addDim("dim1",11);
@@ -26,6 +26,11 @@ int main()
 	 // dimArray[0]=dim1;
 	 // dimArray[1]=dim2;
 	 // NcVar varA1_3  = ncFile.addVar("varA1_3", ncInt, dimArray);
+
+         // and inserting some data that needs leaving the define mode
+         cout << "testing the swith to DATA mode..." << endl;
+         int arr[] = {1,2,3,4,5,6,7,8,9,10,11};
+         var_gw.putVar(arr);
       }
 
       // Now test reading.
@@ -34,6 +39,13 @@ int main()
 
 	 if (ncFile.getVarCount() != 1)
 	    throw NcException("NcException", "Holy Mother of Pearl!", __FILE__, __LINE__);
+      }
+
+      // and redefinition
+      {
+        NcFile ncFile("test_classic.nc", NcFile::write);
+        cout << "testing the swith to DEFINE mode..." << endl;
+        ncFile.putAtt(string("name"),string("value"));
       }
 
       cout << "    -----------   passed\n";
