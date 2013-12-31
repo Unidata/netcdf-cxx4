@@ -12,7 +12,17 @@ using namespace netCDF::exceptions;
 // destructor
 NcFile::~NcFile()
 {
-  ncCheck(nc_close(myId),__FILE__,__LINE__);
+  // destructor may be called due to an exception being thrown
+  // hence throwing an exception from within a destructor 
+  // causes undefined behaviour! so just printing a warning message
+  try
+  {
+    ncCheck(nc_close(myId),__FILE__,__LINE__);
+  }
+  catch (NcException &e) 
+  {
+    cerr << e.what() << endl;
+  }
 }
 
 // Constructor generates a null object.
@@ -63,10 +73,10 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
   switch (fMode) 
     {
     case NcFile::write:
-      ncCheck(NC_EINVAL,__FILE__,__LINE__);
+      ncCheck(nc_open(filePath.c_str(), format | NC_WRITE, &myId),__FILE__,__LINE__);
       break;
     case NcFile::read:
-      ncCheck(NC_EINVAL,__FILE__,__LINE__);
+      ncCheck(nc_open(filePath.c_str(), format | NC_NOWRITE, &myId),__FILE__,__LINE__);
       break;
     case NcFile::newFile:
       ncCheck(nc_create(filePath.c_str(), format | NC_NOCLOBBER, &myId),__FILE__,__LINE__);

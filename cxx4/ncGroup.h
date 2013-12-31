@@ -193,6 +193,16 @@ namespace netCDF
      */
     NcVar getVar(const std::string& name,NcGroup::Location location=Current) const;
 
+    /*! 
+      Adds a new netCDF scalar variable.
+      The NcType must be non-null, and be defined in either the current group or a parent group.
+      An NcNullType exception is thrown if the NcType object is invalid.
+      \param    name     Variable name.
+      \param   typeName  Type name.
+      \return            The NcVar object for this new netCDF variable.
+    */
+    NcVar addVar(const std::string& name, const NcType& ncType) const;
+
     /*!
       Adds a new netCDF variable.
       The NcType and NcDim objects must be non-null, and be defined in either the current group or a parent group.

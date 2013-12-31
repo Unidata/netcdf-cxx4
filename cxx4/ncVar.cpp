@@ -222,6 +222,7 @@ NcVarAtt NcVar::getAtt(const string& name) const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const string& dataValues) const {
+  ncCheckDefineMode(groupId);
   ncCheck(nc_put_att_text(groupId,myId,name.c_str(),dataValues.size(),dataValues.c_str()),__FILE__,__LINE__);
   // finally instantiate this attribute and return
   return getAtt(name);
@@ -229,6 +230,7 @@ NcVarAtt NcVar::putAtt(const string& name, const string& dataValues) const {
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const unsigned char* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -241,6 +243,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const signed char* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -255,6 +258,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 /////////////////////////////////
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, short datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -267,6 +271,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, short datumValue)
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, int datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -278,6 +283,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, int datumValue) c
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, long datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -289,6 +295,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, long datumValue) 
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, float datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -301,6 +308,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, float datumValue)
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, double datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -313,6 +321,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, double datumValue
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned short datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -324,6 +333,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned short da
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned int datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -335,6 +345,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned int datu
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, long long datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -347,6 +358,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, long long datumVa
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned long long datumValue) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -371,6 +383,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, unsigned long lon
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const short* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -383,6 +396,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const int* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -394,6 +408,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const long* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -405,6 +420,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const float* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -417,6 +433,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const double* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -429,6 +446,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const unsigned short* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -440,6 +458,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const unsigned int* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -451,6 +470,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const long long* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -463,6 +483,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const unsigned long long* dataValues) const {
+  ncCheckDefineMode(groupId);
   NcType::ncType typeClass(type.getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_att(groupId,myId,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -475,6 +496,7 @@ NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, size_t len, const char** dataValues) const {
+  ncCheckDefineMode(groupId);
   ncCheck(nc_put_att_string(groupId,myId,name.c_str(),len,dataValues),__FILE__,__LINE__);
   // finally instantiate this attribute and return
   return getAtt(name);
@@ -482,6 +504,7 @@ NcVarAtt NcVar::putAtt(const string& name, size_t len, const char** dataValues) 
 
 // Creates a new NetCDF variable attribute or if already exisiting replaces it.
 NcVarAtt NcVar::putAtt(const string& name, const NcType& type, size_t len, const void* dataValues) const {
+  ncCheckDefineMode(groupId);
   ncCheck(nc_put_att(groupId,myId ,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   // finally instantiate this attribute and return
   return getAtt(name);
@@ -668,6 +691,7 @@ void NcVar::rename( const string& newname ) const
 
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -676,6 +700,7 @@ void NcVar::putVar(const char* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const unsigned char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -684,6 +709,7 @@ void NcVar::putVar(const unsigned char* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const signed char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -692,6 +718,7 @@ void NcVar::putVar(const signed char* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -700,6 +727,7 @@ void NcVar::putVar(const short* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -708,6 +736,7 @@ void NcVar::putVar(const int* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -716,6 +745,7 @@ void NcVar::putVar(const long* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const float* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -724,6 +754,7 @@ void NcVar::putVar(const float* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const double* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -732,6 +763,7 @@ void NcVar::putVar(const double* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const unsigned short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -740,6 +772,7 @@ void NcVar::putVar(const unsigned short* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const unsigned int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -748,6 +781,7 @@ void NcVar::putVar(const unsigned int* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -756,6 +790,7 @@ void NcVar::putVar(const long long* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const unsigned long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -764,6 +799,7 @@ void NcVar::putVar(const unsigned long long* dataValues) const {
 }
 // Writes the entire data into the netCDF variable.
 void NcVar::putVar(const char** dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
@@ -772,6 +808,7 @@ void NcVar::putVar(const char** dataValues) const {
 }
 // Writes the entire data into the netCDF variable with no data conversion.
 void NcVar::putVar(const void* dataValues) const {
+    ncCheckDataMode(groupId);
     ncCheck(nc_put_var(groupId, myId,dataValues),__FILE__,__LINE__);
 }
 
@@ -779,6 +816,7 @@ void NcVar::putVar(const void* dataValues) const {
 ///////////////////
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const string& datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
@@ -790,6 +828,7 @@ void NcVar::putVar(const vector<size_t>& index, const string& datumValue) const 
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const unsigned char* datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
@@ -798,6 +837,7 @@ void NcVar::putVar(const vector<size_t>& index, const unsigned char* datumValue)
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const signed char* datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
@@ -806,6 +846,7 @@ void NcVar::putVar(const vector<size_t>& index, const signed char* datumValue) c
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const short datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -814,6 +855,7 @@ void NcVar::putVar(const vector<size_t>& index, const short datumValue) const {
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const int datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -822,6 +864,7 @@ void NcVar::putVar(const vector<size_t>& index, const int datumValue) const {
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const long datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -830,6 +873,7 @@ void NcVar::putVar(const vector<size_t>& index, const long datumValue) const {
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const float datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -838,6 +882,7 @@ void NcVar::putVar(const vector<size_t>& index, const float datumValue) const {
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const double datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -846,6 +891,7 @@ void NcVar::putVar(const vector<size_t>& index, const double datumValue) const {
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const unsigned short datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -854,6 +900,7 @@ void NcVar::putVar(const vector<size_t>& index, const unsigned short datumValue)
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const unsigned int datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -862,6 +909,7 @@ void NcVar::putVar(const vector<size_t>& index, const unsigned int datumValue) c
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const long long datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -870,6 +918,7 @@ void NcVar::putVar(const vector<size_t>& index, const long long datumValue) cons
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const unsigned long long datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_var1(groupId, myId,&index[0],&datumValue),__FILE__,__LINE__);
@@ -878,6 +927,7 @@ void NcVar::putVar(const vector<size_t>& index, const unsigned long long datumVa
 }
 // Writes a single datum value into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& index, const char** datumValue) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
@@ -886,6 +936,7 @@ void NcVar::putVar(const vector<size_t>& index, const char** datumValue) const {
 }
 // Writes a single datum value into the netCDF variable with no data conversion.
 void NcVar::putVar(const vector<size_t>& index, const void* datumValue) const {
+    ncCheckDataMode(groupId);
     ncCheck(nc_put_var1(groupId, myId,&index[0],datumValue),__FILE__,__LINE__);
 }
 
@@ -894,6 +945,7 @@ void NcVar::putVar(const vector<size_t>& index, const void* datumValue) const {
 
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -902,6 +954,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const unsigned char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -910,6 +963,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const signed char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -918,6 +972,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -926,6 +981,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -934,6 +990,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -942,6 +999,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const float* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -950,6 +1008,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const double* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -958,6 +1017,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const unsigned short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -966,6 +1026,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const unsigned int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -974,6 +1035,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -982,6 +1044,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const unsigned long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -990,6 +1053,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const char** dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
@@ -998,6 +1062,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 }
 // Writes an array of values into the netCDF variable with no data conversion.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, const void* dataValues) const {
+    ncCheckDataMode(groupId);
     ncCheck(nc_put_vara(groupId, myId,&startp[0],&countp[0],dataValues),__FILE__,__LINE__);
 }
 
@@ -1007,6 +1072,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>& countp, c
 
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1015,6 +1081,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const unsigned char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1023,6 +1090,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const signed char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1031,6 +1099,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1039,6 +1108,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1047,6 +1117,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1055,6 +1126,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const float* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1063,6 +1135,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const double* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1071,6 +1144,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const unsigned short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1079,6 +1153,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const unsigned int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1087,6 +1162,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1095,6 +1171,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const unsigned long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1103,6 +1180,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const char** dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
@@ -1111,6 +1189,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a set of subsampled array values into the netCDF variable with no data conversion.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep,  const void* dataValues) const {
+    ncCheckDataMode(groupId);
     ncCheck(nc_put_vars(groupId, myId,&startp[0],&countp[0],&stridep[0],dataValues),__FILE__,__LINE__);
 }
 
@@ -1118,6 +1197,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 ////////////////////
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1126,6 +1206,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const unsigned char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1134,6 +1215,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const signed char* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1142,6 +1224,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1150,6 +1233,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1158,6 +1242,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1166,6 +1251,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const float* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1174,6 +1260,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const double* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1182,6 +1269,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const unsigned short* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1190,6 +1278,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const unsigned int* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1198,6 +1287,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1206,6 +1296,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const unsigned long long* dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1214,6 +1305,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const char** dataValues) const {
+  ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
@@ -1222,6 +1314,7 @@ void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, co
 }
 // Writes a mapped array section of values into the netCDF variable with no data conversion.
 void NcVar::putVar(const vector<size_t>& startp, const vector<size_t>&countp, const vector<ptrdiff_t>& stridep, const vector<ptrdiff_t>& imapp, const void* dataValues) const {
+    ncCheckDataMode(groupId);
     ncCheck(nc_put_varm(groupId, myId,&startp[0],&countp[0],&stridep[0],&imapp[0],dataValues),__FILE__,__LINE__);
 }
 

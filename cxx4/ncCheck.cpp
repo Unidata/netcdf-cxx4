@@ -71,4 +71,16 @@ namespace netCDF
       throw NcException("NcException","Unknown error",file,line);
     }
   }
+
+  void ncCheckDefineMode(int ncid)
+  {
+    int status = nc_redef(ncid);
+    if (status != NC_EINDEFINE) ncCheck(status, __FILE__, __LINE__);
+  }
+
+  void ncCheckDataMode(int ncid)
+  {
+    int status = nc_enddef(ncid);
+    if (status != NC_ENOTINDEFINE) ncCheck(status, __FILE__, __LINE__);
+  }
 }

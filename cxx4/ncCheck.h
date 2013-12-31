@@ -15,6 +15,22 @@ namespace netCDF
   */
   void ncCheck(int retCode, const char* file, int line);
 
+  /*! 
+    Function checks if the file (group) is in define mode.
+    If not, it places it in the define mode.
+    While this is automatically done by the underlying C API
+    for netCDF-4 files, the netCDF-3 files still need this call.
+  */
+  void ncCheckDefineMode(int ncid);
+
+  /*! 
+    Function checks if the file (group) is in data mode.
+    If not, it places it in the data mode.
+    While this is automatically done by the underlying C API
+    for netCDF-4 files, the netCDF-3 files still need this call.
+  */
+  void ncCheckDataMode(int ncid);
+
 };
 
 #endif

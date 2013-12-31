@@ -29,6 +29,10 @@ int main()
 	NcGroup groupC(groupA.addGroup("groupC"));
 	cout <<"    -----------   passed\n";
     
+	cout <<left<<setw(55)<<"Testing addVar(\"varName\",\"typeName\")";
+	NcVar var_scalar  = ncFile.addVar("var_scalar",ncByte);
+	cout <<"    -----------   passed\n";
+
 	cout <<left<<setw(55)<<"Testing addDim(\"dimensionName\")";
 	NcDim dim1 = ncFile.addDim("dim1",11);
 	NcDim dim2 = ncFile.addDim("dim2");
