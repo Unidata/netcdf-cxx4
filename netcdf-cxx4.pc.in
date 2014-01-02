@@ -10,4 +10,4 @@ Description: NetCDF C++ Client Library
 Version: @PACKAGE_VERSION@
 Libs: -L${libdir} @NC_LIBS@
 Cflags: -I${includedir}
-
+Requires: netcdf

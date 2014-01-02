@@ -5,7 +5,7 @@
 
 prefix=@prefix@
 exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
+libdir=@libdir@
 includedir=${prefix}/include
 
 cc="@CC@"
@@ -13,7 +13,7 @@ cxx="@CXX@"
 fc="@FC@"
 cflags=" -I${includedir} @CPPFLAGS@" 
 fflags="@FFLAGS@ @MOD_FLAG@${includedir}"
-libs="-L${libdir} @NC_LIBS@"
+libs="-L${libdir} @NC_LIBS@ -lnetcdf"
 flibs="-L${libdir} @NC_FLIBS@"
 has_dap="@HAS_DAP@"
 has_nc2="@HAS_NC2@"
