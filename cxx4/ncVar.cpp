@@ -168,7 +168,7 @@ vector<NcDim> NcVar::getDims() const
 NcDim NcVar::getDim(int i) const
 {
   vector<NcDim> ncDims = getDims();
-  if((size_t)i >= ncDims.size() || i < 0) throw NcException("NcException","Index out of range",__FILE__,__LINE__);
+  if((size_t)i >= ncDims.size() || i < 0) throw NcException("Index out of range",__FILE__,__LINE__);
   return ncDims[i];
 }
 
@@ -210,8 +210,10 @@ NcVarAtt NcVar::getAtt(const string& name) const
   map<string,NcVarAtt> attributeList = getAtts();
   map<string,NcVarAtt>::iterator myIter;
   myIter = attributeList.find(name);
-  if(myIter == attributeList.end())
-    throw NcException("NcException","attribute '"+name+"' not found",__FILE__,__LINE__);
+  if(myIter == attributeList.end()){
+    string msg("Attribute '"+name+"' not found");
+    throw NcException(msg.c_str(),__FILE__,__LINE__);
+  }
   return NcVarAtt(myIter->second);
 }
 
@@ -564,7 +566,7 @@ void NcVar::getChunkingParameters(ChunkMode& chunkMode, vector<size_t>& chunkSiz
 void NcVar::setFill(bool fillMode, void* fillValue) const {
   // If fillMode is enabled, check that fillValue has a legal pointer.
   if(fillMode && fillValue == NULL)
-    throw NcException("NcException","FillMode was set to zero but fillValue has invalid pointer",__FILE__,__LINE__);
+    throw NcException("FillMode was set to zero but fillValue has invalid pointer",__FILE__,__LINE__);
   
   ncCheck(nc_def_var_fill(groupId,myId,static_cast<int> (!fillMode),fillValue),__FILE__,__LINE__);
 }
@@ -597,7 +599,7 @@ void NcVar::setCompression(bool enableShuffleFilter, bool enableDeflateFilter, i
     
   // Check that the deflate level is legal
   if(enableDeflateFilter & (deflateLevel < 0 || deflateLevel >9))
-    throw NcException("NcException","The deflateLevel must be set between 0 and 9.",__FILE__,__LINE__);
+    throw NcException("The deflateLevel must be set between 0 and 9.",__FILE__,__LINE__);
     
   ncCheck(nc_def_var_deflate(groupId,myId,
 			     static_cast<int> (enableShuffleFilter),
@@ -819,7 +821,7 @@ void NcVar::putVar(const vector<size_t>& index, const string& datumValue) const 
   ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
-    throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
+    throw NcException("user-defined type must be of type void",__FILE__,__LINE__);
   else
     {
       const char* tmpPtr = datumValue.c_str();
@@ -831,7 +833,7 @@ void NcVar::putVar(const vector<size_t>& index, const unsigned char* datumValue)
   ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
-    throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
+    throw NcException("user-defined type must be of type void",__FILE__,__LINE__);
   else
     ncCheck(nc_put_var1_uchar(groupId, myId,&index[0],datumValue),__FILE__,__LINE__);
 }
@@ -840,7 +842,7 @@ void NcVar::putVar(const vector<size_t>& index, const signed char* datumValue) c
   ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
-    throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
+    throw NcException("user-defined type must be of type void",__FILE__,__LINE__);
   else
     ncCheck(nc_put_var1_schar(groupId, myId,&index[0],datumValue),__FILE__,__LINE__);
 }
@@ -930,7 +932,7 @@ void NcVar::putVar(const vector<size_t>& index, const char** datumValue) const {
   ncCheckDataMode(groupId);
   NcType::ncType typeClass(getType().getTypeClass());
   if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
-    throw NcException("NcException","user-defined type must be of type void",__FILE__,__LINE__);
+    throw NcException("user-defined type must be of type void",__FILE__,__LINE__);
   else
     ncCheck(nc_put_var1_string(groupId, myId,&index[0],datumValue),__FILE__,__LINE__);
 }
