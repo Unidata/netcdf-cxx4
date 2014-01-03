@@ -1,3 +1,4 @@
+#include <cstring>
 #include "netcdf.h"
 #include <ncException.h>
 using namespace std;
@@ -14,6 +15,7 @@ namespace netCDF
     const char* msg = 0;
     if (NC_ISSYSERR(retCode)){
       msg = std::strerror(retCode);
+      msg = msg ? msg : "Unknown system error";
     }else{
       msg = nc_strerror(retCode);
     }
