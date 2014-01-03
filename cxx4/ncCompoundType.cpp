@@ -33,7 +33,7 @@ NcCompoundType& NcCompoundType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
     // check the rhs is the base of a Compound type
-    if(getTypeClass() != nc_COMPOUND) 	throw NcException("NcException","The NcType object must be the base of a Compound type.",__FILE__,__LINE__);
+    if(getTypeClass() != nc_COMPOUND) 	throw NcException("The NcType object must be the base of a Compound type.",__FILE__,__LINE__);
     // assign base class parts
     NcType::operator=(rhs);
   }

@@ -23,7 +23,7 @@ NcOpaqueType& NcOpaqueType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
     // check the rhs is the base of an Opaque type
-    if(getTypeClass() != NC_OPAQUE) 	throw NcException("NcException","The NcType object must be the base of an Opaque type.",__FILE__,__LINE__);
+    if(getTypeClass() != NC_OPAQUE) 	throw NcException("The NcType object must be the base of an Opaque type.",__FILE__,__LINE__);
     // assign base class parts
     NcType::operator=(rhs);
   }
@@ -54,7 +54,7 @@ NcOpaqueType::NcOpaqueType(const NcType& ncType) :
   NcType(ncType)
 {
   // check the nctype object is the base of a Opaque type
-  if(getTypeClass() != NC_OPAQUE) 	throw NcException("NcException","The NcType object must be the base of an Opaque type.",__FILE__,__LINE__);
+  if(getTypeClass() != NC_OPAQUE) 	throw NcException("The NcType object must be the base of an Opaque type.",__FILE__,__LINE__);
 }
   
 // Returns the size of the opaque type in bytes.

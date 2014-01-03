@@ -38,7 +38,7 @@ int main()
 	 NcFile ncFile("test_classic.nc", NcFile::read);
 
 	 if (ncFile.getVarCount() != 1)
-	    throw NcException("NcException", "Holy Mother of Pearl!", __FILE__, __LINE__);
+	    throw NcException( "Holy Mother of Pearl!", __FILE__, __LINE__);
       }
 
       // and redefinition
