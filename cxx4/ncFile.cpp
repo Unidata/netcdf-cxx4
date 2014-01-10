@@ -17,7 +17,8 @@ NcFile::~NcFile()
   // causes undefined behaviour! so just printing a warning message
   try
   {
-    ncCheck(nc_close(myId),__FILE__,__LINE__);
+    if (!nullObject)
+      ncCheck(nc_close(myId),__FILE__,__LINE__);
   }
   catch (NcException &e) 
   {
