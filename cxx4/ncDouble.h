@@ -1,7 +1,7 @@
-#include "ncType.h"
-
 #ifndef NcDoubleClass
 #define NcDoubleClass
+
+#include "ncType.h"
 
 namespace netCDF
 {

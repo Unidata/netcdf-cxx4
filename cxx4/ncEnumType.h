@@ -1,11 +1,10 @@
+#ifndef NcEnumTypeClass
+#define NcEnumTypeClass
+
 #include <string>
 #include "ncType.h"
 #include "netcdf.h"
 #include "ncCheck.h"
-
-#ifndef NcEnumTypeClass
-#define NcEnumTypeClass
-
 
 namespace netCDF
 {

@@ -1,10 +1,9 @@
-#include <string>
-#include "ncType.h"
-#include "netcdf.h"
-
 #ifndef NcOpaqueTypeClass
 #define NcOpaqueTypeClass
 
+#include <string>
+#include "ncType.h"
+#include "netcdf.h"
 
 namespace netCDF
 {

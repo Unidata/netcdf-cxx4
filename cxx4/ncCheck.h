@@ -1,9 +1,9 @@
+#ifndef NcCheckFunction
+#define NcCheckFunction
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#ifndef NcCheckFunction
-#define NcCheckFunction
 
 namespace netCDF
 {

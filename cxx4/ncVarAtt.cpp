@@ -1,5 +1,5 @@
-#include "ncVar.h"
 #include "ncVarAtt.h"
+#include "ncVar.h"
 #include "ncGroup.h"
 #include "ncCheck.h"
 #include <netcdf.h>

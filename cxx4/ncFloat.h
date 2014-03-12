@@ -1,7 +1,7 @@
-#include "ncType.h"
-
 #ifndef NcFloatClass
 #define NcFloatClass
+
+#include "ncType.h"
 
 namespace netCDF
 {

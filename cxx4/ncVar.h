@@ -1,3 +1,6 @@
+#ifndef NcVarClass
+#define NcVarClass
+
 #include <exception>
 #include <string>
 #include <typeinfo>
@@ -18,9 +21,6 @@
 #include "ncFloat.h"
 #include "ncDouble.h"
 #include "ncString.h"
-
-#ifndef NcVarClass
-#define NcVarClass
 
 namespace netCDF
 {

@@ -1,3 +1,6 @@
+#ifndef NcGroupClass
+#define NcGroupClass
+
 #include <string>
 #include <vector>
 #include <set>
@@ -5,12 +8,6 @@
 #include "ncType.h"
 #include "ncEnumType.h"
 #include "ncGroupAtt.h"
-
-
-
-#ifndef NcGroupClass
-#define NcGroupClass
-
 
 namespace netCDF
 {

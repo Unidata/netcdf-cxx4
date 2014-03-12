@@ -1,10 +1,9 @@
-#include <string>
-#include "ncGroup.h"
-#include "netcdf.h"
-
 #ifndef NcFileClass
 #define NcFileClass
 
+#include <string>
+#include "ncGroup.h"
+#include "netcdf.h"
 
 //!  C++ API for netCDF4.
 namespace netCDF
@@ -70,7 +69,7 @@ namespace netCDF
 
    private:
 	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
-		  Because the destructor closes the file and releases al resources such 
+		  Because the destructor closes the file and releases all resources such 
 		  an action could leave NcFile objects in an invalid state */
 	   NcFile& operator =(const NcGroup & rhs);
 	   NcFile& operator =(const NcFile & rhs);

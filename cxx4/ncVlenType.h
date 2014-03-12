@@ -1,9 +1,9 @@
+#ifndef NcVlenTypeClass
+#define NcVlenTypeClass
+
 #include <string>
 #include "ncType.h"
 #include "netcdf.h"
-
-#ifndef NcVlenTypeClass
-#define NcVlenTypeClass
 
 
 namespace netCDF

@@ -54,7 +54,7 @@ NcException::NcException(int errorCode, const char* complaint,const char* fileNa
   }
 }
 
-NcException::NcException(const NcException& e) throw()
+NcException::NcException(const NcException& e)
 	: what_msg(NULL)
   , ec(e.ec)
 {
@@ -65,7 +65,7 @@ NcException::NcException(const NcException& e) throw()
 	}
 }
 
-NcException& NcException::operator=(const NcException& e) throw(){
+NcException& NcException::operator=(const NcException& e) {
 	if (this != &e){
     ec = e.ec;
 		delete what_msg;
@@ -78,7 +78,7 @@ NcException& NcException::operator=(const NcException& e) throw(){
 	return *this;
 }
 
-NcException::~NcException()throw() {
+NcException::~NcException() throw() {
 	delete what_msg;
 }
 
@@ -88,7 +88,7 @@ const char* NcException::what() const throw()
   return what_msg==NULL ? "" : what_msg->c_str();
 }
 
-int NcException::errorCode() const throw() {
+int NcException::errorCode() const {
   return ec;
 }
 

@@ -1,6 +1,6 @@
+#include "ncCompoundType.h"
 #include "ncGroup.h"
 #include "ncCheck.h"
-#include "ncCompoundType.h"
 #include "ncByte.h"
 #include "ncUbyte.h"
 #include "ncChar.h"
