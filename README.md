@@ -2,6 +2,10 @@ netcdf-cxx4
 ===========
 
 Official GitHub repository for netCDF-4 C++ library.
+ 
+Note: The latest release of the historic C++ libraries, netCDF-4.2, may be downloaded from the following page:
+
+* http://www.unidata.ucar.edu/downloads/netcdf/index.jsp
 
 ### Introduction
 
