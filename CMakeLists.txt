@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 #Project Name
-PROJECT(NCXX C)
+PROJECT(NCXX C CXX)
 set(PACKAGE "netcdf-cxx" CACHE STRING "")
 
 #####
@@ -77,3 +77,31 @@ MACRO(CHECK_C_LINKER_FLAG M_FLAG M_RESULT)
   CHECK_C_SOURCE_COMPILES("int main() {return 0;}" ${M_RESULT})
   SET(CMAKE_REQUIRED_FLAGS "${T_REQ_FLAG}")
 ENDMACRO()
+
+# Set the build type.
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE DEBUG CACHE STRING "Choose the type of build, options are: None, Debug, Release."
+    FORCE)
+ENDIF()
+
+# Set build type uppercase
+STRING(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+
+# Determine the configure date.
+
+EXECUTE_PROCESS(
+  COMMAND date
+  OUTPUT_VARIABLE CONFIG_DATE
+  )
+IF(CONFIG_DATE)
+	string(STRIP ${CONFIG_DATE} CONFIG_DATE)
+ENDIF()
+##
+# Allow for extra dependencies.
+##
+
+SET(EXTRA_DEPS "")
+
+################################
+# End Project Properties
+################################
