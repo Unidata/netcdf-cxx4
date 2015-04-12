@@ -105,3 +105,104 @@ SET(EXTRA_DEPS "")
 ################################
 # End Project Properties
 ################################
+
+################################
+# Set CTest Properties
+################################
+
+ENABLE_TESTING()
+INCLUDE(CTest)
+
+# Copy the CTest customization file into binary directory, as required.
+FILE(COPY ${CMAKE_SOURCE_DIR}/CTestCustom.cmake DESTINATION ${CMAKE_BINARY_DIR})
+
+# Set Memory test program for non-MSVC based builds.
+# Assume valgrind for now.
+IF(NOT MSVC)
+  SET(CTEST_MEMORYCHECK_COMMAND valgrind CACHE STRING "")
+ENDIF()
+
+# Set variable to define the build type.
+INCLUDE(GenerateExportHeader)
+
+################################
+# End CTest Properties
+################################
+
+ENABLE_TESTING()
+INCLUDE(CTest)
+
+################################
+# Compiler Configuration
+################################
+
+# Default building shared libraries.
+# BUILD_SHARED_LIBS is provided by/used by
+# CMake directly.
+OPTION(BUILD_SHARED_LIBS "Configure netcdf-cxx as a shared library." ON)
+IF(BUILD_SHARED_LIBS)
+  SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ENDIF()
+
+# Set Memory test program for non-MSVC based builds.
+# Assume valgrind for now.
+IF(NOT MSVC)
+  SET (CTEST_MEMORYCHECK_COMMAND valgrind CACHE STRING "")
+ENDIF()
+
+# Set variable to define the build type.
+INCLUDE(GenerateExportHeader)
+
+################################
+# End CTest Properties
+################################
+
+
+################################
+# Compiler Configuration
+################################
+
+
+# Default to shared libs on.
+OPTION(BUILD_SHARED_LIBS "Configure netCDF as a shared library." ON)
+SET (LIB_TYPE STATIC)
+IF (BUILD_SHARED_LIBS)
+  SET(LIB_TYPE SHARED)
+  IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+  ENDIF()
+ENDIF()
+
+# Supress unused variable and parameter warnings, for the time being,
+# on GCC.
+#
+# Also, set some other default compiler flags.
+IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wno-unused-variable -Wno-unused-parameter")
+ENDIF()
+
+ADD_DEFINITIONS()
+
+# Supress CRT Warnings.
+# Only necessary for Windows
+IF(MSVC)
+  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+ENDIF()
+
+
+################################
+# End Compiler Configuration
+################################
+
+################################
+# User Options
+################################
+
+################################
+# End User Options
+################################
+
+ADD_SUBDIRECTORY(cxx4)
+ADD_SUBDIRECTORY(examples)
+
+print_conf_summary()
