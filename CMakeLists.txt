@@ -107,6 +107,39 @@ SET(EXTRA_DEPS "")
 ################################
 
 ################################
+# Utility Macros
+################################
+
+# A function used to create autotools-style 'yes/no' definitions.
+# If a variable is set, it 'yes' is returned. Otherwise, 'no' is
+# returned.
+#
+# Also creates a version of the ret_val prepended with 'NC',
+# when feature is true, which is used to generate netcdf_meta.h.
+FUNCTION(is_disabled feature ret_val)
+  IF(${feature})
+    SET(${ret_val} "no" PARENT_SCOPE)
+  ELSE()
+    SET(${ret_val} "yes" PARENT_SCOPE)
+    SET("NC_${ret_val}" 1 PARENT_SCOPE)
+  ENDIF(${feature})
+ENDFUNCTION()
+
+FUNCTION(is_enabled feature ret_val)
+  IF(${feature})
+    SET(${ret_val} "yes" PARENT_SCOPE)
+    SET("NC_${ret_val}" 1 PARENT_SCOPE)
+  ELSE()
+    SET(${ret_val} "no" PARENT_SCOPE)
+    SET("NC_${ret_val}" 0 PARENT_SCOPE)
+  ENDIF(${feature})
+ENDFUNCTION()
+
+################################
+# End Utility Macros
+################################
+
+################################
 # Set CTest Properties
 ################################
 
@@ -202,7 +235,58 @@ ENDIF()
 # End User Options
 ################################
 
+################################
+# Configure, print libnetcdf-cxx.settings
+# file.
+################################
+
+# Set variables to mirror those used by autoconf.
+# This way we don't need to maintain two separate template
+# files.
+SET(host_cpu "${cpu}")
+SET(host_vendor "${osname}")
+SET(host_os "${osrel}")
+SET(abs_top_builddir "${CMAKE_BINARY_DIR}")
+
+SET(CC_VERSION "${CMAKE_C_COMPILER}")
+SET(CXX_VERSION "${CMAKE_CPP_COMPILER}")
+
+# Build *FLAGS for libnetcdf.settings.
+SET(CFLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}")
+SET(CPPFLAGS "${CMAKE_CPP_FLAGS} ${CMAKE_CPP_FLAGS_${CMAKE_BUILD_TYPE}}")
+SET(LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS_${CMAKE_BUILD_TYPE}}")
+
+is_disabled(BUILD_SHARED_LIBS enable_static)
+is_enabled(BUILD_SHARED_LIBS enable_shared)
+
+# Remove libnetcdf from NC_LIBS.
+STRING(REPLACE "-lnetcdf " "" TMP_NCXX_LIBS "${NCXX_LIBS}")
+SET(LIBS "${TMP_NCXX_LIBS}")
+
+CONFIGURE_FILE(
+  "${CMAKE_CURRENT_SOURCE_DIR}/libnetcdf-cxx.settings.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/libnetcdf-cxx.settings"
+  @ONLY)
+
+# Read in settings file, print out.
+# Avoid using system-specific calls so that this
+# might also work on Windows.
+FILE(READ "${CMAKE_CURRENT_BINARY_DIR}/libnetcdf-cxx.settings"
+  LIBNETCDFCXX_SETTINGS)
+MESSAGE(${LIBNETCDFCXX_SETTINGS})
+
+# Install libnetcdf-cxx.settings file into same location
+# as the libraries.
+INSTALL(FILES "${NCXX_BINARY_DIR}/libnetcdf-cxx.settings"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  COMPONENT libraries)
+
+#####
+# End libnetcdf-cxx.settings section.
+#####
+
+#####
+# Traverse into subdirectories.
+#####
 ADD_SUBDIRECTORY(cxx4)
 ADD_SUBDIRECTORY(examples)
-
-print_conf_summary()
