@@ -190,6 +190,42 @@ INCLUDE(GenerateExportHeader)
 # End CTest Properties
 ################################
 
+################################
+# Seek out dependent libraries.
+################################
+
+# We need the
+IF(NOT netCDF_LIBRARIES AND NOT netCDF_INCLUDE_DIR)
+  FIND_PACKAGE(netCDF QUIET)
+ELSE()
+  SET(netCDF_FOUND TRUE)
+ENDIF()
+
+IF (netCDF_FOUND)
+  INCLUDE_DIRECTORIES(SYSTEM ${netCDF_INCLUDE_DIR})
+  SET(NETCDF_C_LIBRARY ${netCDF_LIBRARIES})
+  SET(NETCDF_C_INCLUDE_DIR ${netCDF_INCLUDE_DIR})
+ELSE()
+  # netCDF not properly packaged. Try to find it manually.
+  FIND_LIBRARY(NETCDF_C_LIBRARY NAMES netcdf libnetcdf)
+  IF(NOT NETCDF_C_LIBRARY)
+    MESSAGE(FATAL_ERROR "libnetcdf not found. Please reinstall and try again.")
+  ELSE()
+    MESSAGE(STATUS "Found netcdf: ${NETCDF_C_LIBRARY}")
+    FIND_PATH(NC_H_INCLUDE_DIR "netcdf.h")
+    IF(NOT NC_H_INCLUDE_DIR)
+      MESSAGE(FATAL_ERROR "Directory containing netcdf.h cannot be found. Please reinstall and try again.")
+    ELSE()
+      INCLUDE_DIRECTORIES(SYSTEM ${NC_H_INCLUDE_DIR})
+    ENDIF()
+  ENDIF()
+ENDIF()
+
+################################
+# End 'seek out dependent libraries'
+################################
+
+
 
 ################################
 # Compiler Configuration
