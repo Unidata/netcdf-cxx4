@@ -71,10 +71,10 @@ INCLUDE(CheckCCompilerFlag)
 FIND_PACKAGE(PkgConfig QUIET)
 
 # A macro to check if a C linker supports a particular flag.
-MACRO(CHECK_C_LINKER_FLAG M_FLAG M_RESULT)
+MACRO(CHECK_CXX_LINKER_FLAG M_FLAG M_RESULT)
   SET(T_REQ_FLAG "${CMAKE_REQUIRED_FLAGS}")
   SET(CMAKE_REQUIRED_FLAGS "${M_FLAG}")
-  CHECK_C_SOURCE_COMPILES("int main() {return 0;}" ${M_RESULT})
+  CHECK_CXX_SOURCE_COMPILES("int main() {return 0;}" ${M_RESULT})
   SET(CMAKE_REQUIRED_FLAGS "${T_REQ_FLAG}")
 ENDMACRO()
 
@@ -135,6 +135,38 @@ FUNCTION(is_enabled feature ret_val)
   ENDIF(${feature})
 ENDFUNCTION()
 
+###
+# A macro to add a binary test.
+###
+MACRO(add_bin_test prefix F)
+  SET(CUR_TEST "${prefix}_${F}")
+  ADD_EXECUTABLE(${CUR_TEST} ${F}.cpp)
+  TARGET_LINK_LIBRARIES(${CUR_TEST}
+    netcdf-cxx4
+    ${NETCDF_C_LIBRARY}
+    ${EXTRA_LIBS}
+    )
+  IF(MSVC)
+    SET_TARGET_PROPERTIES(${CUR_TEST}
+      PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
+      )
+  ENDIF()
+  ADD_TEST(${CUR_TEST} ${EXECUTABLE_OUTPUT_PATH}/${CUR_TEST})
+  ###
+  # If visual studio,
+  # do a little bit of housekeeping/reorganization.
+  ###
+  IF(MSVC)
+    SET_PROPERTY(TEST ${CUR_TEST} PROPERTY FOLDER "tests/")
+    SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
+      ${CMAKE_CURRENT_BINARY_DIR})
+  ENDIF()
+ENDMACRO()
+
 ################################
 # End Utility Macros
 ################################
@@ -146,55 +178,69 @@ ENDFUNCTION()
 ENABLE_TESTING()
 INCLUDE(CTest)
 
+##
 # Copy the CTest customization file into binary directory, as required.
+##
 FILE(COPY ${CMAKE_SOURCE_DIR}/CTestCustom.cmake DESTINATION ${CMAKE_BINARY_DIR})
 
+##
 # Set Memory test program for non-MSVC based builds.
 # Assume valgrind for now.
+##
 IF(NOT MSVC)
   SET(CTEST_MEMORYCHECK_COMMAND valgrind CACHE STRING "")
 ENDIF()
 
+##
 # Set variable to define the build type.
+##
 INCLUDE(GenerateExportHeader)
-
-################################
-# End CTest Properties
-################################
 
 ENABLE_TESTING()
 INCLUDE(CTest)
 
 ################################
-# Compiler Configuration
+# End CTest Properties
 ################################
 
+################################
+# User Options
+################################
+
+##
 # Default building shared libraries.
 # BUILD_SHARED_LIBS is provided by/used by
 # CMake directly.
+##
 OPTION(BUILD_SHARED_LIBS "Configure netcdf-cxx as a shared library." ON)
 IF(BUILD_SHARED_LIBS)
   SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 ENDIF()
 
-# Set Memory test program for non-MSVC based builds.
-# Assume valgrind for now.
-IF(NOT MSVC)
-  SET (CTEST_MEMORYCHECK_COMMAND valgrind CACHE STRING "")
-ENDIF()
+OPTION(NCXX_ENABLE_TESTS "Enable tests. Run with 'make test'." ON)
 
-# Set variable to define the build type.
-INCLUDE(GenerateExportHeader)
+# Options for CTest-based tests, dashboards.
+SET(NCXX_CTEST_PROJECT_NAME "netcdf-cxx4" CACHE STRING "Project Name for CTest-based testing purposes.")
+SET(NCXX_CTEST_DROP_SITE "my.cdash.org" CACHE STRING "Dashboard location for CTest-based testing purposes.")
+SET(NCXX_CTEST_DROP_LOC_PREFIX "" CACHE STRING "Prefix for Dashboard location on remote server when using CTest-based testing.")
+
+##
+# Mark some options as advanced.
+##
+MARK_AS_ADVANCED(NCXX_CTEST_PROJECT_NAME
+  NCXX_CTEST_DROP_SITE
+  NCXX_CTEST_DROP_LOC_PREFIX
+)
+
 
 ################################
-# End CTest Properties
+# End User Options
 ################################
 
 ################################
 # Seek out dependent libraries.
 ################################
 
-# We need the
 IF(NOT netCDF_LIBRARIES AND NOT netCDF_INCLUDE_DIR)
   FIND_PACKAGE(netCDF QUIET)
 ELSE()
@@ -231,24 +277,57 @@ ENDIF()
 # Compiler Configuration
 ################################
 
-
-# Default to shared libs on.
-OPTION(BUILD_SHARED_LIBS "Configure netCDF as a shared library." ON)
-SET (LIB_TYPE STATIC)
-IF (BUILD_SHARED_LIBS)
-  SET(LIB_TYPE SHARED)
-  IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-  ENDIF()
-ENDIF()
-
+##
 # Supress unused variable and parameter warnings, for the time being,
 # on GCC.
 #
 # Also, set some other default compiler flags.
+##
+
 IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wno-unused-variable -Wno-unused-parameter")
-ENDIF()
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wno-unused-variable -Wno-unused-parameter")
+
+  OPTION(ENABLE_COVERAGE_TESTS "Enable compiler flags needed to perform coverage tests." OFF)
+  OPTION(ENABLE_CONVERSION_WARNINGS "Enable warnings for implicit conversion from 64 to 32-bit datatypes." ON)
+  OPTION(ENABLE_LARGE_FILE_TESTS "Enable large file tests." OFF)
+
+  # Debugging flags
+  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall")
+
+  # Check to see if -Wl,--no-undefined is supported.
+  CHECK_CXX_LINKER_FLAG("-Wl,--no-undefined" LIBTOOL_HAS_NO_UNDEFINED)
+
+  IF(LIBTOOL_HAS_NO_UNDEFINED)
+    SET(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--no-undefined")
+  ENDIF()
+  SET(CMAKE_REQUIRED_FLAGS "${TMP_CMAKE_REQUIRED_FLAGS}")
+
+  # Coverage tests need to have optimization turned off.
+  IF(ENABLE_COVERAGE_TESTS)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage")
+    MESSAGE(STATUS "Coverage Tests: On.")
+  ENDIF()
+
+    # Warnings for 64-to-32 bit conversions.
+  IF(ENABLE_CONVERSION_WARNINGS)
+    CHECK_CXX_COMPILER_FLAG(-Wconversion CXX_HAS_WCONVERSION)
+    CHECK_CXX_COMPILER_FLAG(-Wshorten-64-to-32 CXX_HAS_SHORTEN_64_32)
+
+    IF(CXX_HAS_SHORTEN_64_32)
+      SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshorten-64-to-32")
+    ENDIF()
+    IF(CXX_HAS_WCONVERSION)
+      SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wconversion")
+    ENDIF()
+
+  ENDIF(ENABLE_CONVERSION_WARNINGS)
+
+ENDIF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
+
+# End default linux gcc & apple compiler options.
+
 
 ADD_DEFINITIONS()
 
@@ -261,14 +340,6 @@ ENDIF()
 
 ################################
 # End Compiler Configuration
-################################
-
-################################
-# User Options
-################################
-
-################################
-# End User Options
 ################################
 
 ################################
@@ -285,18 +356,18 @@ SET(host_os "${osrel}")
 SET(abs_top_builddir "${CMAKE_BINARY_DIR}")
 
 SET(CC_VERSION "${CMAKE_C_COMPILER}")
-SET(CXX_VERSION "${CMAKE_CPP_COMPILER}")
+SET(CXX_VERSION "${CMAKE_CXX_COMPILER}")
 
 # Build *FLAGS for libnetcdf.settings.
 SET(CFLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE}}")
-SET(CPPFLAGS "${CMAKE_CPP_FLAGS} ${CMAKE_CPP_FLAGS_${CMAKE_BUILD_TYPE}}")
+SET(CXXFLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")
 SET(LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS_${CMAKE_BUILD_TYPE}}")
 
 is_disabled(BUILD_SHARED_LIBS enable_static)
 is_enabled(BUILD_SHARED_LIBS enable_shared)
 
 # Remove libnetcdf from NC_LIBS.
-STRING(REPLACE "-lnetcdf " "" TMP_NCXX_LIBS "${NCXX_LIBS}")
+STRING(REPLACE "-lnetcdf-cxx4 " "" TMP_NCXX_LIBS "${NCXX_LIBS}")
 SET(LIBS "${TMP_NCXX_LIBS}")
 
 CONFIGURE_FILE(
@@ -324,5 +395,11 @@ INSTALL(FILES "${NCXX_BINARY_DIR}/libnetcdf-cxx.settings"
 #####
 # Traverse into subdirectories.
 #####
+
+##
+# Set up include directories.
+##
+INCLUDE_DIRECTORIES(cxx4 examples)
+
 ADD_SUBDIRECTORY(cxx4)
 ADD_SUBDIRECTORY(examples)

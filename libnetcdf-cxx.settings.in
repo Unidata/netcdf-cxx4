@@ -13,7 +13,7 @@ Install Prefix:         @prefix@
 -----------------
 C Compiler:		@CC_VERSION@
 CFLAGS:			@CFLAGS@
-CPPFLAGS:		@CPPFLAGS@
+CPPFLAGS:		@CXXFLAGS@
 LDFLAGS:		@LDFLAGS@
 AM_CFLAGS:		@AM_CFLAGS@
 AM_CPPFLAGS:		@AM_CPPFLAGS@
