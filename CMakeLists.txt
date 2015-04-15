@@ -218,11 +218,32 @@ IF(BUILD_SHARED_LIBS)
 ENDIF()
 
 OPTION(NCXX_ENABLE_TESTS "Enable tests. Run with 'make test'." ON)
+IF(NCXX_ENABLE_TESTS)
+  # Options for CTest-based tests, dashboards.
+  SET(NCXX_CTEST_PROJECT_NAME "netcdf-cxx4" CACHE STRING "Project Name for CTest-based testing purposes.")
+  SET(NCXX_CTEST_DROP_SITE "my.cdash.org" CACHE STRING "Dashboard location for CTest-based testing purposes.")
+  SET(NCXX_CTEST_DROP_LOC_PREFIX "" CACHE STRING "Prefix for Dashboard location on remote server when using CTest-based testing.")
 
-# Options for CTest-based tests, dashboards.
-SET(NCXX_CTEST_PROJECT_NAME "netcdf-cxx4" CACHE STRING "Project Name for CTest-based testing purposes.")
-SET(NCXX_CTEST_DROP_SITE "my.cdash.org" CACHE STRING "Dashboard location for CTest-based testing purposes.")
-SET(NCXX_CTEST_DROP_LOC_PREFIX "" CACHE STRING "Prefix for Dashboard location on remote server when using CTest-based testing.")
+  FIND_PROGRAM(HOSTNAME_CMD NAMES hostname)
+  IF(NOT MSVC)
+    SET(HOSTNAME_ARG "-s")
+  ENDIF()
+  IF(HOSTNAME_CMD)
+    EXEC_PROGRAM(${HOSTNAME_CMD} ARGS "${HOSTNAME_ARG}" OUTPUT_VARIABLE HOSTNAME)
+    SET(NCXX_CTEST_SITE "${HOSTNAME}" CACHE STRING "Hostname of test machine.")
+  ENDIF()
+
+  IF(NCXX_CTEST_SITE)
+    SET(SITE "${NCXX_CTEST_SITE}" CACHE STRING "")
+  ENDIF()
+
+  # Create a CTestConfig file from the template.
+  CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/CTestConfig.cmake.in"
+    "${CMAKE_SOURCE_DIR}/CTestConfig.cmake"
+    @ONLY
+    )
+
+ENDIF()
 
 ##
 # Mark some options as advanced.
