@@ -80,8 +80,14 @@ the offset of a member "mem4" in structure struct1 is: offsetof(struct1,mem4).
     size_t  getMemberCount() const;
       
     /*! Returns a NcType object for a single member. */
-    NcType getMember(int memberIndex) const;              
-      
+    NcType getMember(int memberIndex) const;
+
+    /*! Returns name of member field. */
+    std::string getMemberName(int memberIndex) const;
+
+    /*! Returns index of named member field. */
+    int getMemberIndex(const std::string& memberName) const;
+
     /*! Returns the offset of the member with given index. */
     size_t getMemberOffset(const int index) const;
 

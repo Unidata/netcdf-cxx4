@@ -128,7 +128,21 @@ NcType NcCompoundType::getMember(int memberIndex) const
   }
 }
 
-  
+// Returns name of member field.
+std::string NcCompoundType::getMemberName(int memberIndex) const
+{
+  char fieldName[NC_MAX_NAME];
+  ncCheck(nc_inq_compound_fieldname(groupId,myId,memberIndex, fieldName),__FILE__,__LINE__);
+  return std::string(fieldName);
+}
+
+// Returns index of named member field.
+int NcCompoundType::getMemberIndex(const std::string& memberName) const{
+  int memberIndex;
+  ncCheck(nc_inq_compound_fieldindex(groupId,myId, memberName.c_str(),&memberIndex),__FILE__,__LINE__);
+  return memberIndex;
+}
+
 // Returns the number of dimensions of a member with the given index.
 int NcCompoundType::getMemberDimCount(int memberIndex) const 
 {
