@@ -1,8 +1,10 @@
+[![Build Status](https://travis-ci.org/Unidata/netcdf-cxx4.svg)](https://travis-ci.org/Unidata/netcdf-cxx4)
+
 netcdf-cxx4
 ===========
 
 Official GitHub repository for netCDF-4 C++ library.
- 
+
 Note: The latest release of the historic C++ libraries, netCDF-4.2, may be downloaded from the following page:
 
 * http://www.unidata.ucar.edu/downloads/netcdf/index.jsp
@@ -53,7 +55,7 @@ installation, for example enter
 Note that the "configure" script must be generated using
 
       autoreconf -if
-    
+
 To build the C++ interface guide, change to the cxx4 directory of the
 distribution and enter
 
