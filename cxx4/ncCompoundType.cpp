@@ -131,7 +131,7 @@ NcType NcCompoundType::getMember(int memberIndex) const
 // Returns name of member field.
 std::string NcCompoundType::getMemberName(int memberIndex) const
 {
-  char fieldName[NC_MAX_NAME];
+  char fieldName[NC_MAX_NAME+1];
   ncCheck(nc_inq_compound_fieldname(groupId,myId,memberIndex, fieldName),__FILE__,__LINE__);
   return std::string(fieldName);
 }
