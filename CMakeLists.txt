@@ -319,7 +319,7 @@ ENDIF()
 ###
 # Check to see if netcdf-c was built with parallel.
 ###
-CHECK_LIBRARY_EXISTS(netcdf nc_use_parallel_enabled "" NC_IS_PARALLEL)
+CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_use_parallel_enabled "" NC_IS_PARALLEL)
 IF(NC_IS_PARALLEL)
   SET(BUILD_PARALLEL ${NC_IS_PARALLEL} CACHE STRING "")
 ENDIF()
