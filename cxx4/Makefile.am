@@ -6,12 +6,12 @@
 # Point pre-preprocessor to netcdf-4 directory (libsrc4).
 LDADD = $(top_builddir)/cxx4/libnetcdf_c++4.la  -lnetcdf
 
-# This is our output library. 
+# This is our output library.
 lib_LTLIBRARIES = libnetcdf_c++4.la
 
 # For rules updating the version info, see
 # http://www.gnu.org/s/libtool/manual/html_node/Updating-version-info.html
-libnetcdf_c__4_la_LDFLAGS = -version-info 1:2:0 
+libnetcdf_c__4_la_LDFLAGS = -version-info 1:2:0
 
 # These headers will be installed in the users header directory.
 include_HEADERS = netcdf ncAtt.h ncCheck.h ncDim.h ncException.h	\
@@ -31,7 +31,7 @@ ncUint64.cpp ncString.cpp
 # These are the tests.
 TESTFILES = test_classic$(EXEEXT) test_group$(EXEEXT)	\
 test_dim$(EXEEXT) test_att$(EXEEXT) test_var$(EXEEXT)	\
-test_var2$(EXEEXT) test_type$(EXEEXT)
+test_var2$(EXEEXT) test_type$(EXEEXT) test_open_close$(EXEEXT)
 
 test_classic_SOURCES = test_classic.cpp
 test_group_SOURCES = test_group.cpp
@@ -40,6 +40,7 @@ test_att_SOURCES = test_att.cpp test_utilities.h
 test_var_SOURCES = test_var.cpp test_utilities.h
 test_var2_SOURCES = test_var2.cpp test_utilities.h
 test_type_SOURCES = test_type.cpp test_utilities.h
+test_open_close_SOURCES = test_open_close.cpp test_utilities.h
 
 # Build and run these tests.
 check_PROGRAMS = $(TESTFILES)
@@ -51,5 +52,3 @@ CLEANFILES = firstFile.cdf test*.nc
 doxygen_stamp: $(libnetcdf_c__4_la_SOURCES) $(include_HEADERS)
 	doxygen
 	touch doxygen_stamp
-
-
