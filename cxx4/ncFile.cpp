@@ -13,28 +13,43 @@ using namespace netCDF::exceptions;
 NcFile::~NcFile()
 {
   // destructor may be called due to an exception being thrown
-  // hence throwing an exception from within a destructor 
+  // hence throwing an exception from within a destructor
   // causes undefined behaviour! so just printing a warning message
   try
   {
-    if (!nullObject)
-      ncCheck(nc_close(myId),__FILE__,__LINE__);
+    close();
   }
-  catch (NcException &e) 
+  catch (NcException &e)
   {
     cerr << e.what() << endl;
   }
 }
 
+void NcFile::close()
+{
+  if (!nullObject)
+    ncCheck(nc_close(myId),__FILE__,__LINE__);
+  nullObject = true;
+}
+
 // Constructor generates a null object.
-NcFile::NcFile() : 
+NcFile::NcFile() :
     NcGroup()  // invoke base class constructor
 {}
 
 // constructor
 NcFile::NcFile(const string& filePath, const FileMode fMode)
 {
-  switch (fMode) 
+  open(filePath, fMode);
+}
+
+// open a file from path and mode
+void NcFile::open(const string& filePath, const FileMode fMode)
+{
+  if (!nullObject)
+    close();
+
+  switch (fMode)
     {
     case NcFile::write:
       ncCheck(nc_open(filePath.c_str(), NC_WRITE, &myId),__FILE__,__LINE__);
@@ -55,6 +70,14 @@ NcFile::NcFile(const string& filePath, const FileMode fMode)
 // constructor with file type specified
 NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fFormat )
 {
+  open(filePath, fMode, fFormat);
+}
+
+void NcFile::open(const string& filePath, const FileMode fMode, const FileFormat fFormat )
+{
+  if (!nullObject)
+    close();
+
   int format;
   switch (fFormat)
     {
@@ -71,7 +94,7 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
 	format = NC_NETCDF4 | NC_CLASSIC_MODEL;
 	break;
     }
-  switch (fMode) 
+  switch (fMode)
     {
     case NcFile::write:
       ncCheck(nc_open(filePath.c_str(), format | NC_WRITE, &myId),__FILE__,__LINE__);

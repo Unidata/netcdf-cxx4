@@ -10,16 +10,16 @@
 namespace netCDF
 {
 
-  /*! 
+  /*!
     Class represents a netCDF root group.
-    The Ncfile class is the same as the NcGroup class with the additional functionality for opening 
+    The Ncfile class is the same as the NcGroup class with the additional functionality for opening
     and closing files.
    */
   class NcFile : public NcGroup
    {
    public:
-    
-      enum FileMode 
+
+      enum FileMode
 	 {
 	    read,	//!< File exists, open read-only.
 	    write,      //!< File exists, open for writing.
@@ -34,12 +34,12 @@ namespace netCDF
 	    nc4,        //!< (default) netCDF-4/HDF5 format, enhanced data model
 	    nc4classic  //!< netCDF-4/HDF5 format, classic data model
          };
-    
-         
+
+
       /*! Constructor generates a \ref isNull "null object". */
       NcFile();
 
-      /*! 
+      /*!
 	Opens a netCDF file.
 	\param filePath    Name of netCDF optional path.
 	\param fMode       The file mode:
@@ -49,8 +49,18 @@ namespace netCDF
 	                    - 'newFile' Create new file, fail it exists already.
       */
       NcFile(const std::string& filePath, FileMode fMode);
+      /*!
+      Opens a netCDF file.
+      \param filePath    Name of netCDF optional path.
+      \param fMode       The file mode:
+                          - 'read'    File exists, open for read-only.
+                          - 'write'   File exists, open for writing.
+                          - 'replace' Create new file, even it already exists.
+                          - 'newFile' Create new file, fail it exists already.
+      */
+      void open(const std::string& filePath, FileMode fMode);
 
-      /*! 
+      /*!
 	Creates a netCDF file of a specified format.
 	\param filePath    Name of netCDF optional path.
 	\param fMode       The file mode:
@@ -58,10 +68,21 @@ namespace netCDF
 	                    - 'newFile' Create new file, fail it exists already.
       */
       NcFile(const std::string& filePath, FileMode fMode, FileFormat fFormat);
-    
+      /*!
+      Creates a netCDF file of a specified format.
+      \param filePath    Name of netCDF optional path.
+      \param fMode       The file mode:
+                          - 'replace' Create new file, even it already exists.
+                          - 'newFile' Create new file, fail it exists already.
+      */
+      void open(const std::string& filePath, FileMode fMode, FileFormat fFormat);
+
+      //! Close a file before destructor call
+      void close();
+
       /*! destructor */
       virtual ~NcFile(); //closes file and releases all resources
-     
+
       //! Synchronize an open netcdf dataset to disk
       void sync();
 
@@ -77,9 +98,9 @@ namespace netCDF
 	   NcFile(const NcGroup& rhs);
 	   NcFile(const NcFile& rhs);
    };
-  
+
 }
 
- 
+
 #endif
 
