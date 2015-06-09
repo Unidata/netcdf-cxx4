@@ -23,7 +23,8 @@ before_install:
   - cmake .. -DENABLE_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
   - make -j 4
   - sudo make install
-  - cd
+  - cd ..
+  - cd ..
 
 
 before_script:
