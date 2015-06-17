@@ -26,9 +26,8 @@ SET(NCXX_VERSION_MAJOR 4)
 SET(NCXX_VERSION_MINOR 2)
 SET(NCXX_VERSION_PATCH 1)
 SET(NCXX_VERSION_NOTE "")
-SET(netCDF_VERSION ${NCXX_VERSION_MAJOR}.${NCXX_VERSION_MINOR}.${NCXX_VERSION_PATCH}${NCXX_VERSION_NOTE})
+SET(NCXX_VERSION ${NCXX_VERSION_MAJOR}.${NCXX_VERSION_MINOR}.${NCXX_VERSION_PATCH}${NCXX_VERSION_NOTE})
 SET(VERSION ${NCXX_VERSION})
-SET(NCXX_VERSION ${NCXX_VERSION})
 SET(NCXX_LIB_VERSION 1.0.2)
 SET(NCXX_SO_VERSION 1)
 SET(PACKAGE_VERSION ${VERSION})
@@ -492,6 +491,23 @@ INSTALL(
 #####
 # End libnetcdf-cxx.settings section.
 #####
+
+include(CMakePackageConfigHelpers)
+
+# Create export configuration
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  VERSION ${NCXX_VERSION}
+  COMPATIBILITY SameMajorVersion
+  )
+
+install(
+  FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/netCDFCxx
+  COMPONENT headers
+  )
+
 
 #####
 # Traverse into subdirectories.
