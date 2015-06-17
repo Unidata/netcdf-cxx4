@@ -4,34 +4,18 @@ compiler:
   - clang
 
 before_install:
+  - sudo add-apt-repository -y ppa:nschloe/cmake-backports
+  - sudo add-apt-repository -y ppa:nschloe/netcdf-nightly
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq libcurl4-openssl-dev m4 wget autoconf libtool clang libjpeg8-dev
+  - sudo apt-get install cmake-data cmake
+  - sudo apt-get install libhdf5-openmpi-7 libnetcdf7 libnetcdf-dev
 
-  ###
-  # Install dependencies from a pre-built binary.
-  ###
-  - cd /
-  - sudo wget http://www.unidata.ucar.edu/downloads/netcdf/ftp/travisdeps.tar.bz2
-  - sudo tar -jxf travisdeps.tar.bz2
-  - cd -
-
-  # Install netcdf-c
-  - git clone http://github.com/Unidata/netcdf-c
-  - cd netcdf-c
-  - mkdir build
-  - cd build
-  - cmake .. -DENABLE_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
-  - make -j 4
-  - sudo make install
-  - cd ..
-  - cd ..
-
-
-before_script:
+install:
   - mkdir build
   - cd build
   - cmake ..
+  - make
 
 script:
-  - make -j 4
   - make test
