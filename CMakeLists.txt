@@ -26,9 +26,8 @@ SET(NCXX_VERSION_MAJOR 4)
 SET(NCXX_VERSION_MINOR 2)
 SET(NCXX_VERSION_PATCH 1)
 SET(NCXX_VERSION_NOTE "")
-SET(netCDF_VERSION ${NCXX_VERSION_MAJOR}.${NCXX_VERSION_MINOR}.${NCXX_VERSION_PATCH}${NCXX_VERSION_NOTE})
+SET(NCXX_VERSION ${NCXX_VERSION_MAJOR}.${NCXX_VERSION_MINOR}.${NCXX_VERSION_PATCH}${NCXX_VERSION_NOTE})
 SET(VERSION ${NCXX_VERSION})
-SET(NCXX_VERSION ${NCXX_VERSION})
 SET(NCXX_LIB_VERSION 1.0.2)
 SET(NCXX_SO_VERSION 1)
 SET(PACKAGE_VERSION ${VERSION})
@@ -73,7 +72,7 @@ ENDIF()
 ###
 
 
-# For CMAKE_INSTALL_LIBDIR
+# For CMAKE_INSTALL_{LIBDIR,INCLUDEDIR,...}
 INCLUDE(GNUInstallDirs)
 
 IF(MSVC)
@@ -422,10 +421,14 @@ IF(NOT MSVC)
 
   # the RPATH to be used when installing,
   # but only if it's not a system directory
-  LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
+  LIST(FIND
+    CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
+    "${CMAKE_INSTALL_FULL_LIBDIR}"
+    isSystemDir
+    )
   IF("${isSystemDir}" STREQUAL "-1")
-    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-  ENDIF("${isSystemDir}" STREQUAL "-1")
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+  ENDIF()
 
 ENDIF()
 
@@ -465,24 +468,46 @@ SET(LIBS "${TMP_NCXX_LIBS}")
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/libnetcdf-cxx.settings.in"
   "${CMAKE_CURRENT_BINARY_DIR}/libnetcdf-cxx.settings"
-  @ONLY)
+  @ONLY
+  )
 
 # Read in settings file, print out.
 # Avoid using system-specific calls so that this
 # might also work on Windows.
-FILE(READ "${CMAKE_CURRENT_BINARY_DIR}/libnetcdf-cxx.settings"
-  LIBNETCDFCXX_SETTINGS)
+FILE(
+  READ "${CMAKE_CURRENT_BINARY_DIR}/libnetcdf-cxx.settings"
+  LIBNETCDFCXX_SETTINGS
+  )
 MESSAGE(${LIBNETCDFCXX_SETTINGS})
 
 # Install libnetcdf-cxx.settings file into same location
 # as the libraries.
-INSTALL(FILES "${NCXX_BINARY_DIR}/libnetcdf-cxx.settings"
+INSTALL(
+  FILES "${NCXX_BINARY_DIR}/libnetcdf-cxx.settings"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  COMPONENT libraries)
+  COMPONENT libraries
+  )
 
 #####
 # End libnetcdf-cxx.settings section.
 #####
+
+include(CMakePackageConfigHelpers)
+
+# Create export configuration
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  VERSION ${NCXX_VERSION}
+  COMPATIBILITY SameMajorVersion
+  )
+
+install(
+  FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/netCDFCxx
+  COMPONENT headers
+  )
+
 
 #####
 # Traverse into subdirectories.
