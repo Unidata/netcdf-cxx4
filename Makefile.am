@@ -23,7 +23,7 @@ install-data-hook:
 	@echo ''
 	@echo '+-------------------------------------------------------------+'
 	@echo '| Congratulations! You have successfully installed the        |'
-	@echo '| new netCDF-4 C++ Libaray                                    |'
+	@echo '| new netCDF-4 C++ Library                                    |'
 	@echo '|                                                             |'
 	@echo '| CAUTION:                                                    |'
 	@echo '|                                                             |'
