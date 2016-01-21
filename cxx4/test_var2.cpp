@@ -19,12 +19,12 @@ int main()
   try
     {
       NcFile ncFile("firstFile.cdf",NcFile::replace);
-      
+
       NcGroup groupA(ncFile.addGroup("groupA"));
       NcGroup groupA0(ncFile.addGroup("groupA0"));
       NcGroup groupB(groupA.addGroup("groupB"));
       NcGroup groupC(groupA.addGroup("groupC"));
-    
+
       NcDim dim1 = ncFile.addDim("dim1",10);
       NcDim dim2 = ncFile.addDim("dim2");
       NcDim dim3 = ncFile.addDim("dim3",13);
@@ -57,7 +57,7 @@ int main()
       NcVar varC_3  = groupC.addVar("varC_3",  ncByte,dim1);
       NcVar varC_4  = groupC.addVar("varC_4",  ncByte,dim1);
       NcVar varC_5  = groupC.addVar("varC_5",  ncByte,dim1);
-      
+
 
       vector<short>  a1(10),b1(10);
       vector<int>  a2(10),b2(10);
@@ -99,23 +99,23 @@ int main()
       var_2.setCompression(false,true,9);
 
       // put variables of different type into the same variable type: requires conversion.
-      var_1.putVar(&a1[0]);  
-      var_2.putVar(&a2[0]);  
-      var_3.putVar(&a3[0]);  
-      var_4.putVar(&a4[0]);  
-      var_5.putVar(&a5[0]);  
-      var_6.putVar(&a6[0]);  
-      var_7.putVar(&a7[0]);  
-      var_8.putVar(&a8[0]);  
-      var_9.putVar(&a9[0]);  
+      var_1.putVar(&a1[0]);
+      var_2.putVar(&a2[0]);
+      var_3.putVar(&a3[0]);
+      var_4.putVar(&a4[0]);
+      var_5.putVar(&a5[0]);
+      var_6.putVar(&a6[0]);
+      var_7.putVar(&a7[0]);
+      var_8.putVar(&a8[0]);
+      var_9.putVar(&a9[0]);
 
       // get variable out
       vector<size_t> index(1);index[0]=5;
       vector<size_t> index2(1);index2[0]=4;
-      var_1.getVar(&b1[0]);  
-      //      var_2.getVar(&b2[0]);  
-      //      var_2.getVar(index,&b2[0]);  
-      var_2.getVar(index,index2,&b2[0]);  
+      var_1.getVar(&b1[0]);
+      //      var_2.getVar(&b2[0]);
+      //      var_2.getVar(index,&b2[0]);
+      var_2.getVar(index,index2,&b2[0]);
       for(size_t  i=0; i<b2.size(); i++) {
 	cout << "i ="<<i<<" vector="<<b2[i]<<endl;
       }
@@ -147,7 +147,7 @@ int main()
 
       const string b("abc");
       //      NcVarAtt att4  = var_2.putAtt("att4",ncChar,size_t(2), b.c_str());
-      const char* c(b.c_str());
+      //const char* c(b.c_str());
       //NcVarAtt att12 = var_2.putAtt("att12",ncString,size_t(1), &c);
       vector<short>  a1x(10);
       initializeVector(a1x);
@@ -157,14 +157,14 @@ int main()
 
 
 
-      var_3.getVar(&b3[0]);  
-      var_4.getVar(&b4[0]);  
-      var_5.getVar(&b5[0]);  
-      var_6.getVar(&b6[0]);  
-      var_7.getVar(&b7[0]);  
-      var_8.getVar(&b8[0]);  
-      var_9.getVar(&b9[0]);  
-      
+      var_3.getVar(&b3[0]);
+      var_4.getVar(&b4[0]);
+      var_5.getVar(&b5[0]);
+      var_6.getVar(&b6[0]);
+      var_7.getVar(&b7[0]);
+      var_8.getVar(&b8[0]);
+      var_9.getVar(&b9[0]);
+
       /*
 	if(a1 != b1)  throw NcException("NcException","Error in test 1.1",__FILE__,__LINE__);
 	if(a2 != b2)  throw NcException("NcException","Error in test 1.2",__FILE__,__LINE__);
