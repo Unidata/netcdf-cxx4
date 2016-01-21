@@ -24,13 +24,13 @@ using namespace netCDF::exceptions;
 
 namespace netCDF {
   //  Global comparator operator ==============
-  // comparator operator 
+  // comparator operator
   bool operator<(const NcGroup& lhs,const NcGroup& rhs)
   {
     return false;
   }
-  
-  // comparator operator 
+
+  // comparator operator
   bool operator>(const NcGroup& lhs,const NcGroup& rhs)
   {
     return true;
@@ -38,7 +38,7 @@ namespace netCDF {
 }
 
 using namespace netCDF;
-    
+
 /////////////////////////////////////////////
 
 NcGroup::~NcGroup()
@@ -47,10 +47,11 @@ NcGroup::~NcGroup()
 
 // Constructor generates a null object.
 NcGroup::NcGroup() :
-  nullObject(true)
+  nullObject(true),
+  myId(-1)
 {}
 
-   
+
 // constructor
 NcGroup::NcGroup(const int groupId) :
   nullObject(false),
@@ -66,7 +67,7 @@ NcGroup& NcGroup::operator=(const NcGroup & rhs)
 }
 
 // The copy constructor.
-NcGroup::NcGroup(const NcGroup& rhs): 
+NcGroup::NcGroup(const NcGroup& rhs):
   nullObject(rhs.nullObject),
   myId(rhs.myId)
 {}
@@ -75,23 +76,23 @@ NcGroup::NcGroup(const NcGroup& rhs):
 // equivalence operator
 bool NcGroup::operator==(const NcGroup & rhs) const
 {
-  if(nullObject) 
+  if(nullObject)
     return nullObject == rhs.nullObject;
   else
     return myId == rhs.myId;
-}  
-  
+}
+
 //  !=  operator
 bool NcGroup::operator!=(const NcGroup & rhs) const
 {
   return !(*this == rhs);
-}  
-  
-  
+}
+
+
 // /////////////
 // NcGroup-related methods
 // /////////////
-  
+
 // Get the group name.
 string NcGroup::getName(bool fullName) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getName on a Null group",__FILE__,__LINE__);
@@ -119,7 +120,7 @@ bool NcGroup::isRootGroup()  const{
   bool result = getName() == "/";
   return result;
 }
-  
+
 // Get the parent group.
 NcGroup NcGroup::getParentGroup() const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getParentGroup on a Null group",__FILE__,__LINE__);
@@ -134,14 +135,14 @@ NcGroup NcGroup::getParentGroup() const {
     return NcGroup();
   }
 }
-  
-  
+
+
 // Get the group id.
 int  NcGroup::getId() const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getId on a Null group",__FILE__,__LINE__);
   return myId;
 }
-  
+
 // Get the number of NcGroup objects.
 int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroupCount on a Null group",__FILE__,__LINE__);
@@ -177,7 +178,7 @@ int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
   return ngroups;
 }
 
-  
+
 // Get the set of child NcGroup objects.
 multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
@@ -207,7 +208,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
 
   // search in parent groups.
   if(location == ParentsGrps || location == ParentsAndCurrentGrps || location == AllGrps ) {
-    NcGroup tmpGroup(*this); 
+    NcGroup tmpGroup(*this);
     if(!tmpGroup.isRootGroup()) {
       while(1) {
 	const NcGroup parentGroup(tmpGroup.getParentGroup());
@@ -217,7 +218,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
       }
     }
   }
- 
+
   // search in child groups of the children
   if(location == ChildrenOfChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     multimap<string,NcGroup>::iterator it;
@@ -227,23 +228,23 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
       ncGroups.insert(childGroups.begin(),childGroups.end());
     }
   }
-  
+
   return ncGroups;
 }
-  
+
 // Get the named child NcGroup object.
 NcGroup NcGroup::getGroup(const string& name,NcGroup::GroupLocation location) const{
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroup on a Null group",__FILE__,__LINE__);
   multimap<string,NcGroup> ncGroups(getGroups(location));
   pair<multimap<string,NcGroup>::iterator,multimap<string,NcGroup>::iterator> ret;
   ret = ncGroups.equal_range(name);
-  if(ret.first == ret.second) 
+  if(ret.first == ret.second)
     return NcGroup();  // null group is returned
-  else 
+  else
     return ret.first->second;
 }
 
-  
+
 
 // Get all NcGroup objects with a given name.
 set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation location) const {
@@ -269,16 +270,16 @@ NcGroup NcGroup::addGroup(const string& name) const {
 }
 
 
-  
+
 // /////////////
 // NcVar-related accessors
 // /////////////
-  
+
 // Get the number of NcVar objects in this group.
 int NcGroup::getVarCount(NcGroup::Location location) const {
 
   // search in current group.
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   int nvars=0;
   // search in current group
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
@@ -315,7 +316,7 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
   multimap<string,NcVar> ncVars;
 
   // search in current group.
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
     // get the number of variables.
     int varCount = getVarCount();
@@ -331,7 +332,7 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
     }
   }
 
-  
+
   // search recursively in all parent groups.
   if(location == Parents || location == ParentsAndCurrent || location ==All) {
     tmpGroup=getParentGroup();
@@ -365,7 +366,7 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
 
   return ncVars;
 }
-  
+
 
 // Get all NcVar objects with a given name.
 set<NcVar> NcGroup::getVars(const string& name,NcGroup::Location location) const {
@@ -388,22 +389,22 @@ NcVar NcGroup::getVar(const string& name,NcGroup::Location location) const {
   multimap<std::string,NcVar> ncVars(getVars(location));
   pair<multimap<string,NcVar>::iterator,multimap<string,NcVar>::iterator> ret;
   ret = ncVars.equal_range(name);
-  if(ret.first == ret.second) 
+  if(ret.first == ret.second)
     // no matching netCDF variable found so return null object.
     return NcVar();
-  else 
+  else
     return ret.first->second;
 }
 
 // Adds a new netCDF scalar variable.
 NcVar NcGroup::addVar(const std::string& name, const NcType& ncType) const {
   return NcGroup::addVar(name, ncType, std::vector<NcDim>());
-}   
+}
 
 // Add a new netCDF variable.
 NcVar NcGroup::addVar(const string& name, const string& typeName, const string& dimName) const {
   ncCheckDefineMode(myId);
-    
+
   // get an NcType object with the given type name.
   NcType tmpType(getType(typeName,NcGroup::ParentsAndCurrent));
   if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
@@ -424,17 +425,17 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const string& 
 // Add a new netCDF variable.
 NcVar NcGroup::addVar(const string& name, const NcType& ncType, const NcDim& ncDim) const {
   ncCheckDefineMode(myId);
-    
+
   // check NcType object is valid
   if(ncType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
   NcType tmpType(getType(ncType.getName(),NcGroup::ParentsAndCurrent));
   if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
-  
+
   // check NcDim object is valid
   if(ncDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
   NcDim tmpDim(getDim(ncDim.getName(),NcGroup::ParentsAndCurrent));
   if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
-  
+
   // finally define a new netCDF variable
   int varId;
   int dimId(tmpDim.getId());
@@ -447,7 +448,7 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const NcDim& ncD
 // Add a new netCDF multi-dimensional variable.
 NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<string>& dimNames) const {
   ncCheckDefineMode(myId);
-    
+
   // get an NcType object with the given name.
   NcType tmpType(getType(typeName,NcGroup::ParentsAndCurrent));
   if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: typeName must be defined in either the current group or a parent group",__FILE__,__LINE__);
@@ -472,12 +473,12 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
 // Add a new netCDF multi-dimensional variable.
 NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcDim>& ncDimVector) const {
   ncCheckDefineMode(myId);
-    
+
   // check NcType object is valid
   if(ncType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar with a Null NcType object",__FILE__,__LINE__);
   NcType tmpType(getType(ncType.getName(),NcGroup::ParentsAndCurrent));
   if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
-  
+
   // check NcDim objects are valid
   vector<NcDim>::const_iterator iter;
   vector<int> dimIds;
@@ -501,12 +502,12 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
 // /////////////
 // NcAtt-related methods
 // /////////////
-  
+
 // Get the number of group attributes.
 int NcGroup::getAttCount(NcGroup::Location location) const {
 
   // search in current group.
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   int ngatts=0;
   // search in current group
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
@@ -536,7 +537,7 @@ int NcGroup::getAttCount(NcGroup::Location location) const {
 
   return ngatts;
 }
-  
+
 // Get the collection of NcGroupAtt objects.
 multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) const {
 
@@ -544,7 +545,7 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
   multimap<string,NcGroupAtt> ncAtts;
 
   // search in current group.
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
     // get the number of attributes
     int attCount = tmpGroup.getAttCount();
@@ -556,7 +557,7 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
       ncAtts.insert(pair<const string,NcGroupAtt>(string(charName),tmpAtt));
     }
   }
-  
+
   // search recursively in all parent groups.
   if(location == Parents || location == ParentsAndCurrent || location ==All) {
     tmpGroup=getParentGroup();
@@ -587,16 +588,16 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
 
   return ncAtts;
 }
-  
+
 // Get the named NcGroupAtt object.
 NcGroupAtt NcGroup::getAtt(const std::string& name,NcGroup::Location location) const {
   multimap<std::string,NcGroupAtt> ncAtts(getAtts(location));
   pair<multimap<string,NcGroupAtt>::iterator,multimap<string,NcGroupAtt>::iterator> ret;
   ret = ncAtts.equal_range(name);
-  if(ret.first == ret.second) 
+  if(ret.first == ret.second)
     // no matching groupAttribute so return null object.
     return NcGroupAtt();
-  else 
+  else
     return ret.first->second;
 }
 
@@ -629,7 +630,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const string& dataValues) const {
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned char* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uchar(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -642,7 +643,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const signed char* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_schar(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -655,7 +656,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, short datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_short(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -668,7 +669,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, short datumVa
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, int datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_int(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -680,7 +681,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, int datumValu
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_long(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -692,7 +693,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long datumVal
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, float datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_float(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -705,7 +706,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, float datumVa
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, double datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_double(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -718,7 +719,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, double datumV
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned short datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ushort(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -730,7 +731,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned shor
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned int datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uint(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -742,7 +743,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned int 
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long long datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_longlong(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -755,7 +756,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long long dat
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned long long datumValue) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ulonglong(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -768,7 +769,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned long
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const short* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_short(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -781,7 +782,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const int* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_int(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -793,7 +794,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const long* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_long(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -805,7 +806,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const float* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_float(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -818,7 +819,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const double* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_double(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -831,7 +832,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned short* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ushort(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -843,7 +844,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned int* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uint(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -855,7 +856,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const long long* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_longlong(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -868,7 +869,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned long long* dataValues) const {
   ncCheckDefineMode(myId);
   NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND) 
+  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ulonglong(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -894,11 +895,11 @@ NcGroupAtt NcGroup::putAtt(const string& name, size_t len, const char** dataValu
 }
 
 
-  
+
 // /////////////
 // NcDim-related methods
 // /////////////
-  
+
 // Get the number of NcDim objects.
 int NcGroup::getDimCount(NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDimCount on a Null group",__FILE__,__LINE__);
@@ -921,7 +922,7 @@ int NcGroup::getDimCount(NcGroup::Location location) const {
       ndims += it->second.getDimCount();
     }
   }
-  
+
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
     multimap<string,NcGroup>::iterator it;
@@ -948,7 +949,7 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
       ncCheck(nc_inq_dimids(getId(), &dimCount, &dimids[0], 0),__FILE__,__LINE__);
       // now get the name of each NcDim and populate the nDims container.
       for(int i=0; i<dimCount;i++){
-        NcDim tmpDim(*this,dimids[i]); 
+        NcDim tmpDim(*this,dimids[i]);
         ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
       }
     }
@@ -985,9 +986,9 @@ NcDim NcGroup::getDim(const string& name,NcGroup::Location location) const {
   multimap<string,NcDim> ncDims(getDims(location));
   pair<multimap<string,NcDim>::iterator,multimap<string,NcDim>::iterator> ret;
   ret = ncDims.equal_range(name);
-  if(ret.first == ret.second) 
+  if(ret.first == ret.second)
     return NcDim(); // null group is returned
-  else 
+  else
     return ret.first->second;
 }
 
@@ -1059,7 +1060,7 @@ int NcGroup::getTypeCount(NcGroup::Location location) const {
       ntypes += it->second.getTypeCount();
     }
   }
-  
+
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
     multimap<string,NcGroup>::iterator it;
@@ -1072,7 +1073,7 @@ int NcGroup::getTypeCount(NcGroup::Location location) const {
 }
 
 
-  
+
 // Gets the number of type objects with a given enumeration type.
 int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) const {
 
@@ -1104,7 +1105,7 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
       ntypes += it->second.getTypeCount(enumType);
     }
   }
-  
+
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
     multimap<string,NcGroup>::iterator it;
@@ -1131,7 +1132,7 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
       ncCheck(nc_inq_typeids(getId(), &typeCount,&typeids[0]),__FILE__,__LINE__);
       // now get the name of each NcType and populate the nTypes container.
       for(int i=0; i<typeCount;i++){
-        NcType tmpType(*this,typeids[i]); 
+        NcType tmpType(*this,typeids[i]);
         ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
       }
     }
@@ -1231,8 +1232,8 @@ NcType NcGroup::getType(const string& name, NcGroup::Location location) const {
   if(name ==  "short"   ) return ncShort;
   if(name ==  "ushort"  ) return ncUshort;
   if(name ==  "int"     ) return ncInt;
-  if(name ==  "uint"    ) return ncUint;  
-  if(name ==  "int64"   ) return ncInt64; 
+  if(name ==  "uint"    ) return ncUint;
+  if(name ==  "int64"   ) return ncInt64;
   if(name ==  "uint64"  ) return ncUint64;
   if(name ==  "float"   ) return ncFloat;
   if(name ==  "double"  ) return ncDouble;
@@ -1249,7 +1250,7 @@ NcType NcGroup::getType(const string& name, NcGroup::Location location) const {
   set<NcType> tmpType;
     // get the set of NcType objects with a given name
   ret=types.equal_range(name);
-  if(ret.first == ret.second) 
+  if(ret.first == ret.second)
     return NcType();
   else
     return ret.first->second;
@@ -1284,7 +1285,7 @@ NcOpaqueType NcGroup::addOpaqueType(const string& name, size_t size) const {
   NcOpaqueType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
-    
+
 // Adds a new netCDF UserDefined type.
 NcCompoundType NcGroup::addCompoundType(const string& name, size_t size) const {
   ncCheckDefineMode(myId);
@@ -1293,14 +1294,14 @@ NcCompoundType NcGroup::addCompoundType(const string& name, size_t size) const {
   NcCompoundType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
-  
-  
+
+
 // Get the collection of coordinate variables.
 map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
   map<string,NcGroup> coordVars;
 
   // search in current group and parent groups.
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   multimap<string,NcDim>::iterator itD;
   multimap<string,NcVar>::iterator itV;
   while(1) {
@@ -1330,7 +1331,7 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
       coordVars.insert(coordVarsTmp.begin(),coordVarsTmp.end());
     }
   }
-  
+
   return coordVars;
 }
 
@@ -1339,7 +1340,7 @@ void NcGroup::getCoordVar(string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGr
 
   // search in current group and parent groups.
   multimap<string,NcDim>::iterator itD;
-  NcGroup tmpGroup(*this); 
+  NcGroup tmpGroup(*this);
   multimap<string,NcVar>::iterator itV;
   while(1) {
     // get the collection of NcDim objects defined in this group.
