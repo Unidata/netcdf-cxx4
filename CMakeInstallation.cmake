@@ -11,10 +11,6 @@ SET(CPACK_PACKAGE_VENDOR "Unidata")
 # NOTE!! This list uses regular expressions, NOT wildcards!!
 ##
 SET(CPACK_SOURCE_IGNORE_FILES "${CPACK_SOURCE_IGNORE_FILES}"
-  "/expecttds3/"
-  "/nocacheremote3/"
-  "/nocacheremote4/"
-  "/special3/"
   "${CMAKE_BINARY_DIR}/*"
   "/myhtml/*"
   "/.svn/"
@@ -52,6 +48,7 @@ IF(WIN32)
   SET(CPACK_NSIS_MENU_LINKS
 	"http://www.unidata.ucar.edu/netcdf" "Unidata Website"
 	"http://www.unidata.ucar.edu/netcdf/docs" "NetCDF Stable Documentation"
+    "http://www.unidata.ucar.edu/netcdf/docs/cxx4" "NetCDF CXX4 Stable Documentation"
 	"http://www.unidata.ucar.edu/netcdf/docs_rc" "NetCDF Unstable Documentation")
 
 ENDIF()
@@ -72,7 +69,7 @@ IF(NC_DPKG)
   ENDMACRO(getdpkg_arch)
   getdpkg_arch(dpkg_arch)
 
-  SET(CPACK_DEBIAN_PACKAGE_NAME "netcdf4-dev")	
+  SET(CPACK_DEBIAN_PACKAGE_NAME "netcdf4-cxx4-dev")
   SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${dpkg_arch}")
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "zlib1g (>= 1:1.2.3.4), libhdf5-7 (>= 1.8.11), libcurl4-openssl-dev (>= 7.22.0)")
 ENDIF()
@@ -116,15 +113,11 @@ ADD_CUSTOM_TARGET(uninstall
 # Customize some of the package component descriptions
 ##
 
-set(CPACK_COMPONENT_UTILITIES_DESCRIPTION
-  "The NetCDF-C Utilities")
 set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
-  "The NetCDF-C Libraries")
+  "The NetCDF-CXX4 Libraries")
 set(CPACK_COMPONENT_HEADERS_DESCRIPTION
-  "Header files for use with NetCDF-C")
-set(CPACK_COMPONENT_DEPENDENCIES_DESCRIPTION
-  "Dependencies for this build of NetCDF-C")
+  "Header files for use with NetCDF-CXX4")
 set(CPACK_COMPONENT_DOCUMENTATION_DESCRIPTION
-  "The NetCDF-C user documentation.")
+  "The NetCDF-CXX4 user documentation.")
 
 INCLUDE(CPack)
