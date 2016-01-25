@@ -80,6 +80,62 @@ AC_MSG_RESULT($TEMP_LARGE)
 #AC_SUBST(TEMP_LARGE)
 AC_DEFINE_UNQUOTED([TEMP_LARGE], ["$TEMP_LARGE"], [Place to put very large netCDF test files.])
 
+
+####
+# Doxygen and doxygen-related options.
+####
+AC_ARG_ENABLE([doxygen],
+  [AS_HELP_STRING([--enable-doxygen],
+    [Enable generation of documentation.])])
+test "x$enable_doxygen" = xyes || enable_doxygen=no
+AM_CONDITIONAL([BUILD_DOCS], [test "x$enable_doxygen" = xyes])
+
+
+##
+# Eventually set these depending on an upcoming 'build release docs'
+# option.  See configure.ac in netcdf-c for guidance.
+##
+AC_SUBST([DOXYGEN_CSS_FILE], [])
+AC_SUBST([DOXYGEN_HEADER_FILE], [])
+AC_SUBST([DOXYGEN_SEARCHENGINE], ["YES"])
+
+##
+# Is doxygen installed? If so, have configure construct the Doxyfile.
+##
+AC_CHECK_PROGS([DOXYGEN], [doxygen])
+if test -z "$DOXYGEN"; then
+   AC_MSG_WARN([Doxygen not found - documentation will not be built])
+fi
+
+# Is graphviz/dot installed? If so, we'll use dot to create
+# graphs in the documentation.
+AC_CHECK_PROGS([DOT], [dot])
+if test -z "$DOT"; then
+   AC_MSG_WARN([dot not found - will use simple charts in documentation])
+   HAVE_DOT=NO
+elif test "x$enable_dot" = xno; then
+   HAVE_DOT=NO
+else
+   HAVE_DOT=YES
+fi
+
+# If we have doxygen, and it's enabled, then process the file.
+if test "x$enable_doxygen" != xno; then
+   if test -n "$DOXYGEN"; then
+        AC_SUBST(HAVE_DOT)
+        AC_CONFIG_FILES([docs/Doxyfile])
+   fi
+# Note: the list of files to input to doxygen
+# has been moved to docs/Doxyfile.in so
+# that make distcheck works correctly.
+# Any new inputs should be inserted into
+# docs/Doxyfile.in and possibley docs/Makefile.am
+fi
+
+#####
+# End Doxygen and doxygen-related options.
+#####
+
 # Valgrind tests don't work with shared builds because of some libtool
 # weirdness.
 if test "x$enable_shared" = xyes; then
@@ -152,10 +208,10 @@ AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 NC_LIBS="-lnetcdf_c++4"
 if test "x$enable_shared" != xyes; then
    NC_LIBS="$LDFLAGS $NC_LIBS $LIBS"
-fi	 
+fi
 
 case "x$target_os" in
-xsolaris*) 
+xsolaris*)
   NEWNCLIBS=""
   for x in $NC_LIBS ; do
     case "$x" in
@@ -184,4 +240,3 @@ AC_CONFIG_FILES([Makefile
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])
 
 AC_OUTPUT()
-

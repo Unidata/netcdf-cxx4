@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = NetCDF-CXX4
+PROJECT_NAME           = NetCDF-C++
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -745,7 +745,6 @@ WARN_LOGFILE           =
 
 INPUT = \
     @abs_top_srcdir@/docs/mainpage.md \
-    @abs_top_srcdir@/RELEASE_NOTES.md \
     @abs_top_srcdir@/cxx4/ncAtt.h   \
     @abs_top_srcdir@/cxx4/ncByte.h  \
     @abs_top_srcdir@/cxx4/ncChar.h  \
@@ -807,7 +806,8 @@ INPUT = \
     @abs_top_srcdir@/examples/sfc_pres_temp_wr.cpp \
     @abs_top_srcdir@/examples/simple_xy_rd.cpp \
     @abs_top_srcdir@/examples/simple_xy_wr.cpp \
-    @abs_top_srcdir@/examples/simple_xy_wr_formats.cpp
+    @abs_top_srcdir@/examples/simple_xy_wr_formats.cpp \
+    @abs_top_srcdir@/RELEASE_NOTES.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
