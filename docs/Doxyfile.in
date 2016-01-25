@@ -416,7 +416,7 @@ EXTRACT_PACKAGE        = NO
 # included in the documentation.
 # The default value is: NO.
 
-EXTRACT_STATIC         = YES
+EXTRACT_STATIC         = NO
 
 # If the EXTRACT_LOCAL_CLASSES tag is set to YES classes (and structs) defined
 # locally in source files will be included in the documentation. If set to NO
@@ -424,7 +424,7 @@ EXTRACT_STATIC         = YES
 # for Java sources.
 # The default value is: YES.
 
-EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_CLASSES  = NO
 
 # This flag is only useful for Objective-C code. When set to YES local methods,
 # which are defined in the implementation section but not in the interface are
@@ -432,7 +432,7 @@ EXTRACT_LOCAL_CLASSES  = YES
 # included.
 # The default value is: NO.
 
-EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_LOCAL_METHODS  = NO
 
 # If this flag is set to YES, the members of anonymous namespaces will be
 # extracted and appear in the documentation as a namespace called
@@ -441,7 +441,7 @@ EXTRACT_LOCAL_METHODS  = YES
 # are hidden.
 # The default value is: NO.
 
-EXTRACT_ANON_NSPACES   = YES
+EXTRACT_ANON_NSPACES   = NO
 
 # If the HIDE_UNDOC_MEMBERS tag is set to YES, doxygen will hide all
 # undocumented members inside documented classes or files. If set to NO these
@@ -692,7 +692,7 @@ QUIET                  = YES
 # Tip: Turn warnings on while writing the documentation.
 # The default value is: YES.
 
-WARNINGS               = YES
+WARNINGS               = NO
 
 # If the WARN_IF_UNDOCUMENTED tag is set to YES, then doxygen will generate
 # warnings for undocumented members. If EXTRACT_ALL is set to YES then this flag
@@ -707,7 +707,7 @@ WARN_IF_UNDOCUMENTED   = NO
 # markup commands wrongly.
 # The default value is: YES.
 
-WARN_IF_DOC_ERROR      = YES
+WARN_IF_DOC_ERROR      = NO
 
 # This WARN_NO_PARAMDOC option can be enabled to get warnings for functions that
 # are documented, but have no documentation for their parameters or return
@@ -715,7 +715,7 @@ WARN_IF_DOC_ERROR      = YES
 # documentation, but not about the absence of documentation.
 # The default value is: NO.
 
-WARN_NO_PARAMDOC       = YES
+WARN_NO_PARAMDOC       = NO
 
 # The WARN_FORMAT tag determines the format of the warning messages that doxygen
 # can produce. The string should contain the $file, $line, and $text tags, which
@@ -746,6 +746,33 @@ WARN_LOGFILE           =
 INPUT = \
     @abs_top_srcdir@/docs/mainpage.md \
     @abs_top_srcdir@/RELEASE_NOTES.md \
+    @abs_top_srcdir@/cxx4/ncAtt.h   \
+    @abs_top_srcdir@/cxx4/ncByte.h  \
+    @abs_top_srcdir@/cxx4/ncChar.h  \
+    @abs_top_srcdir@/cxx4/ncCheck.h \
+    @abs_top_srcdir@/cxx4/ncCompoundType.h \
+    @abs_top_srcdir@/cxx4/ncDim.h \
+    @abs_top_srcdir@/cxx4/ncDouble.h \
+    @abs_top_srcdir@/cxx4/ncEnumType.h \
+    @abs_top_srcdir@/cxx4/ncException.h \
+    @abs_top_srcdir@/cxx4/ncFile.h \
+    @abs_top_srcdir@/cxx4/ncFloat.h \
+    @abs_top_srcdir@/cxx4/ncGroup.h \
+    @abs_top_srcdir@/cxx4/ncGroupAtt.h \
+    @abs_top_srcdir@/cxx4/ncInt.h \
+    @abs_top_srcdir@/cxx4/ncInt64.h \
+    @abs_top_srcdir@/cxx4/ncOpaqueType.h \
+    @abs_top_srcdir@/cxx4/ncShort.h \
+    @abs_top_srcdir@/cxx4/ncString.h \
+    @abs_top_srcdir@/cxx4/ncType.h \
+    @abs_top_srcdir@/cxx4/ncUbyte.h \
+    @abs_top_srcdir@/cxx4/ncUint.h \
+    @abs_top_srcdir@/cxx4/ncUint64.h \
+    @abs_top_srcdir@/cxx4/ncUshort.h \
+    @abs_top_srcdir@/cxx4/ncVar.h \
+    @abs_top_srcdir@/cxx4/ncVarAtt.h \
+    @abs_top_srcdir@/cxx4/ncVlenType.h \
+    @abs_top_srcdir@/cxx4/test_utilities.h \
     @abs_top_srcdir@/cxx4/ncAtt.cpp   \
     @abs_top_srcdir@/cxx4/ncByte.cpp  \
     @abs_top_srcdir@/cxx4/ncChar.cpp  \
@@ -774,17 +801,13 @@ INPUT = \
     @abs_top_srcdir@/cxx4/ncVlenType.cpp \
     @abs_top_srcdir@/COPYRIGHT \
     @abs_top_srcdir@/cxx4/example1.cpp \
-    @abs_top_srcdir@/examples/C/simple_xy_wr.c \
-    @abs_top_srcdir@/examples/C/simple_xy_rd.c \
-    @abs_top_srcdir@/examples/C/sfc_pres_temp_wr.c \
-    @abs_top_srcdir@/examples/C/sfc_pres_temp_rd.c \
-    @abs_top_srcdir@/examples/C/pres_temp_4D_wr.c \
-    @abs_top_srcdir@/examples/C/pres_temp_4D_rd.c \
-    @abs_top_srcdir@/examples/C/simple_nc4_wr.c \
-    @abs_top_srcdir@/examples/C/simple_nc4_rd.c \
-    @abs_top_srcdir@/examples/C/simple_xy_nc4_wr.c \
-    @abs_top_srcdir@/examples/C/simple_xy_nc4_rd.c
-
+    @abs_top_srcdir@/examples/pres_temp_4D_rd.cpp \
+    @abs_top_srcdir@/examples/pres_temp_4D_wr.cpp \
+    @abs_top_srcdir@/examples/sfc_pres_temp_rd.cpp \
+    @abs_top_srcdir@/examples/sfc_pres_temp_wr.cpp \
+    @abs_top_srcdir@/examples/simple_xy_rd.cpp \
+    @abs_top_srcdir@/examples/simple_xy_wr.cpp \
+    @abs_top_srcdir@/examples/simple_xy_wr_formats.cpp
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
