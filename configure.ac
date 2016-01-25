@@ -200,6 +200,7 @@ AM_CONDITIONAL([BUILD_V2], [test "x$ac_cv_func_nccreate" = xyes])
 AM_CONDITIONAL([USE_LOGGING], [test "x$ac_cv_func_nc_set_log_level" = xyes])
 AM_CONDITIONAL([BUILD_DAP], [test "x$ac_cv_func_oc_open" = xyes])
 AM_CONDITIONAL([BUILD_PARALLEL], [test "x$ac_cv_func_nc_use_parallel_enabled" = xyes])
+AM_CONDITIONAL([BUILD_DOCS], [test x$enable_doxygen = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 
 # Flags for ncxx4-config script; by design $prefix, $includir, $libdir,
@@ -235,6 +236,7 @@ AC_MSG_NOTICE([generating header files and makefiles])
 AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
                  examples/Makefile
+                 docs/Makefile
                  ncxx4-config
                  netcdf-cxx4.pc],
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])

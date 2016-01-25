@@ -14,7 +14,7 @@ pkgconfig_DATA = netcdf-cxx4.pc
 bin_SCRIPTS = ncxx4-config
 
 # Build and test in these directories.
-SUBDIRS = cxx4 examples
+SUBDIRS = cxx4 examples docs
 
 # Remove these generated files, for a distclean.
 DISTCLEANFILES = VERSION
@@ -37,10 +37,8 @@ install-data-hook:
 	@echo '| http://www.unidata.ucar.edu/software/netcdf/                |'
 	@echo '|                                                             |'
 	@echo '| NetCDF is developed and maintained at the Unidata Program   |'
-	@echo '| Center. Unidata provides a broad array of data and software |' 
+	@echo '| Center. Unidata provides a broad array of data and software |'
 	@echo '| tools for use in geoscience education and research.         |'
 	@echo '| http://www.unidata.ucar.edu                                 |'
 	@echo '+-------------------------------------------------------------+'
 	@echo ''
-
-
