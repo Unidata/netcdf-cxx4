@@ -4,6 +4,7 @@ This file contains the release notes for the `netcdf-cxx4` project.
 
 ## netcdf-cxx4 v4.3.2 released TBD
 
+* Changed `NCXX_ENABLE_DOXYGEN` option to an easier-to-remember `ENABLE_DOXYGEN`.
 * Added `--enable-doxygen`, `-DNCXX_ENABLE_DOXYGEN=ON` options to allow generation of netCDF-CXX4 documentation via doxygen using either `configure` or `cmake`, respectively.
 * Added `netcdf-cxx4` to the [Coverity Scan Dashboard](https://scan.coverity.com/projects/unidata-netcdf-cxx4?tab=overview).
 * Added `open` and `close` methods for NcFile.  See [Github Pull Request #18](https://github.com/Unidata/netcdf-cxx4/pull/18) for more information.
