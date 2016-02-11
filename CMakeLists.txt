@@ -247,8 +247,8 @@ ENDIF()
 ##
 # Enable doxygen-generated documentation.
 ##
-OPTION(NCXX_ENABLE_DOXYGEN "Enable generation of doxygen-based documentation." OFF)
-IF(NCXX_ENABLE_DOXYGEN)
+OPTION(ENABLE_DOXYGEN "Enable generation of doxygen-based documentation." OFF)
+IF(ENABLE_DOXYGEN)
   FIND_PACKAGE(Doxygen REQUIRED)
   FIND_PROGRAM(NCXX_DOT NAMES dot)
   IF(NCXX_DOT)
@@ -538,7 +538,7 @@ INCLUDE_DIRECTORIES(cxx4 examples)
 
 ADD_SUBDIRECTORY(cxx4)
 ADD_SUBDIRECTORY(examples)
-IF(NCXX_ENABLE_DOXYGEN)
+IF(ENABLE_DOXYGEN)
   ADD_SUBDIRECTORY(docs)
 ENDIF()
 
