@@ -16,14 +16,14 @@ try
   {
     cout<<"Opening file \"firstFile.cdf\" with NcFile::replace"<<endl;
     NcFile ncFile("firstFile.cdf",NcFile::replace);
-    
+
     cout<<left<<setw(50)<<"Testing addGroup(\"groupName\")";
     NcGroup groupA(ncFile.addGroup("groupA"));
     NcGroup groupA0(ncFile.addGroup("groupA0"));
     NcGroup groupB(groupA.addGroup("groupB"));
     NcGroup groupC(groupA.addGroup("groupC"));
     cout <<"    -----------   passed\n";
-    
+
     cout <<left<<setw(50)<<"Testing getGroupCount([netCDF::Location])";
     if( ncFile.getGroupCount()!= 2)                                 throw NcException("Error in test 1.1",__FILE__,__LINE__);
     if( groupA.getGroupCount()!= 2)                                 throw NcException("Error in test 1.2",__FILE__,__LINE__);
@@ -53,14 +53,14 @@ try
       if( iter == groupMap.end())    throw NcException("Error in test 2.2",__FILE__,__LINE__);
       iter=groupMap.find("groupA0");
       if( iter == groupMap.end())    throw NcException("Error in test 2.3",__FILE__,__LINE__);
-      
+
       groupMap =ncFile.getGroups(NcGroup::ChildrenGrps);
       if( groupMap.size() != 2)      throw NcException("Error in test 2.4",__FILE__,__LINE__);
       iter=groupMap.find("groupA");
       if( iter == groupMap.end())    throw NcException("Error in test 2.5",__FILE__,__LINE__);
       iter=groupMap.find("groupA0");
       if( iter == groupMap.end())    throw NcException("Error in test 2.6",__FILE__,__LINE__);
-      
+
       groupMap = ncFile.getGroups(NcGroup::ParentsGrps);
       if( groupMap.size() != 0)      throw NcException("Error in test 2.7",__FILE__,__LINE__);
 
@@ -81,7 +81,7 @@ try
       if( iter == groupMap.end())    throw NcException("Error in test 2.14",__FILE__,__LINE__);
       iter=groupMap.find("groupC");
       if( iter == groupMap.end())    throw NcException("Error in test 2.15",__FILE__,__LINE__);
-      
+
       groupMap = ncFile.getGroups(NcGroup::ParentsAndCurrentGrps);
       if( groupMap.size() != 1)      throw NcException("Error in test 2.16",__FILE__,__LINE__);
       iter=groupMap.find("/");
@@ -109,7 +109,7 @@ try
       if( iter == groupMap.end())    throw NcException("Error in test 2.25",__FILE__,__LINE__);
       iter=groupMap.find("groupC");
       if( iter == groupMap.end())    throw NcException("Error in test 2.26",__FILE__,__LINE__);
-      
+
 
       groupMap =groupA.getGroups(NcGroup::ChildrenGrps);
       if( groupMap.size() != 2)      throw NcException("Error in test 2.27",__FILE__,__LINE__);
@@ -117,7 +117,7 @@ try
       if( iter == groupMap.end())    throw NcException("Error in test 2.28",__FILE__,__LINE__);
       iter=groupMap.find("groupC");
       if( iter == groupMap.end())    throw NcException("Error in test 2.29",__FILE__,__LINE__);
-      
+
       groupMap = groupA.getGroups(NcGroup::ParentsGrps);
       if( groupMap.size() != 1)      throw NcException("Error in test 2.30",__FILE__,__LINE__);
       iter=groupMap.find("/");
@@ -132,7 +132,7 @@ try
       if( iter == groupMap.end())    throw NcException("Error in test 2.34",__FILE__,__LINE__);
       iter=groupMap.find("groupC");
       if( iter == groupMap.end())    throw NcException("Error in test 2.35",__FILE__,__LINE__);
-      
+
       groupMap = groupA.getGroups(NcGroup::ParentsAndCurrentGrps);
       if( groupMap.size() != 2)      throw NcException("Error in test 2.36",__FILE__,__LINE__);
       iter=groupMap.find("/");
@@ -158,7 +158,7 @@ try
 
       groupMap =groupB.getGroups(NcGroup::ChildrenGrps);
       if( groupMap.size() != 0)      throw NcException("Error in test 2.45",__FILE__,__LINE__);
-      
+
       groupMap = groupB.getGroups(NcGroup::ParentsGrps);
       if( groupMap.size() != 2)      throw NcException("Error in test 2.46",__FILE__,__LINE__);
       iter=groupMap.find("/");
@@ -171,7 +171,7 @@ try
 
       groupMap = groupB.getGroups(NcGroup::AllChildrenGrps);
       if( groupMap.size() != 0)      throw NcException("Error in test 2.50",__FILE__,__LINE__);
-      
+
       groupMap = groupB.getGroups(NcGroup::ParentsAndCurrentGrps);
       if( groupMap.size() != 3)      throw NcException("Error in test 2.51",__FILE__,__LINE__);
       iter=groupMap.find("/");
@@ -226,7 +226,7 @@ try
 
       groupSet = ncFile.getGroups("groupA",NcGroup::AllGrps);
       if( groupSet.size() != 1)      throw NcException("Error in test 3.9",__FILE__,__LINE__);
-      
+
 
       // operations on ncFile:groupB
 
@@ -250,7 +250,7 @@ try
 
       groupSet = ncFile.getGroups("groupB",NcGroup::AllGrps);
       if( groupSet.size() != 1)      throw NcException("Error in test 3.16",__FILE__,__LINE__);
-      
+
 
       // operations on groupA:groupA
 
@@ -274,7 +274,7 @@ try
 
       groupSet = groupA.getGroups("groupA",NcGroup::AllGrps);
       if( groupSet.size() != 1)      throw NcException("Error in test 3.23",__FILE__,__LINE__);
-      
+
 
 
       // operations on groupA:ncFile
@@ -299,7 +299,7 @@ try
 
       groupSet = groupA.getGroups("/",NcGroup::AllGrps);
       if( groupSet.size() != 1)      throw NcException("Error in test 3.30",__FILE__,__LINE__);
-      
+
 
 
       // operations on groupA:groupB
@@ -324,7 +324,7 @@ try
 
       groupSet = groupA.getGroups("groupB",NcGroup::AllGrps);
       if( groupSet.size() != 1)      throw NcException("Error in test 3.37",__FILE__,__LINE__);
-      
+
 
       // operations on groupA:groupA0
 
@@ -348,13 +348,13 @@ try
 
       groupSet = groupA.getGroups("groupA0",NcGroup::AllGrps);
       if( groupSet.size() != 0)      throw NcException("Error in test 3.44",__FILE__,__LINE__);
-      
+
     }
 
     cout <<"    -----------   passed\n";
-    
-    
-    
+
+
+
 
 
     cout <<left<<setw(50)<<"Testing getGroup(\"name\",[netCDF::Location])";
@@ -364,11 +364,11 @@ try
 
       if( ncFile.getGroup("groupA").getName() != "groupA")  throw NcException("Error in test 4.1",__FILE__,__LINE__);
       if( !ncFile.getGroup("groupB").isNull())              throw NcException("Error in test 4.2",__FILE__,__LINE__);
-      
+
     }
 
     cout <<"    -----------   passed\n";
-    
+
 
 
 
@@ -379,7 +379,7 @@ try
     if( groupA0.getParentGroup().getName() != "/")    throw NcException("Error in test 5.3",__FILE__,__LINE__);
     if( groupB.getParentGroup().getName() != "groupA")throw NcException("Error in test 5.4",__FILE__,__LINE__);
     if( groupC.getParentGroup().getName() != "groupA")throw NcException("Error in test 5.5",__FILE__,__LINE__);
-    
+
     cout <<"    -----------   passed\n";
 
 
@@ -388,5 +388,6 @@ try
    {
      cout << "unknown error"<<endl;
      e.what();
+     return e.errorCode();
    }
 }

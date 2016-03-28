@@ -27,14 +27,14 @@ try
   {
     cout<<"Opening file \"firstFile.cdf\" with NcFile::replace"<<endl;
     NcFile ncFile("firstFile.cdf",NcFile::replace);
-    
+
     cout<<left<<std::setw(57)<<"Testing addGroup(\"groupName\")";
     NcGroup groupA(ncFile.addGroup("groupA"));
     NcGroup groupA0(ncFile.addGroup("groupA0"));
     NcGroup groupB(groupA.addGroup("groupB"));
     NcGroup groupC(groupA.addGroup("groupC"));
     cout <<"    -----------   passed\n";
-    
+
     vector<string>  b1(10);
     vector<unsigned char *>  b2(10);
     vector<signed char*>  b3(10);
@@ -134,7 +134,7 @@ try
     if( ncString.getTypeClassName() !=  "nc_STRING") throw NcException("Error in test 5.12",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
 
-    
+
 
     cout <<left<<setw(57)<<"Testing creating new Compound Type";
     struct struct1{
@@ -143,7 +143,7 @@ try
       short mem3;
       double mem4;
     };
-    
+
     struct struct2{
       char mem1;
       double mem2;
@@ -179,7 +179,7 @@ try
     if(compoundType2.getTypeClass() != NcCompoundType::nc_COMPOUND) throw NcException("Error in test 8.3",__FILE__,__LINE__);
     if(dummyType.getTypeClass() != NcCompoundType::nc_COMPOUND)     throw NcException("Error in test 8.4",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
     cout <<left<<setw(57)<<"Testing compoundClass.getMemberCount()";
     if(compoundType2.getMemberCount() != 3)throw NcException("Error in test 9.1",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
@@ -189,7 +189,7 @@ try
     if(compoundType2.getMemberDimCount(1) != 0)throw NcException("Error in test 10.2",__FILE__,__LINE__);
     if(compoundType2.getMemberDimCount(2) != 2)throw NcException("Error in test 10.3",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
 
     cout <<left<<setw(57)<<"Testing NcCompoundType::getMemberShape(index)";
     vector<int> memberShape;
@@ -204,14 +204,14 @@ try
     if(memberShape[0] != 6)    throw NcException("Error in test 11.4",__FILE__,__LINE__);
     if(memberShape[1] != 3)    throw NcException("Error in test 11.5",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
 
     cout <<left<<setw(57)<<"Testing NcCompoundType::getMember(index).getName()";
     if(compoundType2.getMember(0).getName() !=  "char")   throw NcException("Error in test 12.1",__FILE__,__LINE__);
     if(compoundType2.getMember(1).getName() !=  "double") throw NcException("Error in test 12.2",__FILE__,__LINE__);
     if(compoundType2.getMember(2).getName() !=  "short")  throw NcException("Error in test 12.3",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
 
     cout <<left<<setw(57)<<"Testing NcCompoundType == NcType";
     NcType dummyType2(compoundType2);
@@ -222,7 +222,7 @@ try
     NcCompoundType dummy3(compoundType2);
     if(!(dummy3 == compoundType2)) throw NcException("Error in test 14.1",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
 
     ////////////////////////////
 
@@ -234,15 +234,15 @@ try
     cout <<left<<setw(57)<<"Testing NcVlenType::getTypeClass()";
     if(vlenType1.getTypeClass() != NcType::nc_VLEN) throw NcException("Error in test 15.1",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
     cout <<left<<setw(57)<<"Testing NcVlenType::getTypeClassName()";
     if(vlenType1.getTypeClassName() != "nc_VLEN") throw NcException("Error in test 16.1",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
     cout <<left<<setw(57)<<"Testing NcVlenType::getName()";
     if(vlenType1.getName() != "vlenType_1") throw NcException("Error in test 17.1",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
     cout <<left<<setw(57)<<"Testing NcVlenType::getBaseType(); == and !=";
     if(!(vlenType1.getBaseType() == ncShort)) throw NcException("Error in test 18.1",__FILE__,__LINE__);
     if(vlenType1.getBaseType() != ncShort) throw NcException("Error in test 18.2",__FILE__,__LINE__);
@@ -255,7 +255,7 @@ try
     if(vlenType1 != vlenvlenType) throw NcException("Error in test 19.1",__FILE__,__LINE__);
     if(vlenType1 != typevlen) throw NcException("Error in test 19.2",__FILE__,__LINE__);
     cout <<"    -----------   passed\n";
-    
+
 
 
 
@@ -340,7 +340,7 @@ try
     ncFile.getTypes(NcType::nc_ENUM);
     ncFile.getTypes("enumType_1");
     ncFile.getTypes();
-    
+
 
 
     cout <<left<<setw(57)<<"Testing ENUM ncFile::putVar() and NcFile::getVar()";
@@ -358,10 +358,10 @@ try
       enumValues[7] =  1;
       enumValues[8] =  -20;
       enumValues[9] =  7;
-      var_1.putVar(enumValues);  
+      var_1.putVar(enumValues);
 
       NcVar var_2(ncFile.getVar("var_1"));
-      
+
       if(var_2.isNull()) throw NcException("Error in test 27.1",__FILE__,__LINE__);
       short enumValues2[10];
       var_2.getVar(enumValues2);
@@ -377,15 +377,15 @@ try
       if(enumValues[9] != 7)  throw NcException("Error in test 27.11",__FILE__,__LINE__);
     }
     cout <<"    -----------   passed\n";
- 
-  
+
+
 
 
 
     cout <<left<<setw(57)<<"Testing COMPOUND ncFile::putVar() and NcFile::getVar()";
     {
       vector<int> vecSize(2); vecSize[0]=6,vecSize[1]=3;
-      
+
       NcCompoundType compoundType3(ncFile.addCompoundType("compoundType_3",sizeof(struct3)));
       compoundType3.addMember("member1",ncInt,offsetof(struct3,mem1));
       compoundType3.addMember("member2",ncDouble,offsetof(struct3,mem2));
@@ -394,52 +394,52 @@ try
 
       NcDim dim3 = ncFile.addDim("dim3",2);
       NcVar var_3   = ncFile.addVar("var_3", compoundType3,dim3);
-      
+
       struct3 dummyStruct;
       dummyStruct.mem1=1;
       dummyStruct.mem2=-1.23456;
       dummyStruct.mem3[0]=1;
       dummyStruct.mem3[1]=-6;
       dummyStruct.mem3[2]=20;
-      
+
       struct3 dummyFill   ;
       dummyFill.mem1=94;
       dummyFill.mem2=95;
       dummyFill.mem3[0]=96;
       dummyFill.mem3[1]=97;
       dummyFill.mem3[2]=98;
-      
+
       struct3 dummyStruct2[2];
       dummyStruct2[0].mem1=1;
       dummyStruct2[0].mem2=-1.23456;
       dummyStruct2[0].mem3[0]=1;
       dummyStruct2[0].mem3[1]=-6;
       dummyStruct2[0].mem3[2]=20;
-      
+
       var_3.setFill(true,dummyFill);
 
       vector<size_t> index(1);index[0]=1;
-      //var_3.putVar(&dummyStruct2);  
-      var_3.putVar(index,&dummyStruct);  
-      
+      //var_3.putVar(&dummyStruct2);
+      var_3.putVar(index,&dummyStruct);
+
       NcVar var_4(ncFile.getVar("var_3"));
 
       if(var_4.isNull()) throw NcException("Error in test 28.1",__FILE__,__LINE__);
       struct3 dummyStruct3[2];
       var_4.getVar(dummyStruct3);
-	  
+
       if(dummyStruct3[1].mem1 != 1)  throw NcException("Error in test 28.2",__FILE__,__LINE__);
       if(dummyStruct3[1].mem2 != -1.23456)  throw NcException("Error in test 28.3",__FILE__,__LINE__);
       if(dummyStruct3[1].mem3[0] != 1)  throw NcException("Error in test 28.4",__FILE__,__LINE__);
       if(dummyStruct3[1].mem3[1] != -6)  throw NcException("Error in test 28.5",__FILE__,__LINE__);
       if(dummyStruct3[1].mem3[2] != 20)  throw NcException("Error in test 28.6",__FILE__,__LINE__);
-      
+
       if(dummyStruct3[0].mem1 != 94)  throw NcException("Error in test 28.7",__FILE__,__LINE__);
       if(dummyStruct3[0].mem2 != 95)  throw NcException("Error in test 28.8",__FILE__,__LINE__);
       if(dummyStruct3[0].mem3[0] != 96)  throw NcException("Error in test 28.9",__FILE__,__LINE__);
       if(dummyStruct3[0].mem3[1] != 97)  throw NcException("Error in test 28.10",__FILE__,__LINE__);
       if(dummyStruct3[0].mem3[2] != 98)  throw NcException("Error in test 28.11",__FILE__,__LINE__);
-      
+
     }
     cout <<"    -----------   passed\n";
 
@@ -472,7 +472,7 @@ try
       dummyData[1].p = vlenPointer;
       dummyData[1].len = 2;
 
-      var_7.putVar(dummyData);  
+      var_7.putVar(dummyData);
 
        nc_free_vlen(&dummyData[0]);
        nc_free_vlen(&dummyData[1]);
@@ -521,7 +521,7 @@ try
       // finally define a variable containing this new compound type
       NcDim dim13 = ncFile.addDim("dim13",2);
       NcVar var_13   = ncFile.addVar("var_13", compoundType4,dim13);
-      
+
       // here we populate a single entry.
       struct10 dummyData2;
       short int* vlenPointer;
@@ -539,12 +539,12 @@ try
       vlenPointer[1] = 64;
       dummyData2.mem1[1].p=vlenPointer;
       dummyData2.mem1[1].len=2;
-      
+
       dummyData2.mem2=20.1234;
 
       // ...and put the data into the netCDF file
       vector<size_t> index(1);index[0]=1;
-      var_13.putVar(index,&dummyData2);  
+      var_13.putVar(index,&dummyData2);
 
       nc_free_vlen(&dummyData2.mem1[0]);
       nc_free_vlen(&dummyData2.mem1[1]);
@@ -552,13 +552,14 @@ try
 
     }
     cout <<"    -----------   passed\n";
-      
 
- 
+
+
 }
 catch (NcException& e)
   {
     cout << "unknown error"<<endl;
     cout << e.what();
+    exit e.errorCode();
   }
 }

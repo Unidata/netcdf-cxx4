@@ -20,14 +20,14 @@ int main()
     {
       cout<<"Opening file \"firstFile.cdf\" with NcFile::replace"<<endl;
       NcFile ncFile("firstFile.cdf",NcFile::replace);
-    
+
       cout<<left<<setw(55)<<"Testing addGroup(\"groupName\")";
       NcGroup groupA(ncFile.addGroup("groupA"));
       NcGroup groupA0(ncFile.addGroup("groupA0"));
       NcGroup groupB(groupA.addGroup("groupB"));
       NcGroup groupC(groupA.addGroup("groupC"));
       cout <<"    -----------   passed\n";
-    
+
       cout <<left<<setw(55)<<"Testing putAtt(\"attName\",\"typeName\",len,dataValues)";
       vector<string>  b1(10);
       vector<unsigned char *>  b2(10);
@@ -402,7 +402,7 @@ int main()
 	iter=groupMap.find("att_C1"); if( iter != groupMap.end()) throw NcException("Error in test 8.116",__FILE__,__LINE__);
 
 
-	// now for groupB    
+	// now for groupB
 	groupMap = groupB.getAtts();
 	if(groupMap.size() != 4)                                   throw NcException("Error in test 8.117",__FILE__,__LINE__);
 	iter=groupMap.find("att1_7");  if( iter != groupMap.end()) throw NcException("Error in test 8.118",__FILE__,__LINE__);
@@ -456,7 +456,7 @@ int main()
 
 	cout <<"    -----------   passed\n";
       }
-    
+
       cout <<left<<setw(55)<<"Testing getAtt(\"name\",[netCDF::Location])";
       if(ncFile.getAtt("att1_7") != attA1_7)                            throw NcException("Error in test 9.1",__FILE__,__LINE__);
       if(ncFile.getAtt("att1_7",NcGroup::Current) != attA1_7)           throw NcException("Error in test 9.2",__FILE__,__LINE__);
@@ -498,7 +498,7 @@ int main()
       if(ncFile.getAtt("att_C1",NcGroup::All) != att_C1)               throw NcException("Error in test 9.35",__FILE__,__LINE__);
 
       // now for next group
-    
+
       if(!groupA0.getAtt("att1_7").isNull())                             throw NcException("Error in test 9.36",__FILE__,__LINE__);
       if(!groupA0.getAtt("att1_7",NcGroup::Current).isNull())            throw NcException("Error in test 9.37",__FILE__,__LINE__);
       if(groupA0.getAtt("att1_7",NcGroup::Parents)  != attA1_7)          throw NcException("Error in test 9.38",__FILE__,__LINE__);
@@ -506,7 +506,7 @@ int main()
       if(groupA0.getAtt("att1_7",NcGroup::ParentsAndCurrent) != attA1_7) throw NcException("Error in test 9.40",__FILE__,__LINE__);
       if(!groupA0.getAtt("att1_7",NcGroup::ChildrenAndCurrent).isNull()) throw NcException("Error in test 9.41",__FILE__,__LINE__);
       if(groupA0.getAtt("att1_7",NcGroup::All) != attA1_7)               throw NcException("Error in test 9.42",__FILE__,__LINE__);
-    
+
       if(!groupA0.getAtt("att_A01").isNull())                           throw NcException("Error in test 9.43",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_A01",NcGroup::Current).isNull())          throw NcException("Error in test 9.44",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_A01",NcGroup::Parents).isNull())           throw NcException("Error in test 9.45",__FILE__,__LINE__);
@@ -514,7 +514,7 @@ int main()
       if(!groupA0.getAtt("att_A01",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.47",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_A01",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.48",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_A01",NcGroup::All).isNull())              throw NcException("Error in test 9.49",__FILE__,__LINE__);
-    
+
       if(groupA0.getAtt("att_A1") != att_A1)                            throw NcException("Error in test 9.50",__FILE__,__LINE__);
       if(groupA0.getAtt("att_A1",NcGroup::Current) != att_A1)           throw NcException("Error in test 9.51",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_A1",NcGroup::Parents).isNull())           throw NcException("Error in test 9.52",__FILE__,__LINE__);
@@ -522,7 +522,7 @@ int main()
       if(groupA0.getAtt("att_A1",NcGroup::ParentsAndCurrent) != att_A1)throw NcException("Error in test 9.54",__FILE__,__LINE__);
       if(groupA0.getAtt("att_A1",NcGroup::ChildrenAndCurrent)!= att_A1) throw NcException("Error in test 9.55",__FILE__,__LINE__);
       if(groupA0.getAtt("att_A1",NcGroup::All) != att_A1)               throw NcException("Error in test 9.56",__FILE__,__LINE__);
-    
+
       if(!groupA0.getAtt("att_B3").isNull())                            throw NcException("Error in test 9.57",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_B3",NcGroup::Current).isNull())           throw NcException("Error in test 9.58",__FILE__,__LINE__);
       if(!groupA0.getAtt("att_B3",NcGroup::Parents).isNull())           throw NcException("Error in test 9.59",__FILE__,__LINE__);
@@ -605,7 +605,7 @@ int main()
       if(!groupB.getAtt("att_A1",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.124",__FILE__,__LINE__);
       if(!groupB.getAtt("att_A1",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.125",__FILE__,__LINE__);
       if(!groupB.getAtt("att_A1",NcGroup::All).isNull())               throw NcException("Error in test 9.126",__FILE__,__LINE__);
-    
+
       if(groupB.getAtt("att_B3") != att_B3)                            throw NcException("Error in test 9.127",__FILE__,__LINE__);
       if(groupB.getAtt("att_B3",NcGroup::Current) != att_B3)           throw NcException("Error in test 9.128",__FILE__,__LINE__);
       if(!groupB.getAtt("att_B3",NcGroup::Parents).isNull())           throw NcException("Error in test 9.129",__FILE__,__LINE__);
@@ -817,7 +817,7 @@ int main()
 
 	return 0;
       }
-    
+
 
 
 
@@ -830,5 +830,6 @@ int main()
     {
       cout << "unknown error"<<endl;
       e.what();
+      return e.errorCode();
     }
 }

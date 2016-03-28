@@ -188,5 +188,6 @@ int main()
     {
       cout << "unknown error"<<endl;
       e.what();
+      return e.errorCode();
     }
 }
