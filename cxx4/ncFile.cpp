@@ -64,6 +64,9 @@ void NcFile::open(const string& filePath, const FileMode fMode)
       ncCheck(nc_create(filePath.c_str(), NC_NETCDF4 | NC_CLOBBER, &myId),__FILE__,__LINE__);
       break;
     }
+
+  file_id = myId;
+
   nullObject=false;
 }
 
