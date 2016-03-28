@@ -560,6 +560,6 @@ catch (NcException& e)
   {
     cout << "unknown error"<<endl;
     cout << e.what();
-    exit e.errorCode();
+    exit(e.errorCode());
   }
 }

@@ -29,7 +29,6 @@ int main() {
       return -1;
     } catch(NcException &e) {
       cout << "Caught Expected Exception." << endl;
-      return e.errorCode();
     }
 
     // Test opening a file that exists.
