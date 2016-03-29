@@ -27,7 +27,7 @@ try
 	short mem3[3];
       };
       vector<int> vecSize(2); vecSize[0]=6,vecSize[1]=3;
-      
+
       NcCompoundType compoundType3(ncFile.addCompoundType("compoundType_3",sizeof(struct3)));
       compoundType3.addMember("member1",ncInt,offsetof(struct3,mem1));
       compoundType3.addMember("member2",ncDouble,offsetof(struct3,mem2));
@@ -36,17 +36,17 @@ try
 
       NcDim dim3 = ncFile.addDim("dim3",1);
       NcVar var_3   = ncFile.addVar("var_3", compoundType3,dim3);
-      
+
       struct3 dummyStruct;
       dummyStruct.mem1=1;
       dummyStruct.mem2=-1.23456;
       dummyStruct.mem3[0]=1;
       dummyStruct.mem3[1]=-6;
       dummyStruct.mem3[2]=20;
-      
+
       vector<size_t> index(1);index[0]=0;
-      var_3.putVar(index,&dummyStruct);  
-      
+      var_3.putVar(index,&dummyStruct);
+
       //NcVar var_4(ncFile.getVar("var_3"));
 
       exit(1);
@@ -55,5 +55,6 @@ catch (NcException& e)
   {
     cout << "unknown error"<<endl;
     e.what();
+    return e.errorCode();
   }
 }

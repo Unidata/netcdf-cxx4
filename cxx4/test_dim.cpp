@@ -19,14 +19,14 @@ int main()
     {
       cout<<"Opening file \"firstFile.cdf\" with NcFile::replace"<<endl;
       NcFile ncFile("firstFile.cdf", NcFile::replace);
-    
+
       cout<<left<<setw(55)<<"Testing addGroup(\"groupName\")";
       NcGroup groupA(ncFile.addGroup("groupA"));
       NcGroup groupA0(ncFile.addGroup("groupA0"));
       NcGroup groupB(groupA.addGroup("groupB"));
       NcGroup groupC(groupA.addGroup("groupC"));
       cout <<"    -----------   passed\n";
-    
+
       cout <<left<<setw(55)<<"Testing addDim(\"dimensionName\")";
       NcDim dim1 = ncFile.addDim("dim1",11);
       NcDim dim2 = ncFile.addDim("dim2");
@@ -105,7 +105,7 @@ int main()
       cout <<"    -----------   passed\n";
 
 
-	
+
       cout <<left<<setw(55)<<"Testing NcGroup::getDims([netCDF::Location])";
       {
 	multimap<string,NcDim> dimMap;
@@ -162,12 +162,12 @@ int main()
 	if( iter == dimMap.end())    throw NcException("Error in test 7.21",__FILE__,__LINE__);
 	iter=dimMap.find("dim7");
 	if( iter == dimMap.end())    throw NcException("Error in test 7.22",__FILE__,__LINE__);
-      
+
       }
       cout <<"    -----------   passed\n";
 
 
-	
+
       cout <<left<<setw(55)<<"Testing NcGroup::getDims(\"name\",[netCDF::Location])";
       {
 
@@ -328,5 +328,6 @@ int main()
     {
       cout <<"\n";
       e.what();
+      return e.errorCode();
     }
 }

@@ -53,6 +53,6 @@ int main()
    catch(NcException& e)
    {
       cout << "Error!\n";
-      return 99;
+      return e.errorCode();
    }
 }

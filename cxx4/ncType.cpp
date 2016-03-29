@@ -4,16 +4,17 @@
 #include "ncCheck.h"
 using namespace std;
 
+extern int g_ncid;
 
 namespace netCDF {
   //  Global comparator operator ==============
-  // comparator operator 
+  // comparator operator
   bool operator<(const NcType& lhs,const NcType& rhs)
   {
     return false;
   }
-  
-  // comparator operator 
+
+  // comparator operator
   bool operator>(const NcType& lhs,const NcType& rhs)
   {
     return true;
@@ -32,16 +33,16 @@ NcType& NcType::operator=(const NcType & rhs)
 }
 
 // The copy constructor.
-NcType::NcType(const NcType& rhs): 
+NcType::NcType(const NcType& rhs):
   nullObject(rhs.nullObject),
-  myId(rhs.myId), 
+  myId(rhs.myId),
   groupId(rhs.groupId)
 {}
 
 
 // Constructor generates a null object.
-NcType::NcType() : 
-  nullObject(true) 
+NcType::NcType() :
+  nullObject(true)
 {}
 
 // constructor
@@ -53,14 +54,13 @@ NcType::NcType(const NcGroup& grp, const string& name) :
   myId = typTmp.getId();
 }
 
-// constructor for a global type 
+// constructor for a global type
 NcType::NcType(nc_type id) :
   nullObject(false),
   myId(id),
   groupId(0)
 {
 }
-  
 
 // Constructor for a non-global type
 NcType::NcType(const netCDF::NcGroup& grp, nc_type id):
@@ -73,40 +73,45 @@ NcType::NcType(const netCDF::NcGroup& grp, nc_type id):
 // equivalence operator
 bool NcType::operator==(const NcType & rhs) const
 {
-  if(nullObject) 
+  if(nullObject)
     return nullObject == rhs.nullObject;
   else
     return groupId == rhs.groupId && myId == rhs.myId;
-}  
-  
+}
+
 //  !=  operator
 bool NcType::operator!=(const NcType & rhs) const
 {
   return !(*this == rhs);
-}  
-  
+}
+
 // Gets parent group.
 NcGroup  NcType::getParentGroup() const {
   if(groupId == 0) return NcGroup(); else  return NcGroup(groupId);
 }
-  
+
 // Returns the type name.
 string  NcType::getName() const{
   char charName[NC_MAX_NAME+1];
   size_t *sizep=NULL;
-  ncCheck(nc_inq_type(groupId,myId,charName,sizep),__FILE__,__LINE__);
+
+  /* We cannot call nc_inq_type without a valid
+     netcdf file ID (ncid), which is not *groupid*.
+     Working around this for now. */
+
+  ncCheck(nc_inq_type(g_ncid,myId,charName,sizep),__FILE__,__LINE__);
   return string(charName);
-  //  }
+
 };
 
 // Returns the size in bytes
 size_t NcType::getSize() const{
   char* charName=NULL;
   size_t sizep;
-  ncCheck(nc_inq_type(groupId,myId,charName,&sizep),__FILE__,__LINE__);
+  ncCheck(nc_inq_type(g_ncid,myId,charName,&sizep),__FILE__,__LINE__);
   return sizep;
 };
-  
+
 // The type class returned as an enumeration type.
 NcType::ncType NcType::getTypeClass() const{
   switch (myId) {
@@ -116,15 +121,15 @@ NcType::ncType NcType::getTypeClass() const{
   case NC_SHORT   : return nc_SHORT;
   case NC_USHORT  : return nc_USHORT;
   case NC_INT     : return nc_INT;
-  case NC_UINT    : return nc_UINT;  
-  case NC_INT64   : return nc_INT64; 
+  case NC_UINT    : return nc_UINT;
+  case NC_INT64   : return nc_INT64;
   case NC_UINT64  : return nc_UINT64;
   case NC_FLOAT   : return nc_FLOAT;
   case NC_DOUBLE  : return nc_DOUBLE;
   case NC_STRING  : return nc_STRING;
-  default:  
+  default:
     // this is a user defined type
-    // establish its type class, ie whether it is: NC_VLEN, NC_OPAQUE, NC_ENUM, or NC_COMPOUND. 
+    // establish its type class, ie whether it is: NC_VLEN, NC_OPAQUE, NC_ENUM, or NC_COMPOUND.
     char* name=NULL;
     size_t* sizep=NULL;
     nc_type* base_nc_typep=NULL;
@@ -134,7 +139,7 @@ NcType::ncType NcType::getTypeClass() const{
     return static_cast<ncType>(classp);
   }
 }
-  
+
 // The type class returned as a string.
 string NcType::getTypeClassName() const{
   ncType typeClass=getTypeClass();
@@ -145,8 +150,8 @@ string NcType::getTypeClassName() const{
   case nc_SHORT   : return string("nc_SHORT");
   case nc_USHORT  : return string("nc_USHORT");
   case nc_INT     : return string("nc_INT");
-  case nc_UINT    : return string("nc_UINT");  
-  case nc_INT64   : return string("nc_INT64"); 
+  case nc_UINT    : return string("nc_UINT");
+  case nc_INT64   : return string("nc_INT64");
   case nc_UINT64  : return string("nc_UINT64");
   case nc_FLOAT   : return string("nc_FLOAT");
   case nc_DOUBLE  : return string("nc_DOUBLE");

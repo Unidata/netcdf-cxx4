@@ -21,14 +21,14 @@ int main()
       {
 	cout<<"Opening file \"firstFile.cdf\" with NcFile::replace"<<endl;
 	NcFile ncFile("firstFile.cdf",NcFile::replace);
-    
+
 	cout<<left<<setw(55)<<"Testing addGroup(\"groupName\")";
 	NcGroup groupA(ncFile.addGroup("groupA"));
 	NcGroup groupA0(ncFile.addGroup("groupA0"));
 	NcGroup groupB(groupA.addGroup("groupB"));
 	NcGroup groupC(groupA.addGroup("groupC"));
 	cout <<"    -----------   passed\n";
-    
+
 	cout <<left<<setw(55)<<"Testing addVar(\"varName\",\"typeName\")";
 	NcVar var_scalar  = ncFile.addVar("var_scalar",ncByte);
 	cout <<"    -----------   passed\n";
@@ -73,12 +73,12 @@ int main()
 
       cout<<"Preparing for tests..."<<endl;
       NcFile ncFile("firstFile.cdf",NcFile::replace);
-    
+
       NcGroup groupA(ncFile.addGroup("groupA"));
       NcGroup groupA0(ncFile.addGroup("groupA0"));
       NcGroup groupB(groupA.addGroup("groupB"));
       NcGroup groupC(groupA.addGroup("groupC"));
-    
+
       NcDim dim1 = ncFile.addDim("dim1",11);
       NcDim dim2 = ncFile.addDim("dim2");
       NcDim dim3 = ncFile.addDim("dim3",13);
@@ -136,7 +136,7 @@ int main()
 	if(groupA.getVarCount(NcGroup::ChildrenAndCurrent) !=11) throw NcException("Error in test 4.20",__FILE__,__LINE__);
 	if(groupA.getVarCount(NcGroup::All) != 12 )              throw NcException("Error in test 4.21",__FILE__,__LINE__);
 	cout <<"    -----------   passed\n";
-	
+
       }
 
 
@@ -813,5 +813,6 @@ int main()
     {
       cout << "unknown error"<<endl;
       e.what();
+      return e.errorCode();
     }
 }
