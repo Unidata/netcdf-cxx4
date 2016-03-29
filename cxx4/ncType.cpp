@@ -4,7 +4,7 @@
 #include "ncCheck.h"
 using namespace std;
 
-
+extern int g_ncid;
 
 namespace netCDF {
   //  Global comparator operator ==============
@@ -62,7 +62,6 @@ NcType::NcType(nc_type id) :
 {
 }
 
-
 // Constructor for a non-global type
 NcType::NcType(const netCDF::NcGroup& grp, nc_type id):
   nullObject(false),
@@ -92,7 +91,7 @@ NcGroup  NcType::getParentGroup() const {
 }
 
 // Returns the type name.
-string  NcType::getName(int ncid) const{
+string  NcType::getName() const{
   char charName[NC_MAX_NAME+1];
   size_t *sizep=NULL;
 
@@ -100,16 +99,16 @@ string  NcType::getName(int ncid) const{
      netcdf file ID (ncid), which is not *groupid*.
      Working around this for now. */
 
-  ncCheck(nc_inq_type(ncid,myId,charName,sizep),__FILE__,__LINE__);
+  ncCheck(nc_inq_type(g_ncid,myId,charName,sizep),__FILE__,__LINE__);
   return string(charName);
 
 };
 
 // Returns the size in bytes
-size_t NcType::getSize(int ncid) const{
+size_t NcType::getSize() const{
   char* charName=NULL;
   size_t sizep;
-  ncCheck(nc_inq_type(ncid,myId,charName,&sizep),__FILE__,__LINE__);
+  ncCheck(nc_inq_type(g_ncid,myId,charName,&sizep),__FILE__,__LINE__);
   return sizep;
 };
 
