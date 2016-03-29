@@ -29,8 +29,11 @@ NcFile::~NcFile()
 
 void NcFile::close()
 {
-  if (!nullObject)
+  if (!nullObject) {
     ncCheck(nc_close(myId),__FILE__,__LINE__);
+    g_ncid = -1;
+  }
+
   nullObject = true;
 }
 
