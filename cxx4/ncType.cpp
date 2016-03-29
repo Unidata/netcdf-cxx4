@@ -92,38 +92,17 @@ NcGroup  NcType::getParentGroup() const {
 }
 
 // Returns the type name.
-string  NcType::getName() const{
+string  NcType::getName(int ncid) const{
   char charName[NC_MAX_NAME+1];
   size_t *sizep=NULL;
-
-  ncCheck(nc_inq_type(file_id,myId,charName,sizep),__FILE__,__LINE__);
-  return string(charName);
-
-  switch(myId) {
-  case NC_BYTE : return "byte";
-  case NC_CHAR : return "char";
-  case NC_SHORT : return "short";
-  case NC_INT: return "int";
-  case NC_FLOAT: return "float";
-  case NC_DOUBLE: return "double";
-  case NC_INT64: return "int64";
-  case NC_UBYTE: return "ubyte";
-  case NC_USHORT: return "ushort";
-  case NC_UINT: return "uint";
-  case NC_UINT64: return "uint64";
-  case NC_STRING: return "string";
-  case NC_NAT:
-  default:
-    return "undefined";
-  }
 
   /* We cannot call nc_inq_type without a valid
      netcdf file ID (ncid), which is not *groupid*.
      Working around this for now. */
 
-  //ncCheck(nc_inq_type(groupId,myId,charName,sizep),__FILE__,__LINE__);
-  //return string(charName);
-  //  }
+  ncCheck(nc_inq_type(ncid,myId,charName,sizep),__FILE__,__LINE__);
+  return string(charName);
+
 };
 
 // Returns the size in bytes
