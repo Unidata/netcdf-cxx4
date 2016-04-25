@@ -80,7 +80,7 @@ IF(MSVC)
 ENDIF()
 
 #Add custom CMake Module
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/"
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/"
   CACHE INTERNAL "Location of our custom CMake modules.")
 
 # auto-configure style checks, other CMake modules.
@@ -208,7 +208,7 @@ INCLUDE(CTest)
 ##
 # Copy the CTest customization file into binary directory, as required.
 ##
-FILE(COPY ${CMAKE_SOURCE_DIR}/CTestCustom.cmake DESTINATION ${CMAKE_BINARY_DIR})
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 ##
 # Set Memory test program for non-MSVC based builds.
@@ -279,8 +279,8 @@ IF(NCXX_ENABLE_TESTS)
   ENDIF()
 
   # Create a CTestConfig file from the template.
-  CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/CTestConfig.cmake.in"
-    "${CMAKE_SOURCE_DIR}/CTestConfig.cmake"
+  CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/CTestConfig.cmake.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/CTestConfig.cmake"
     @ONLY
     )
 
@@ -465,7 +465,7 @@ ENDIF()
 SET(host_cpu "${cpu}")
 SET(host_vendor "${osname}")
 SET(host_os "${osrel}")
-SET(abs_top_builddir "${CMAKE_BINARY_DIR}")
+SET(abs_top_builddir "${CMAKE_CURRENT_BINARY_DIR}")
 
 SET(CC_VERSION "${CMAKE_C_COMPILER}")
 SET(CXX_VERSION "${CMAKE_CXX_COMPILER}")

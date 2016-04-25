@@ -11,7 +11,7 @@ SET(CPACK_PACKAGE_VENDOR "Unidata")
 # NOTE!! This list uses regular expressions, NOT wildcards!!
 ##
 SET(CPACK_SOURCE_IGNORE_FILES "${CPACK_SOURCE_IGNORE_FILES}"
-  "${CMAKE_BINARY_DIR}/*"
+  "${CMAKE_CURRENT_BINARY_DIR}/*"
   "/myhtml/*"
   "/.svn/"
   "my.*\\\\.sh"
