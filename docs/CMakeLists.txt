@@ -11,7 +11,7 @@ IF(NCXX_ENABLE_DOXYGEN)
   # Set some configuration variables so that they
   # are redundant with autotools.
   ##
-  SET(abs_top_srcdir ${CMAKE_SOURCE_DIR})
+  SET(abs_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR}/..)
   SET(abs_builddir ${CMAKE_CURRENT_BINARY_DIR})
 
   ##
