@@ -1,5 +1,5 @@
 ## This is a automake file, part of Unidata's netCDF package.
-# Copyright 2006, see the COPYRIGHT file for more information.  
+# Copyright 2006, see the COPYRIGHT file for more information.
 
 # This file builds CXX4 examples.
 
@@ -34,5 +34,4 @@ TESTS = $(TESTPROGRAMS) #do_comps.sh
 # Cleaning up files created during the process.
 CLEANFILES = simple_xy.nc sfc_pres_temp.nc pres_temp_4D.nc		\
 tmp-test.cdl tmp-ref.cdl simple_xy_classic.nc simple_xy_classic64.nc	\
-simple_xy_nc4.nc simple_xy_nc4cm.nc
-
+simple_xy_nc4.nc simple_xy_nc4cm.nc simple_xy_nc4classic.nc
