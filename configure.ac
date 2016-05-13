@@ -3,7 +3,7 @@
 # the COPYRIGHT file for more information.
 
 AC_PREREQ([2.66])
-AC_INIT([netCDF-cxx4], [4.2.1], [support-netcdf@unidata.ucar.edu])
+AC_INIT([netCDF-cxx4], [4.3.1-developer], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.

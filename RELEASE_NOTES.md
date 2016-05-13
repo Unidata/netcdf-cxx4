@@ -6,7 +6,7 @@ This file contains a high-level description of this package's evolution. Release
 
 Note that this file was created and maintained starting with the `netcdf-cxx4 4.3.0 release`.
 
-## netcdf-cxx4 v4.3.0 released TBD
+## netcdf-cxx4 v4.3.0 released May 13, 2016
 
 * Fixed an issue where the tests were failing silently, and the underlying `NcType` class could not properly determine the type name or type size reliably.  [GitHub issue #30](See https://github.com/Unidata/netcdf-cxx4/issues/30) for more information.
 * Changed `NCXX_ENABLE_DOXYGEN` option to an easier-to-remember `ENABLE_DOXYGEN`.
