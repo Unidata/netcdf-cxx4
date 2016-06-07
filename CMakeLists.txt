@@ -510,6 +510,26 @@ INSTALL(
 #####
 
 #####
+# Begin ncxx4-config section
+#####
+
+FILE(MAKE_DIRECTORY ${netCDF_BINARY_DIR}/tmp)
+CONFIGURE_FILE("${netCDF_SOURCE_DIR}/ncxx4-config.cmake.in"
+        "${netCDF_BINARY_DIR}/tmp/ncxx4-config" @ONLY)
+FILE(COPY "${netCDF_BINARY_DIR}/tmp/ncxx4-config"
+        DESTINATION ${netCDF_BINARY_DIR}/
+        FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+INSTALL(PROGRAMS ${netCDF_BINARY_DIR}/ncxx4-config
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT utilities)
+
+#####
+# End ncxx4-config section
+#####
+
+
+#####
 # Options
 #####
 
