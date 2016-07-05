@@ -23,7 +23,7 @@ has_dap="yes"
 fi
 
 has_nc2="@BUILD_V2@"
-if [ -z $has_nc2 -o "$has_nc2" = "OFF" ]; then
+if [ -z $has_nc2 ] || [ "$has_nc2" = "OFF" ]; then
         has_nc2="no"
 else
 has_nc2="yes"
@@ -93,7 +93,7 @@ while test $# -gt 0; do
     # this deals with options in the style
     # --option=value and extracts the value part
     # [not currently used]
-    -*=*) value=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    -*=*) value=$(echo "$1" | sed 's/[-_a-zA-Z0-9]*=//') ;;
     *) value= ;;
     esac
 
