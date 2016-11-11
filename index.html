@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NetCDF-cxx4 by Unidata</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>NetCDF-cxx4</h1>
+        <p>Official GitHub repository for netCDF-C++ libraries and utilities.</p>
+
+        <p class="view"><a href="https://github.com/Unidata/netcdf-cxx4">View the Project on GitHub <small>Unidata/netcdf-cxx4</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Unidata/netcdf-cxx4/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Unidata/netcdf-cxx4/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Unidata/netcdf-cxx4">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="https://travis-ci.org/Unidata/netcdf-cxx4"><img src="https://travis-ci.org/Unidata/netcdf-cxx4.svg" alt="Build Status"></a></p>
+
+<h1>
+<a id="netcdf-cxx4" class="anchor" href="#netcdf-cxx4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>netcdf-cxx4</h1>
+
+<p>Official GitHub repository for netCDF-4 C++ library.</p>
+
+<p>Note: The latest release of the historic C++ libraries, netCDF-4.2, may be downloaded from the following page:</p>
+
+<ul>
+<li><a href="http://www.unidata.ucar.edu/downloads/netcdf/index.jsp">http://www.unidata.ucar.edu/downloads/netcdf/index.jsp</a></li>
+</ul>
+
+<h3>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h3>
+
+<p>Lynton Appel, of the Culham Centre for Fusion Energy (CCFE) in
+Oxfordshire, has developed and contributed a
+Oxfordshire, has developed and contributed a
+<a href="http://www.unidata.ucar.edu/downloads/netcdf/netcdf-cxx/">netCDF-4 C++ library</a> that depends on an installed
+netCDF-4 C library.  The netCDF-4 C++ API was developed for use in
+managing fusion research data from CCFE's innovative MAST (Mega Amp
+Spherical Tokamak) experiment.</p>
+
+<p>Appel's C++ implementation is a complete read/write interface for
+netCDF-4, but can also be used as an alternative to the older netCDF-3
+C++ interface, to write classic-format netCDF-3 files as well as
+netCDF-4 classic model files. The new API is implemented as a layer
+over the netCDF-4 C interface, which means bug fixes and performance
+enhancements in the C interface will be immediately available to C++
+developers as well. It replaces a previous partial netCDF-4 C++
+interface developed by Shanna Forbes.</p>
+
+<p>The new API makes use of standard C++ features such as namespaces,
+exceptions, and templates, none of which were included in the first
+netCDF-3 C++ API developed in the mid-90's. The earlier netCDF-3 C++
+API is still supported and available in the source distribution, but
+developers who are thinking of eventually upgrading to use of the
+enhanced data model should consider using Lynton's new API.</p>
+
+<p>We're grateful for Appel's development and CCFE's contribution of the
+new open-source code for the netCDF-4 C++ API, and hope C++ developers
+in the netCDF community will find it useful! Feedback is appreciated,
+and should be directed to <a href="mailto:Lynton.Appel@ccfe.ac.uk">Lynton Appel</a>.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Installing the C++ interface requires the additional flag
+--enable-netcdf-4 to be used during the configure stage of the
+installation, for example enter</p>
+
+<pre><code>  ./configure --enable-cxx-4 [plus other options]
+</code></pre>
+
+<p>Note that the "configure" script must be generated using</p>
+
+<pre><code>  autoreconf -if
+</code></pre>
+
+<p>To build the C++ interface guide, change to the cxx4 directory of the
+distribution and enter</p>
+
+<pre><code>  doxygen
+</code></pre>
+
+<p>By default, HTML documentation will be installed in cxx4/doc/html;
+other options may be specified according to the settings contained in
+the file "Doxyfile" (details of alternative settings are documented at
+<a href="http://www.stack.nl/%7Edimitri/doxygen">doxygen</a>). Note that as a prerequisite for generating the
+documentation, the system will need to have doxygen and
+<a href="http://www.graphviz.org/">Graphviz</a> installed.</p>
+
+<h3>
+<a id="examples-of-usage" class="anchor" href="#examples-of-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples of usage</h3>
+
+<p>Examples codes can be found by selecting the "Examples" tab.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Unidata">Unidata</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
