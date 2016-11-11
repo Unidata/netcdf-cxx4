@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classnetCDF_1_1NcAtt.html" title="Abstract base class represents inherited by ncVarAtt and ncGroupAtt. " alt="" coords="5,31,116,57"/>
+<area shape="rect" id="node2" href="$classnetCDF_1_1NcGroupAtt.html" title="Class represents a netCDF group attribute. " alt="" coords="164,5,309,32"/>
+<area shape="rect" id="node3" href="$classnetCDF_1_1NcVarAtt.html" title="Class represents a netCDF attribute local to a netCDF variable. " alt="" coords="171,56,302,83"/>
+</map>

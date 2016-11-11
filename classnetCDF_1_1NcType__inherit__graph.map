@@ -1,0 +1,18 @@
+<map id="netCDF::NcType" name="netCDF::NcType">
+<area shape="rect" id="node2" href="$classnetCDF_1_1NcByte.html" title="Class represents a netCDF atomic Byte type. " alt="" coords="209,5,329,32"/>
+<area shape="rect" id="node3" href="$classnetCDF_1_1NcChar.html" title="Class represents a netCDF atomic Char type. " alt="" coords="208,56,329,83"/>
+<area shape="rect" id="node4" href="$classnetCDF_1_1NcCompoundType.html" title="Class represents a netCDF compound type. " alt="" coords="176,107,361,133"/>
+<area shape="rect" id="node5" href="$classnetCDF_1_1NcDouble.html" title="Class represents a netCDF atomic Double type. " alt="" coords="201,157,336,184"/>
+<area shape="rect" id="node6" href="$classnetCDF_1_1NcEnumType.html" title="Class represents a netCDF enum type. " alt="" coords="191,208,347,235"/>
+<area shape="rect" id="node7" href="$classnetCDF_1_1NcFloat.html" title="Class represents a netCDF atomic Float type. " alt="" coords="207,259,330,285"/>
+<area shape="rect" id="node8" href="$classnetCDF_1_1NcInt.html" title="Class represents a netCDF atomic Int type. " alt="" coords="215,309,323,336"/>
+<area shape="rect" id="node9" href="$classnetCDF_1_1NcInt64.html" title="Class represents a netCDF atomic Int64 type. " alt="" coords="207,360,330,387"/>
+<area shape="rect" id="node10" href="$classnetCDF_1_1NcOpaqueType.html" title="Class represents a netCDF opaque type. " alt="" coords="185,411,352,437"/>
+<area shape="rect" id="node11" href="$classnetCDF_1_1NcShort.html" title="Class represents a netCDF atomic Short type. " alt="" coords="207,461,331,488"/>
+<area shape="rect" id="node12" href="$classnetCDF_1_1NcString.html" title="Class represents a netCDF atomic String type. " alt="" coords="205,512,332,539"/>
+<area shape="rect" id="node13" href="$classnetCDF_1_1NcUbyte.html" title="Class represents a netCDF atomic Ubyte type. " alt="" coords="205,563,333,589"/>
+<area shape="rect" id="node14" href="$classnetCDF_1_1NcUint.html" title="Class represents a netCDF atomic Uint type. " alt="" coords="210,613,327,640"/>
+<area shape="rect" id="node15" href="$classnetCDF_1_1NcUint64.html" title="Class represents a netCDF atomic Uint64 type. " alt="" coords="203,664,334,691"/>
+<area shape="rect" id="node16" href="$classnetCDF_1_1NcUshort.html" title="Class represents a netCDF atomic Ushort type. " alt="" coords="203,715,335,741"/>
+<area shape="rect" id="node17" href="$classnetCDF_1_1NcVlenType.html" title="Class represents a netCDF VLEN type. " alt="" coords="195,765,343,792"/>
+</map>

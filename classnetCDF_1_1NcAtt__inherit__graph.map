@@ -1,0 +1,4 @@
+<map id="netCDF::NcAtt" name="netCDF::NcAtt">
+<area shape="rect" id="node2" href="$classnetCDF_1_1NcGroupAtt.html" title="Class represents a netCDF group attribute. " alt="" coords="5,80,151,107"/>
+<area shape="rect" id="node3" href="$classnetCDF_1_1NcVarAtt.html" title="Class represents a netCDF attribute local to a netCDF variable. " alt="" coords="175,80,306,107"/>
+</map>
