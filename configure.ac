@@ -174,32 +174,71 @@ AC_FUNC_MALLOC
 # Check to see if any macros must be set to enable large (>2GB) files.
 AC_SYS_LARGEFILE
 
-# See if these functions are in the library.
-AC_CHECK_HEADERS([netcdf.h], [], [AC_MSG_ERROR([netcdf.h could not be found. Please set CPPFLAGS.])])
-AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
-AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled])
-test "x$ac_cv_func_oc_open" = xyes && nc_has_dap=yes || nc_has_dap=no
+# User supplied nc-config
+AC_ARG_WITH([nc-config],
+    [AS_HELP_STRING([--with-nc-config=DIR],
+        [directory containing nc-config (if not in PATH)])],,
+    [])
 
-# Whether we build/test some functionality depends on what we found in
-# the C library.
-nc_build_v2=$ac_cv_func_nccreate
-nc_build_v4=$ac_cv_func_nc_def_opaque
+# Find nc-config, either from user supplied PATH, or system PATH
+AS_CASE([$with_nc_config],
+    ["yes"], [AC_MSG_ERROR([You must supply a path to --with-nc-config])],
+    ["no"], [AC_MSG_NOTICE([Not using nc-config])],
+    [AC_PATH_PROG([NCCONF], [nc-config], [], [$with_nc_config$PATH_SEPARATOR$PATH])])
+
+# If we found nc-config, use that to check NetCDF capabilities
+# otherwise, try and find the header/libraries and check directly
+AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
+    [
+      AC_MSG_NOTICE([checking output of nc-config])
+      nc_build_v2=`$ac_cv_path_NCCONF --has-nc2`
+      nc_build_v4=`$ac_cv_path_NCCONF --has-nc4`
+      nc_has_logging=`$ac_cv_path_NCCONF --has-logging`
+      nc_has_dap=`$ac_cv_path_NCCONF --has-dap`
+      nc_has_pnetcdf=`$ac_cv_path_NCCONF --has-pnetcdf`
+    ],
+    [
+      # See if these functions are in the library.
+      AC_CHECK_HEADERS([netcdf.h], [], [AC_MSG_ERROR([netcdf.h could not be found. Please set CPPFLAGS.])])
+      AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
+      AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled])
+
+      # Whether we build/test some functionality depends on what we found in
+      # the C library.
+      nc_build_v2=$ac_cv_func_nccreate
+      nc_build_v4=$ac_cv_func_nc_def_opaque
+      nc_has_logging=$ac_cv_func_nc_set_log_level
+      nc_has_dap=$ac_cv_func_oc_open
+      nc_has_pnetcdf=$ac_cv_func_nc_use_parallel_enabled
+    ])
+
+AC_MSG_CHECKING([netCDF v2 API present])
+AC_MSG_RESULT([$nc_build_v2])
+
+AC_MSG_CHECKING([netCDF-4 present])
+AC_MSG_RESULT([$nc_build_v4])
+
+AC_MSG_CHECKING([netCDF has logging])
+AC_MSG_RESULT([$nc_has_logging])
+
+AC_MSG_CHECKING([netCDF has dap])
+AC_MSG_RESULT([$nc_has_dap])
+
+AC_MSG_CHECKING([netCDF has pnetcdf])
+AC_MSG_RESULT([$nc_has_pnetcdf])
+
 if test "x$nc_build_v4" = xyes; then
    AC_DEFINE([USE_NETCDF4], [1], [if true, build netCDF-4])
 else
    AC_ERROR([NetCDF must be built with netCDF-4 enabled.])
 fi
 
-AC_MSG_CHECKING([netCDF v2 API present])
-AC_MSG_RESULT([$nc_build_v2])
-AC_MSG_CHECKING([netCDF-4 present])
-AC_MSG_RESULT([$nc_build_v4])
+AM_CONDITIONAL([USE_NETCDF4], [test "x$nc_build_v4" = xyes])
+AM_CONDITIONAL([BUILD_V2], [test "x$nc_build_v2" = xyes])
+AM_CONDITIONAL([USE_LOGGING], [test "x$nc_has_logging" = xyes])
+AM_CONDITIONAL([BUILD_DAP], [test "x$nc_has_dap" = xyes])
+AM_CONDITIONAL([BUILD_PARALLEL], [test "x$nc_has_pnetcdf" = xyes])
 
-AM_CONDITIONAL([USE_NETCDF4], [test "x$ac_cv_func_nc_def_opaque" = xyes])
-AM_CONDITIONAL([BUILD_V2], [test "x$ac_cv_func_nccreate" = xyes])
-AM_CONDITIONAL([USE_LOGGING], [test "x$ac_cv_func_nc_set_log_level" = xyes])
-AM_CONDITIONAL([BUILD_DAP], [test "x$ac_cv_func_oc_open" = xyes])
-AM_CONDITIONAL([BUILD_PARALLEL], [test "x$ac_cv_func_nc_use_parallel_enabled" = xyes])
 AM_CONDITIONAL([BUILD_DOCS], [test x$enable_doxygen = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 
