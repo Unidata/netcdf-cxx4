@@ -8,19 +8,19 @@
 namespace netCDF
 {
   class NcGroup;  // forward declaration.
-     
+
   /*! Class represents a netCDF dimension */
   class NcDim   {
-    
+
   public:
-     
+
     /*! destructor*/
     ~NcDim(){};
 
     /*! Constructor generates a \ref isNull "null object". */
     NcDim ();
 
-    /*! 
+    /*!
       Constructor for a dimension .
       The dimension must already exist in the netCDF file. New netCDF variables can be added using NcGroup::addNcDim();
       \param grp    Parent NcGroup object.
@@ -32,23 +32,23 @@ namespace netCDF
     NcDim& operator =(const NcDim &);
 
     /*! equivalence operator */
-    bool operator==(const NcDim& rhs) const;     
+    bool operator==(const NcDim& rhs) const;
 
     /*!  != operator */
-    bool operator!=(const NcDim& rhs) const;     
+    bool operator!=(const NcDim& rhs) const;
 
     /*! The copy constructor. */
     NcDim(const NcDim& ncDim);
 
     /*! The name of this dimension.*/
-    const std::string getName() const;
+    std::string getName() const;
 
     /*! The netCDF Id of this dimension. */
-    const int getId() const {return myId;};
-    
+    int getId() const {return myId;};
+
     /*! Gets a  NcGroup object of the parent group. */
     NcGroup getParentGroup() const;
-      
+
     /*! Returns true if this is an unlimited dimension */
     bool isUnlimited() const;
 
@@ -63,15 +63,15 @@ namespace netCDF
 
     /*! comparator operator  */
     friend bool operator<(const NcDim& lhs,const NcDim& rhs);
-    
+
     /*! comparator operator  */
     friend bool operator>(const NcDim& lhs,const NcDim& rhs);
-    
+
   private:
 
     bool nullObject;
 
-    int myId;	
+    int myId;
 
     int groupId;
 
@@ -79,6 +79,5 @@ namespace netCDF
   
 }
 
- 
-#endif
 
+#endif
