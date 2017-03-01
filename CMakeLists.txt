@@ -262,7 +262,7 @@ OPTION(NCXX_ENABLE_TESTS "Enable tests. Run with 'make test'." ON)
 IF(NCXX_ENABLE_TESTS)
   # Options for CTest-based tests, dashboards.
   SET(NCXX_CTEST_PROJECT_NAME "netcdf-cxx4" CACHE STRING "Project Name for CTest-based testing purposes.")
-  SET(NCXX_CTEST_DROP_SITE "my.cdash.org" CACHE STRING "Dashboard location for CTest-based testing purposes.")
+  SET(NCXX_CTEST_DROP_SITE "129.114.104.111" CACHE STRING "Dashboard location for CTest-based testing purposes.")
   SET(NCXX_CTEST_DROP_LOC_PREFIX "" CACHE STRING "Prefix for Dashboard location on remote server when using CTest-based testing.")
 
   FIND_PROGRAM(HOSTNAME_CMD NAMES hostname)
