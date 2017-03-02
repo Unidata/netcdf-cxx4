@@ -7,13 +7,13 @@ using namespace std;
 
 namespace netCDF {
   //  Global comparator operator ==============
-  // comparator operator 
+  // comparator operator
   bool operator<(const NcDim& lhs,const NcDim& rhs)
   {
     return false;
   }
-  
-  // comparator operator 
+
+  // comparator operator
   bool operator>(const NcDim& lhs,const NcDim& rhs)
   {
     return true;
@@ -32,7 +32,7 @@ NcDim& NcDim::operator=(const NcDim & rhs)
 }
 
 // The copy constructor.
-NcDim::NcDim(const NcDim& rhs): 
+NcDim::NcDim(const NcDim& rhs):
   nullObject(rhs.nullObject),
   myId(rhs.myId),
   groupId(rhs.groupId)
@@ -42,17 +42,17 @@ NcDim::NcDim(const NcDim& rhs):
 // equivalence operator
 bool NcDim::operator==(const NcDim& rhs) const
 {
-  if(nullObject) 
+  if(nullObject)
     return nullObject == rhs.nullObject;
   else
     return myId == rhs.myId && groupId == rhs.groupId;
-}  
+}
 
 //  !=  operator
 bool NcDim::operator!=(const NcDim & rhs) const
 {
   return !(*this == rhs);
-}  
+}
 
 
 // Gets parent group.
@@ -61,8 +61,8 @@ NcGroup  NcDim::getParentGroup() const {
 }
 
 // Constructor generates a null object.
-NcDim::NcDim() : 
-  nullObject(true) 
+NcDim::NcDim() :
+  nullObject(true)
 {}
 
 // Constructor for a dimension (must already exist in the netCDF file.)
@@ -103,17 +103,15 @@ bool NcDim::isUnlimited() const
 
 
 // gets the name of the dimension.
-const string NcDim::getName() const
+string NcDim::getName() const
 {
   char dimName[NC_MAX_NAME+1];
   ncCheck(nc_inq_dimname(groupId, myId, dimName),__FILE__,__LINE__);
   return string(dimName);
 }
-  
+
 // renames this dimension.
 void NcDim::rename(const string& name)
 {
   ncCheck(nc_rename_dim(groupId, myId, name.c_str()),__FILE__,__LINE__);
 }
-
-
