@@ -1,9 +1,8 @@
-#include <string>
-#include "netcdf.h"
-
 #ifndef NcDimClass
 #define NcDimClass
 
+#include <string>
+#include "netcdf.h"
 
 namespace netCDF
 {

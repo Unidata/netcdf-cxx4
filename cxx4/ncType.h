@@ -1,8 +1,8 @@
-#include <string>
-#include "netcdf.h"
-
 #ifndef NcTypeClass
 #define NcTypeClass
+
+#include <string>
+#include "netcdf.h"
 
 
 namespace netCDF

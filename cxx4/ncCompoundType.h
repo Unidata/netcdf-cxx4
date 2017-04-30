@@ -1,11 +1,10 @@
+#ifndef NcCompoundTypeClass
+#define NcCompoundTypeClass
+
 #include <string>
 #include <vector>
 #include "ncType.h"
 #include "netcdf.h"
-
-#ifndef NcCompoundTypeClass
-#define NcCompoundTypeClass
-
 
 namespace netCDF
 {

@@ -1,8 +1,8 @@
-#include "ncAtt.h"
-#include "netcdf.h"
-
 #ifndef NcGroupAttClass
 #define NcGroupAttClass
+
+#include "ncAtt.h"
+#include "netcdf.h"
 
 namespace netCDF
 {

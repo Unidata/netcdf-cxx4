@@ -1,10 +1,10 @@
+#ifndef NcAttClass
+#define NcAttClass
+
 #include "ncType.h"
 #include "ncException.h"
 #include <string>
 #include <typeinfo>
-
-#ifndef NcAttClass
-#define NcAttClass
 
 namespace netCDF
 {
@@ -21,7 +21,7 @@ namespace netCDF
     NcAtt ();
     
     /*! Constructor for non-null instances. */
-    NcAtt(bool nullObject); 
+    explicit NcAtt(bool nullObject); 
 
     /*! The copy constructor. */
     NcAtt(const NcAtt& rhs);

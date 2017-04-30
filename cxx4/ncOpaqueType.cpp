@@ -7,9 +7,7 @@ using namespace std;
 using namespace netCDF;
 using namespace netCDF::exceptions;
 
-// Class represents a netCDF variable.
-using namespace netCDF;
-  
+
 // assignment operator
 NcOpaqueType& NcOpaqueType::operator=(const NcOpaqueType& rhs)
 {

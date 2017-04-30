@@ -1,6 +1,6 @@
+#include "ncVar.h"
 #include "ncVarAtt.h"
 #include "ncDim.h"
-#include "ncVar.h"
 #include "ncGroup.h"
 #include "ncCheck.h"
 #include "ncException.h"

@@ -1,9 +1,9 @@
+#ifndef NcExceptionClasses
+#define NcExceptionClasses
+
 #include <exception>
 #include <string>
 #include <iostream>
-
-#ifndef NcExceptionClasses
-#define NcExceptionClasses
 
 namespace netCDF
 {
@@ -26,11 +26,11 @@ namespace netCDF
       //NcException(const string& complaint,const char* fileName,int lineNumber);
       NcException(const char* complaint,const char* fileName,int lineNumber);
       NcException(int errorCode, const char* complaint,const char* fileName,int lineNumber);
-      NcException(const NcException& e) throw();
-      NcException& operator=(const NcException& e) throw();
+      NcException(const NcException& e);
+      NcException& operator=(const NcException& e);
       virtual ~NcException() throw();
       const char* what() const throw();
-      int errorCode() const throw();
+      int errorCode() const;
     private:
       std::string* what_msg;
       int ec;

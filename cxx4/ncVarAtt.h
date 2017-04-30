@@ -1,8 +1,8 @@
-#include "ncAtt.h"
-#include "netcdf.h"
-
 #ifndef NcVarAttClass
 #define NcVarAttClass
+
+#include "ncAtt.h"
+#include "netcdf.h"
 
 namespace netCDF
 {

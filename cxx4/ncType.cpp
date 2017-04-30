@@ -1,5 +1,5 @@
-#include <string>
 #include "ncType.h"
+#include <string>
 #include "ncGroup.h"
 #include "ncCheck.h"
 using namespace std;
