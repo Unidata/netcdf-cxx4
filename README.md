@@ -7,7 +7,7 @@ Official GitHub repository for netCDF-4 C++ library.
 
 Note: The latest release of the historic C++ libraries, netCDF-4.2, may be downloaded from the following page:
 
-* http://www.unidata.ucar.edu/downloads/netcdf/index.jsp
+* https://www.unidata.ucar.edu/downloads/netcdf/index.jsp
 
 ### Introduction
 
@@ -19,7 +19,7 @@ netCDF-4 C library.  The netCDF-4 C++ API was developed for use in
 managing fusion research data from CCFE's innovative MAST (Mega Amp
 Spherical Tokamak) experiment.
 
-  [netcdf-cxx4]: http://www.unidata.ucar.edu/downloads/netcdf/netcdf-cxx/
+  [netcdf-cxx4]: https://www.unidata.ucar.edu/downloads/netcdf/netcdf-cxx/
 
 Appel's C++ implementation is a complete read/write interface for
 netCDF-4, but can also be used as an alternative to the older netCDF-3
@@ -69,8 +69,8 @@ documentation, the system will need to have doxygen and
 [Graphviz][g_l] installed.
 
 
-  [dox_l]: http://www.stack.nl/~dimitri/doxygen
-  [g_l]: http://www.graphviz.org/
+  [dox_l]: https://www.stack.nl/~dimitri/doxygen
+  [g_l]: https://www.graphviz.org/
 
 
 ### Examples of usage
