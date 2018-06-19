@@ -42,6 +42,7 @@ test_var_SOURCES = test_var.cpp test_utilities.h
 test_var2_SOURCES = test_var2.cpp test_utilities.h
 test_type_SOURCES = test_type.cpp test_utilities.h
 test_open_close_SOURCES = test_open_close.cpp test_utilities.h
+test_ncFile_Flags_SOURCES = test_ncFile_Flags.cpp test_utilities.h
 
 # Build and run these tests.
 check_PROGRAMS = $(TESTFILES)
