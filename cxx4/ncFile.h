@@ -40,6 +40,15 @@ namespace netCDF
       NcFile();
 
       /*!
+        Opens a netCDF file.
+        \param filePath    Name of netCDF optional path.
+        \aram ncFileFlags File flags from netcdf.h
+      */
+
+      NcFile(const std::string& filePath, int ncFileFlags);
+
+
+      /*!
 	Opens a netCDF file.
 	\param filePath    Name of netCDF optional path.
 	\param fMode       The file mode:
@@ -49,14 +58,24 @@ namespace netCDF
 	                    - 'newFile' Create new file, fail it exists already.
       */
       NcFile(const std::string& filePath, FileMode fMode);
+
+
       /*!
-      Opens a netCDF file.
-      \param filePath    Name of netCDF optional path.
-      \param fMode       The file mode:
-                          - 'read'    File exists, open for read-only.
-                          - 'write'   File exists, open for writing.
-                          - 'replace' Create new file, even it already exists.
-                          - 'newFile' Create new file, fail it exists already.
+        Opens a netCDF file.
+        \param filePath    Name of netCDF optional path.
+        \param ncFileFlags File flags from netcdf.h
+      */
+      void open(const std::string& filePath, int ncFileFlags);
+
+
+      /*!
+        Opens a netCDF file.
+        \param filePath    Name of netCDF optional path.
+        \param fMode       The file mode:
+        - 'read'    File exists, open for read-only.
+        - 'write'   File exists, open for writing.
+        - 'replace' Create new file, even it already exists.
+        - 'newFile' Create new file, fail it exists already.
       */
       void open(const std::string& filePath, FileMode fMode);
 
