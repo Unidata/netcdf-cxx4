@@ -22,7 +22,7 @@ int main() {
   /* Test opening a new file. */
   cout << "Creating file...";
   try {
-    file.open("test_ncFile_Flags_newFile.nc",NC_NETCDF4 | NC_NOCLOBBER);
+    file.create("test_ncFile_Flags_newFile.nc",NC_NETCDF4);
     cout << "Success." << endl;
   } catch (NcException &e) {
     cout << "Caught unexpected exception." << endl;
@@ -38,6 +38,26 @@ int main() {
     cout << "Caught unexpected exception." << endl;
     return e.errorCode();
   }
+
+  cout << "Opening file...";
+  try {
+    file.open("test_ncFile_Flags_newFile.nc",NC_SHARE | NC_NOWRITE);
+    cout << "Success." << endl;
+  } catch (NcException &e) {
+    cout << "Caught unexpected exception." << endl;
+    return e.errorCode();
+  }
+
+  /* Test closing the file. */
+  cout << "Closing file...";
+  try {
+    file.close();
+    cout << "Success." << endl;
+  } catch (NcException &e) {
+    cout << "Caught unexpected exception." << endl;
+    return e.errorCode();
+  }
+
 
   cout << endl << "Finished." << endl;
   return 0;

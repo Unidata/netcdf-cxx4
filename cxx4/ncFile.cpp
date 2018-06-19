@@ -106,6 +106,22 @@ NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fF
   open(filePath, fMode, fFormat);
 }
 
+
+/*! Allow for the explicit creation of a file using a path and NC_ file flags from netcdf.h
+ *
+ * @author wfisher
+ */
+void NcFile::create(const string& filePath, const int ncFileFlags) {
+  if(!nullObject)
+    close();
+
+  ncCheck(nc_create(filePath.c_str(),ncFileFlags,&myId),__FILE__,__LINE__);
+
+  g_ncid = myId;
+
+  nullObject=false;
+}
+
 void NcFile::open(const string& filePath, const FileMode fMode, const FileFormat fFormat )
 {
   if (!nullObject)

@@ -59,6 +59,12 @@ namespace netCDF
       */
       NcFile(const std::string& filePath, FileMode fMode);
 
+      /*!
+        Create a netCDF file.
+        \param filePath    Name of netCDF optional path.
+        \param ncFileFlags File flags from netcdf.h
+      */
+      void create(const std::string& filePath, int ncFileFlags);
 
       /*!
         Opens a netCDF file.
