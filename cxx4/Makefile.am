@@ -31,7 +31,8 @@ ncUint64.cpp ncString.cpp
 # These are the tests.
 TESTFILES = test_classic$(EXEEXT) test_group$(EXEEXT)	\
 test_dim$(EXEEXT) test_att$(EXEEXT) test_var$(EXEEXT)	\
-test_var2$(EXEEXT) test_type$(EXEEXT) test_open_close$(EXEEXT)
+test_var2$(EXEEXT) test_type$(EXEEXT) test_open_close$(EXEEXT) \
+test_ncFile_Flags$(EXEEXT)
 
 test_classic_SOURCES = test_classic.cpp
 test_group_SOURCES = test_group.cpp

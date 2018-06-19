@@ -22,6 +22,7 @@ IF(NCXX_ENABLE_TESTS)
   add_bin_test(cxx4 test_var2)
   add_bin_test(cxx4 test_type)
   add_bin_test(cxx4 test_open_close)
+  add_bin_test(cxx4 test_ncFile_Flags)
 
 ENDIF()
 
