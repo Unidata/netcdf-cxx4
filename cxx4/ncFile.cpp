@@ -48,11 +48,36 @@ NcFile::NcFile(const string& filePath, const FileMode fMode)
   open(filePath, fMode);
 }
 
+// constructor
+NcFile::NcFile(const string& filePath, const int ncFileFlags)
+{
+  open(filePath, ncFileFlags);
+}
+
+/*! Open a file from a path and an NC_FLAG
+ *
+ * This will allow for fine-grained control by the user.
+ *
+ *
+ */
+void NcFile::open(const string& filePath, int ncFileFlags) {
+  if(!nullObject)
+    close();
+
+  ncCheck(nc_open(filePath.c_str(), ncFileFlags, &myId),__FILE__,__LINE__);
+  g_ncid = myId;
+
+  nullObject=false;
+}
+
+
 // open a file from path and mode
 void NcFile::open(const string& filePath, const FileMode fMode)
 {
   if (!nullObject)
     close();
+
+
 
   switch (fMode)
     {
@@ -79,6 +104,22 @@ void NcFile::open(const string& filePath, const FileMode fMode)
 NcFile::NcFile(const string& filePath, const FileMode fMode, const FileFormat fFormat )
 {
   open(filePath, fMode, fFormat);
+}
+
+
+/*! Allow for the explicit creation of a file using a path and NC_ file flags from netcdf.h
+ *
+ * @author wfisher
+ */
+void NcFile::create(const string& filePath, const int ncFileFlags) {
+  if(!nullObject)
+    close();
+
+  ncCheck(nc_create(filePath.c_str(),ncFileFlags,&myId),__FILE__,__LINE__);
+
+  g_ncid = myId;
+
+  nullObject=false;
 }
 
 void NcFile::open(const string& filePath, const FileMode fMode, const FileFormat fFormat )
