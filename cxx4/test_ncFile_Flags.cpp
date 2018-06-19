@@ -1,5 +1,8 @@
 /*! Test that C++ library can access NC_SHARE, other flags.
   Copyright Unidata 2018
+
+  Basic test to start, will be fleshed out later.
+
   @author wfisher
 */
 #include <iostream>
