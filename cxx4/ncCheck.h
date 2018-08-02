@@ -31,6 +31,6 @@ namespace netCDF
   */
   void ncCheckDataMode(int ncid);
 
-};
+}
 
 #endif
