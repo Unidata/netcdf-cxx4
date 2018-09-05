@@ -67,7 +67,7 @@ namespace netCDF
 
          /*! Move assignment operators */
         NcGroup& operator=(NcGroup&&) = default;
-        Ncfile& operator=(NcFile&&) = default;
+        NcFile& operator=(NcFile&&) = default;
       #endif
 
       /*!
