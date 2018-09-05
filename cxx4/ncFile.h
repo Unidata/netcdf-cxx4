@@ -1,4 +1,5 @@
 #include <string>
+#include "cxxFeatures.h"
 #include "ncGroup.h"
 #include "netcdf.h"
 
@@ -58,6 +59,16 @@ namespace netCDF
 	                    - 'newFile' Create new file, fail it exists already.
       */
       NcFile(const std::string& filePath, FileMode fMode);
+
+      #ifdef HAS_CXX11
+         /*! Move constructors */
+        NcGroup(NcGroup&&) = default;
+        NcFile(NcFile&&) = default;
+
+         /*! Move assignment operators */
+        NcGroup& operator=(NcGroup&&) = default;
+        Ncfile& operator=(NcFile&&) = default;
+      #endif
 
       /*!
         Create a netCDF file.
