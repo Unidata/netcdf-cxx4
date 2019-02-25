@@ -60,7 +60,7 @@ namespace netCDF
       */
       NcFile(const std::string& filePath, FileMode fMode);
 
-      #ifdef HAS_CXX11
+      #ifndef NO_CXX11_DEFAULTED_MOVES
          /*! Move constructors */
         NcGroup(NcGroup&&) = default;
         NcFile(NcFile&&) = default;
