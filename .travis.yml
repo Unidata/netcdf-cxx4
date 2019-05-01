@@ -26,4 +26,4 @@ before_install:
 
 script:
 
-    - docker run --rm -it -h "$CURHOST" -e USEDASH=FALSE -e RUNC=OFF -e RUNF=OFF -e RUNCXX=TRUE -e RUNP=OFF -e RUNNCO=OFF -e USECMAKE=$USECMAKE -e USEAC=$USEAC -e COPTS=$COPTS -v $(pwd):/netcdf-cxx4 $DOCKIMG
+    - docker run --rm -it -h "$CURHOST" -e USEDASH=FALSE -e RUNC=OFF -e RUNF=OFF -e RUNCXX=TRUE -e RUNP=OFF -e RUNNCO=OFF -e USECMAKE=$USECMAKE -e USEAC=$USEAC -e COPTS=$COPTS -e USE_CC=$USE_CC -v $(pwd):/netcdf-cxx4 $DOCKIMG
