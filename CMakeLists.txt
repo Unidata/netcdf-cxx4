@@ -510,6 +510,21 @@ INSTALL(
 #####
 
 #####
+# Traverse into subdirectories.
+#####
+
+##
+# Set up include directories.
+##
+# INCLUDE_DIRECTORIES(cxx4 examples)
+
+ADD_SUBDIRECTORY(cxx4)
+ADD_SUBDIRECTORY(examples)
+IF(ENABLE_DOXYGEN)
+  ADD_SUBDIRECTORY(docs)
+ENDIF()
+
+#####
 # Begin ncxx4-config section
 #####
 
@@ -528,42 +543,41 @@ INSTALL(PROGRAMS ${NCXX_BINARY_DIR}/ncxx4-config
 # End ncxx4-config section
 #####
 
-
 #####
 # Options
 #####
 
 include(CMakePackageConfigHelpers)
 
+set(ConfigPackageLocation "${CMAKE_INSTALL_LIBDIR}/cmake/netCDF")
+
 # Create export configuration
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfigVersion.cmake"
   VERSION ${NCXX_VERSION}
   COMPATIBILITY SameMajorVersion
   )
 
 install(
-  FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/netCDFCxx
-  COMPONENT headers
+  EXPORT netcdf-cxx4Targets
+  FILE netcdf-cxx4Targets.cmake
+  NAMESPACE netCDF::
+  DESTINATION ${ConfigPackageLocation}
   )
 
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/netCDFCxxConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfig.cmake"
+  INSTALL_DESTINATION "${ConfigPackageLocation}"
+  )
 
-#####
-# Traverse into subdirectories.
-#####
-
-##
-# Set up include directories.
-##
-INCLUDE_DIRECTORIES(cxx4 examples)
-
-ADD_SUBDIRECTORY(cxx4)
-ADD_SUBDIRECTORY(examples)
-IF(ENABLE_DOXYGEN)
-  ADD_SUBDIRECTORY(docs)
-ENDIF()
+install(
+  FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfigVersion.cmake"
+  DESTINATION "${ConfigPackageLocation}"
+  COMPONENT headers
+  )
 
 ##
 # CPack, CMakeInstallation.cmake file.

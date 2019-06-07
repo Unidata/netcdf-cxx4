@@ -1,0 +1,9 @@
+# NetCDF CXX Configuration Summary
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(netCDF)
+
+include("${CMAKE_CURRENT_LIST_DIR}/netcdf-cxx4Targets.cmake")
+
