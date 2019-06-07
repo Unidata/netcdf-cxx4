@@ -45,6 +45,7 @@ Available values for OPTION include:
   --libs        library linking information for netcdf
   --prefix      Install prefix
   --includedir  Include directory
+  --libdir      Library directory
   --version     Library version
 
 EOF
@@ -69,6 +70,7 @@ all()
 	echo
         echo "  --prefix    -> $prefix"
         echo "  --includedir-> $includedir"
+        echo "  --libdir    -> $libdir"
         echo "  --version   -> $version"
         echo
 }
@@ -131,6 +133,10 @@ while test $# -gt 0; do
     --includedir)
        	echo "${includedir}"
        	;;
+
+    --libdir)
+        echo "${libdir}"
+        ;;
 
     --version)
 	echo $version
