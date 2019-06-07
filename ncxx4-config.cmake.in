@@ -13,7 +13,7 @@ cxx="@CMAKE_CXX_COMPILER@"
 
 cflags="-I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@"
 
-libs="-L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ @NC_LIBS@"
+libs="-L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -lnetcdf-cxx4 -lnetcdf"
 
 has_dap="@USE_DAP@"
 if [ -z $has_dap ]; then
