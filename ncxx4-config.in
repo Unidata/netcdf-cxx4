@@ -10,7 +10,7 @@ includedir=@includedir@
 
 cc="@CC@"
 cxx="@CXX@"
-cflags=" -I${includedir} @CPPFLAGS@" 
+cflags="-I${includedir} @CPPFLAGS@"
 libs="-L${libdir} @NC_LIBS@ -lnetcdf"
 version="@PACKAGE_NAME@ @PACKAGE_VERSION@"
 
@@ -71,50 +71,50 @@ while test $# -gt 0; do
     case "$1" in
 
     --help)
-	usage 0
-	;;
+    usage 0
+    ;;
 
     --all)
-	all
-	;;
+    all
+    ;;
 
     --cc)
-	echo $cc
-	;;
+    echo $cc
+    ;;
 
     --cxx)
-	echo $cxx
-	;;
+    echo $cxx
+    ;;
 
     --cflags)
-	echo $cflags
-	;;
+    echo $cflags
+    ;;
 
      --libs)
-       	echo $libs
-       	;;
+        echo $libs
+        ;;
 
     --prefix)
-       	echo "${prefix}"
-       	;;
+        echo "${prefix}"
+        ;;
 
     --includedir)
-       	echo "${includedir}"
-       	;;
+        echo "${includedir}"
+        ;;
 
     --libdir)
         echo "${libdir}"
         ;;
 
     --version)
-	echo $version
-	;;
+    echo $version
+    ;;
 
     *)
         echo "unknown option: $1"
-	usage
-	exit 1
-	;;
+    usage
+    exit 1
+    ;;
     esac
     shift
 done
