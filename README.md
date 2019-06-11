@@ -45,20 +45,42 @@ and should be directed to [Lynton Appel][la_email].
 
 ### Installation
 
-Installing the C++ interface requires the additional flag
---enable-netcdf-4 to be used during the configure stage of the
-installation, for example enter
+The C++ interface requires the C library to have been build with the
+netCDF-4 API (this is the default in recent versions). You can check
+by running:
 
-      ./configure --enable-cxx-4 [plus other options]
+    $ nc-config --has-nc4
+    yes
+
+The simplest way to build the C++ interface is with CMake:
+
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ctest
+    make install
+
+Make sure that either `nc-config` is in your `PATH`, or that the
+location of `netCDFConfig.cmake` is in `CMAKE_PREFIX_PATH`.
+
+There is also an autotools-based build system:
+
+    mkdir build
+    cd build
+    ../configure
+    make
+    make check
+    make install
 
 Note that the "configure" script must be generated using
 
-      autoreconf -if
+    autoreconf -if
 
 To build the C++ interface guide, change to the cxx4 directory of the
 distribution and enter
 
-      doxygen
+    doxygen
 
 By default, HTML documentation will be installed in cxx4/doc/html;
 other options may be specified according to the settings contained in
