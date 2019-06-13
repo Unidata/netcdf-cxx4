@@ -168,6 +168,13 @@ void NcFile::sync(){
   ncCheck(nc_sync(myId),__FILE__,__LINE__);
 }
 
+// Aodhan adding a redef() function
+void NcFile::redef(){
+  cout<<"\n+++++++++++++++++++++ \n inside redef() \n+++++++++++++++++++++\n";
+  ncCheck(nc_redef(myId),__FILE__,__LINE__);
+  cout<<"completed nc Check";
+}
+
 // Leave define mode, used for classic model
 void NcFile::enddef() {
     ncCheck(nc_enddef(myId),__FILE__,__LINE__);

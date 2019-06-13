@@ -625,6 +625,25 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
 }
 
 
+////////////////////
+
+// setting filter details details
+//Aodhan adding stuff
+
+////////////////////
+
+
+void NcVar::filter( unsigned int id, size_t nparams,
+            const unsigned int* parms) const
+{
+  cout<< "\n++++++++++++\n inside filter() \n++++++++++++\n";
+  ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
+  cout<< "filtering completed"<<endl;
+  //above is returning error because of definition outside of enddef
+  //To fix we will be adding enddef() wrapper to ncFile and trying again
+}
+
+
 
 ////////////////////
 

@@ -104,6 +104,12 @@ namespace netCDF
     /*! Rename the variable. */
     void rename( const std::string& newname ) const;
 
+    /*Aodhan Adding function for filter*/
+    void filter(unsigned int id, size_t nparams,
+                const unsigned int* parms) const;
+
+    //Now returning to the stuff that was here before
+
 
     /*! Get the variable id. */
     int  getId() const;
