@@ -20,7 +20,7 @@ void NcFilter::setFilter( unsigned int id, size_t nparams,
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
 }
 
-void NcFilter::inquire_v()
+void NcFilter::getFilter(unsigned int* idp, size_t* nparamsp, unsigned int* params) const
 {
-  ncCheck(nc_inq_var_filter(ncid, varid, &filterid,  &nparams,NULL));
+  ncCheck(nc_inq_var_filter(groupId, myId, idp, nparamsp, params),__FILE__,__LINE__);
 }

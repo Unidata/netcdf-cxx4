@@ -627,16 +627,17 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
 
 ////////////////////
 
-// setting filter details details
+// setting filter details 
 //Aodhan adding stuff
 
 ////////////////////
 
 
-void NcVar::filter( unsigned int id, size_t nparams,
+void NcVar::setFilter( unsigned int id, size_t nparams,
             const unsigned int* parms) const
 {
-  cout<< "\n++++++++++++\n inside filter() \n++++++++++++\n";
+  cout<<"BZIP2_ID: " << id <<"\nBZIP2_NPARAMS: "<< nparams << "\n&level: "<< parms;
+  cout<<"\ngoupID: "<< groupId <<"\nmyId"<< myId <<"\nnparams"<< nparams << "\nparms" <<parms;
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
   cout<< "filtering completed"<<endl;
   //above is returning error because of definition outside of enddef
@@ -644,6 +645,11 @@ void NcVar::filter( unsigned int id, size_t nparams,
 }
 
 
+void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params) const
+{
+  cout<<"\n++++++++++++\n inside getFilter() \n++++++++++++\n";
+  ncCheck(nc_inq_var_filter(groupId, myId, idp, nparamsp, params),__FILE__,__LINE__);
+}
 
 ////////////////////
 

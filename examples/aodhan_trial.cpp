@@ -57,7 +57,7 @@ int main(){
   data.open("sfc_pres_temp.nc", NcFile::write);
   data.redef();
   filtered_data = data.getVar("latitude");
-  filtered_data.filter(BZIP2_ID,1,&level);
+  filtered_data.setFilter(BZIP2_ID,1,&level);
 
 
   NcVar latitude = data.getVar("latitude");

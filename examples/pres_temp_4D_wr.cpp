@@ -35,7 +35,11 @@ using namespace netCDF::exceptions;
 // Filter specs.
 #define BZIP2_ID 307
 #define BZIP2_LEVEL 9
+#define BZIP2_NPARAMS 1
 unsigned int level = BZIP2_LEVEL;
+unsigned int idp = BZIP2_ID;
+size_t nparamsp = BZIP2_NPARAMS;
+
 
 // Names of things.
 #define LVL_NAME "level"
@@ -137,8 +141,17 @@ int main()
       latVar.putVar(lats);
       lonVar.putVar(lons);
 
+
+
       //Testing the filter ability in a write function
-      latVar.filter(BZIP2_ID,1,&level);
+      cout<<"hey \n";
+      cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
+      latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
+      cout<<"hey2"; //this one doesnt show up, something is happening in setFilter
+      cout<<"idp* " << &idp;
+      latVar.getFilter(&idp,&nparamsp, &level);
+
+
 
       // Write the pretend data. This will write our surface pressure and
       // surface temperature data. The arrays only hold one timestep
