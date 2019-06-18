@@ -138,7 +138,7 @@ int main()
       tempVar.putAtt(UNITS, TEMP_UNITS);
 
       // Write the coordinate variable data to the file.
-      latVar.putVar(lats);
+v
       lonVar.putVar(lons);
 
 
@@ -147,10 +147,11 @@ int main()
       cout<<"hey \n";
       cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
       latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
+      latVar.putVar(lats);
+
       cout<<"hey2"; //this one doesnt show up, something is happening in setFilter
       cout<<"idp* " << &idp;
       latVar.getFilter(&idp,&nparamsp, &level);
-
 
 
       // Write the pretend data. This will write our surface pressure and
