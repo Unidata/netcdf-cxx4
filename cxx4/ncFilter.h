@@ -10,13 +10,16 @@ namespace netCDF
 {
   class NcFilter
     {
-      //constructor
-      NcFilter ();
       public:
+        ~NcFilter();
+
+        //constructor
+        NcFilter ();
+
         //member function
-        void setFilter();
-        void getFilter();
-    };
+        void setFilter(unsigned int, unsigned int, unsigned int, size_t, const unsigned int*);
+        void getFilter(unsigned int, unsigned int, unsigned int*, size_t*, unsigned int*);
+      };
 
 }
 #endif

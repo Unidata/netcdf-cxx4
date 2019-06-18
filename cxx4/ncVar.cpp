@@ -627,7 +627,7 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
 
 ////////////////////
 
-// setting filter details 
+// setting filter details
 //Aodhan adding stuff
 
 ////////////////////
