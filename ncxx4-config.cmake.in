@@ -13,28 +13,7 @@ cxx="@CMAKE_CXX_COMPILER@"
 
 cflags="-I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@"
 
-libs="-L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ @NC_LIBS@"
-
-has_dap="@USE_DAP@"
-if [ -z $has_dap ]; then
-        has_dap="no"
-else
-has_dap="yes"
-fi
-
-has_nc2="@BUILD_V2@"
-if [ -z $has_nc2 ] || [ "$has_nc2" = "OFF" ]; then
-        has_nc2="no"
-else
-has_nc2="yes"
-fi
-
-has_nc4="@USE_NETCDF4@"
-if [ -z $has_nc4 ]; then
-        has_nc4="no"
-else
-has_nc4="yes"
-fi
+libs="-L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -lnetcdf-cxx4 -lnetcdf"
 
 version="@PACKAGE@ @VERSION@"
 
@@ -50,12 +29,10 @@ Available values for OPTION include:
   --cc          C compiler
   --cxx         C++ compiler
   --cflags      pre-processor and compiler flags
-  --has-dap     whether OPeNDAP is enabled in this build
-  --has-nc2     whether NetCDF-2 API is enabled
-  --has-nc4     whether NetCDF-4/HDF-5 is enabled in this build
   --libs        library linking information for netcdf
   --prefix      Install prefix
   --includedir  Include directory
+  --libdir      Library directory
   --version     Library version
 
 EOF
@@ -74,12 +51,9 @@ all()
         echo
         echo "  --cxx       -> $cxx"
         echo
-        echo "  --has-dap   -> $has_dap"
-        echo "  --has-nc2   -> $has_nc2"
-        echo "  --has-nc4   -> $has_nc4"
-	echo
         echo "  --prefix    -> $prefix"
         echo "  --includedir-> $includedir"
+        echo "  --libdir    -> $libdir"
         echo "  --version   -> $version"
         echo
 }
@@ -100,58 +74,50 @@ while test $# -gt 0; do
     case "$1" in
 
     --help)
-	usage 0
-	;;
+    usage 0
+    ;;
 
     --all)
-	all
-	;;
+    all
+    ;;
 
     --cc)
-	echo $cc
-	;;
+    echo $cc
+    ;;
 
     --cxx)
-	echo $cxx
-	;;
+    echo $cxx
+    ;;
 
     --cflags)
-	echo $cflags
-	;;
+    echo $cflags
+    ;;
 
      --libs)
-       	echo $libs
-       	;;
-
-    --has-dap)
-       	echo $has_dap
-       	;;
-
-    --has-nc2)
-       	echo $has_nc2
-       	;;
-
-    --has-nc4)
-       	echo $has_nc4
-       	;;
+        echo $libs
+        ;;
 
     --prefix)
-       	echo "${prefix}"
-       	;;
+        echo "${prefix}"
+        ;;
 
     --includedir)
-       	echo "${includedir}"
-       	;;
+        echo "${includedir}"
+        ;;
+
+    --libdir)
+        echo "${libdir}"
+        ;;
 
     --version)
-	echo $version
-	;;
+    echo $version
+    ;;
 
     *)
         echo "unknown option: $1"
-	usage
-	exit 1
-	;;
+    usage
+    exit 1
+    ;;
     esac
     shift
 done
