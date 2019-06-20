@@ -138,12 +138,13 @@ int main()
       tempVar.putAtt(UNITS, TEMP_UNITS);
 
       // Write the coordinate variable data to the file.
-      latVar.putVar(lats);
-      lonVar.putVar(lons);
+      //latVar.putVar(lats);
+      //lonVar.putVar(lons);
 
 
 
       //Testing the filter ability in a write function
+
       cout<<"hey \n";
       cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
       latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
@@ -151,7 +152,8 @@ int main()
       cout<<"idp* " << &idp;
       latVar.getFilter(&idp,&nparamsp, &level);
 
-
+      latVar.putVar(lats);
+      lonVar.putVar(lons);
 
       // Write the pretend data. This will write our surface pressure and
       // surface temperature data. The arrays only hold one timestep
