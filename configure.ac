@@ -201,7 +201,7 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       # See if these functions are in the library.
       AC_CHECK_HEADERS([netcdf.h], [], [AC_MSG_ERROR([netcdf.h could not be found. Please set CPPFLAGS.])])
       AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
-      AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled])
+      AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled nc_def_var_filter])
 
       # Whether we build/test some functionality depends on what we found in
       # the C library.
@@ -210,6 +210,7 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       nc_has_logging=$ac_cv_func_nc_set_log_level
       nc_has_dap=$ac_cv_func_oc_open
       nc_has_pnetcdf=$ac_cv_func_nc_use_parallel_enabled
+      nc_has_filters=$ac_cv_func_nc_def_var_filter
     ])
 
 AC_MSG_CHECKING([netCDF v2 API present])
@@ -227,6 +228,9 @@ AC_MSG_RESULT([$nc_has_dap])
 AC_MSG_CHECKING([netCDF has pnetcdf])
 AC_MSG_RESULT([$nc_has_pnetcdf])
 
+AC_MSG_CHECKING([netCDF has filter support])
+AC_MSG_RESULT([$nc_has_filters])
+
 if test "x$nc_build_v4" = xyes; then
    AC_DEFINE([USE_NETCDF4], [1], [if true, build netCDF-4])
 else
@@ -238,7 +242,7 @@ AM_CONDITIONAL([BUILD_V2], [test "x$nc_build_v2" = xyes])
 AM_CONDITIONAL([USE_LOGGING], [test "x$nc_has_logging" = xyes])
 AM_CONDITIONAL([BUILD_DAP], [test "x$nc_has_dap" = xyes])
 AM_CONDITIONAL([BUILD_PARALLEL], [test "x$nc_has_pnetcdf" = xyes])
-
+AM_CONDITIONAL([NC_HAS_FILTERS], [test "x$nc_has_filters" = xyes])
 AM_CONDITIONAL([BUILD_DOCS], [test x$enable_doxygen = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 
@@ -270,6 +274,7 @@ AC_SUBST(NC_LIBS,[$NC_LIBS])
 AC_SUBST(HAS_DAP,[$nc_has_dap])
 AC_SUBST(HAS_NC2,[$nc_build_v2])
 AC_SUBST(HAS_NC4,[$nc_build_v4])
+AC_SUBST(NC_HAS_FILTERS, [$nc_has_filters])
 
 AC_MSG_NOTICE([generating header files and makefiles])
 AC_CONFIG_FILES([Makefile
