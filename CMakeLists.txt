@@ -311,7 +311,6 @@ ENDIF()
 
 IF (netCDF_FOUND)
   INCLUDE_DIRECTORIES(SYSTEM ${netCDF_INCLUDE_DIR})
-  LINK_DIRECTORIES(${netCDF_LIB_DIR})
   SET(NETCDF_C_LIBRARY ${netCDF_LIBRARIES})
   SET(NETCDF_C_INCLUDE_DIR ${netCDF_INCLUDE_DIR})
 ELSE()
@@ -326,7 +325,6 @@ ELSE()
       MESSAGE(FATAL_ERROR "Directory containing netcdf.h cannot be found. Please reinstall and try again.")
     ELSE()
       GET_FILENAME_COMPONENT(netCDF_LIB_DIR "${NETCDF_C_LIBRARY}" REALPATH)
-      LINK_DIRECTORIES(${netCDF_LIB_DIR})
       INCLUDE_DIRECTORIES(SYSTEM ${NC_H_INCLUDE_DIR})
     ENDIF()
   ENDIF()
@@ -339,6 +337,16 @@ CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_use_parallel_enabled "" NC_IS_PARALL
 IF(NC_IS_PARALLEL)
   SET(BUILD_PARALLEL ${NC_IS_PARALLEL} CACHE STRING "")
 ENDIF()
+
+###
+# Check to see if netcdf-c was built with plugin support.
+###
+CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_def_var_filter "" NC_HAS_DEF_VAR_FILTER)
+IF(NC_HAS_DEF_VAR_FILTER)
+  SET(HAS_DEF_VAR_FILTER ${NC_HAS_DEF_VAR_FILTER} CACHE STRING "")
+ENDIF(NC_HAS_DEF_VAR_FILTER)
+
+
 
 ################################
 # End 'seek out dependent libraries'
@@ -528,6 +536,23 @@ INSTALL(PROGRAMS ${NCXX_BINARY_DIR}/ncxx4-config
 # End ncxx4-config section
 #####
 
+#####
+# Build cxx4/findplugin.sh
+#####
+
+
+
+#####
+# Build nc_test4/findplugin.sh
+#####
+IF(NC_HAS_DEF_VAR_FILTER)
+  SET(ISCMAKE "1")
+  configure_file(${CMAKE_SOURCE_DIR}/cxx4/findplugin.in ${CMAKE_BINARY_DIR}/cxx4/findplugin.sh @ONLY NEWLINE_STYLE LF)
+ENDIF(NC_HAS_DEF_VAR_FILTER)
+#####
+# End findplugin.sh
+#####
+
 
 #####
 # Options
@@ -554,10 +579,16 @@ install(
 # Traverse into subdirectories.
 #####
 
+
+
 ##
 # Set up include directories.
 ##
 INCLUDE_DIRECTORIES(cxx4 examples)
+
+IF(NC_HAS_DEF_VAR_FILTER)
+  ADD_SUBDIRECTORY(plugins)
+ENDIF(NC_HAS_DEF_VAR_FILTER)
 
 ADD_SUBDIRECTORY(cxx4)
 ADD_SUBDIRECTORY(examples)

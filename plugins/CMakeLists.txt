@@ -10,9 +10,6 @@ SET(libh5bzip2_SOURCES blocksort.c huffman.c crctable.c randtable.c compress.c d
 
 SET(libmisc_SOURCES H5Zmisc.c H5Zutil.c h5misc.h)
 
-IF(ENABLE_FILTER_TESTING)
-IF(BUILD_UTILITIES)
-
 # LDFLAGS = -module -avoid-version -shared -export-dynamic -no-undefined
 
 IF(MSVC)
@@ -21,8 +18,6 @@ SET( CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
 SET( CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 ENDIF()
 
-# Note we use name test_bzip2 instead of bzip2 to avoid logical
-# target name clash with examples/C/hdf5plugins
 ADD_LIBRARY(test_bzip2 MODULE ${libh5bzip2_SOURCES})
 SET_TARGET_PROPERTIES(test_bzip2 PROPERTIES OUTPUT_NAME "bzip2")
 SET_TARGET_PROPERTIES(test_bzip2 PROPERTIES LIBRARY_OUTPUT_NAME "h5bzip2")
@@ -35,9 +30,6 @@ SET_TARGET_PROPERTIES(misc PROPERTIES LIBRARY_OUTPUT_NAME "misc")
 SET_TARGET_PROPERTIES(misc PROPERTIES ARCHIVE_OUTPUT_NAME "misc")
 SET_TARGET_PROPERTIES(misc PROPERTIES RUNTIME_OUTPUT_NAME "misc")
 TARGET_LINK_LIBRARIES(misc ${ALL_TLL_LIBS})
-
-ENDIF(BUILD_UTILITIES)
-ENDIF(ENABLE_FILTER_TESTING)
 
 # Copy some test files from current source dir to out-of-tree build dir.
 FILE(COPY ${COPY_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
