@@ -201,7 +201,7 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       # See if these functions are in the library.
       AC_CHECK_HEADERS([netcdf.h], [], [AC_MSG_ERROR([netcdf.h could not be found. Please set CPPFLAGS.])])
       AC_SEARCH_LIBS([nc_create], [netcdf], [], [])
-      AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled nc_def_var_filter])
+      AC_CHECK_FUNCS([nc_def_opaque nccreate nc_set_log_level oc_open nc_use_parallel_enabled])
 
       # Whether we build/test some functionality depends on what we found in
       # the C library.
@@ -210,8 +210,12 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       nc_has_logging=$ac_cv_func_nc_set_log_level
       nc_has_dap=$ac_cv_func_oc_open
       nc_has_pnetcdf=$ac_cv_func_nc_use_parallel_enabled
-      nc_has_filters=$ac_cv_func_nc_def_var_filter
     ])
+
+###
+# Check for Filter support
+###
+AC_CHECK_LIB([netcdf],[nc_def_var_filter],[nc_has_filters=yes],[nc_has_filters=no])
 
 AC_MSG_CHECKING([netCDF v2 API present])
 AC_MSG_RESULT([$nc_build_v2])
@@ -284,5 +288,9 @@ AC_CONFIG_FILES([Makefile
                  ncxx4-config
                  netcdf-cxx4.pc],
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])
+
+if test "x$nc_has_filters" = xyes; then
+   AC_CONFIG_FILES(cxx4/findplugin.sh:cxx4/findplugin.in)
+fi
 
 AC_OUTPUT()

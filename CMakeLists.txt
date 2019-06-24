@@ -587,6 +587,12 @@ install(
 INCLUDE_DIRECTORIES(cxx4 examples)
 
 IF(NC_HAS_DEF_VAR_FILTER)
+  #####
+  # Build cxx4/findplugin.sh
+  #####
+  SET(ISCMAKE "1")
+  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/cxx4/findplugin.in ${CMAKE_BINARY_DIR}/nc_test4/findplugin.sh @ONLY NEWLINE_STYLE LF)
+
   ADD_SUBDIRECTORY(plugins)
 ENDIF(NC_HAS_DEF_VAR_FILTER)
 
