@@ -60,15 +60,10 @@ namespace netCDF
       */
       NcFile(const std::string& filePath, FileMode fMode);
 
-      #ifndef NO_CXX11_DEFAULTED_MOVES
-         /*! Move constructors */
-        NcGroup(NcGroup&&) = default;
-        NcFile(NcFile&&) = default;
-
-         /*! Move assignment operators */
-        NcGroup& operator=(NcGroup&&) = default;
-        NcFile& operator=(NcFile&&) = default;
-      #endif
+#ifndef NO_CXX11_DEFAULTED_MOVES
+      NcFile(NcFile &&) = default;
+      NcFile &operator=(NcFile &&) = default;
+#endif
 
       /*!
         Create a netCDF file.
