@@ -145,21 +145,16 @@ int main()
 
 
       //Testing the filter ability in a write function
-
-      cout<<"hey \n";
       cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
       latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
-      latVar.putVar(lats);
 
-      cout<<"hey2"; //this one doesnt show up, something is happening in setFilter
-      cout<<"idp* " << &idp;
       latVar.getFilter(&idp,&nparamsp, &level);
 
-<<<<<<< HEAD
-=======
+      //<<<<<<< HEAD
+      //=======
       latVar.putVar(lats);
       lonVar.putVar(lons);
->>>>>>> e404ec174e8de27e10b846a6122e84d975de3c77
+      //>>>>>>> e404ec174e8de27e10b846a6122e84d975de3c77
 
       // Write the pretend data. This will write our surface pressure and
       // surface temperature data. The arrays only hold one timestep

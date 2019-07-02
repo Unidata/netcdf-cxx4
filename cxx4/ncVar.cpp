@@ -632,24 +632,66 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
 
 ////////////////////
 
-
+//set filter details
 void NcVar::setFilter( unsigned int id, size_t nparams,
             const unsigned int* parms) const
 {
-  cout<<"BZIP2_ID: " << id <<"\nBZIP2_NPARAMS: "<< nparams << "\n&level: "<< parms;
+  cout<<"\nBZIP2_ID: " << id <<"\nBZIP2_NPARAMS: "<< nparams << "\n&level: "<< parms;
   cout<<"\ngoupID: "<< groupId <<"\nmyId"<< myId <<"\nnparams"<< nparams << "\nparms" <<parms;
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
-  cout<< "filtering completed"<<endl;
+  cout<< "\n setFilter filtering completed"<<endl;
   //above is returning error because of definition outside of enddef
   //To fix we will be adding enddef() wrapper to ncFile and trying again
 }
 
-
+//retrieve filter details
 void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params) const
 {
   cout<<"\n++++++++++++\n inside getFilter() \n++++++++++++\n";
+  cout<<"\nidp: " << idp << "\n nparamsp: " << nparamsp << "\n params: " << params;
   ncCheck(nc_inq_var_filter(groupId, myId, idp, nparamsp, params),__FILE__,__LINE__);
+  cout<<"\n++++++++++++\n getFilter() completed \n++++++++++++\n";
 }
+
+void NcVar::getTypeLen(nc_type type) const
+{
+  ncCheck(nctypelen(type),__FILE__,__LINE__);
+}
+
+void NcVar::freeString(size_t len, char **data) const
+{
+  ncCheck(nc_free_string(len, data),__FILE__,__LINE__);
+}
+
+void NcVar::setChunkCache(size_t size, size_t nelems, float preemption) const
+{
+  ncCheck(nc_set_var_chunk_cache(groupId, myId, size, nelems, preemption),__FILE__,__LINE__);
+}
+
+
+/*void NcVar::getShape(int ndims, size_t* shape) const
+{
+  ncCheck(NC_getshape(groupId, myId, ndims, shape),__FILE__,__LINE__);
+}*/
+/*
+//NOT CURRENTLY Working
+//query whether a variable has a record dimension
+void NcVar::is_recvar(size_t* nrecs)
+{
+  ncCheck(NC_is_recvar(groupId, myId, nrecs),__FILE__,__LINE__);
+}*/
+/*
+//retrieve the actual number of record dimensions for a variable
+void NcVar::inq_recvar(int* nrecdimsp, int* is_recdim) const
+{
+  ncCheck(NC_inq_recvar(groupId, myId, nrecdimsp, is_recdim),__FILE__,__LINE__);
+}
+*/
+////////////////////
+//End of Aodhan adding stuff
+////////////////////
+
+
 
 ////////////////////
 

@@ -113,8 +113,20 @@ namespace netCDF
 
     void getFilter(unsigned int* idp, size_t* nparamsp, unsigned int* params) const;
 
-    //Now returning to the stuff that was here before
+    void getTypeLen(nc_type type) const;
 
+    void freeString(size_t len, char **data) const;
+
+    void setChunkCache(size_t size, size_t nelems, float preemption) const;
+
+    //void getShape(int ndims, size_t* shape) const;
+
+    //void is_recvar(size_t* nrecs);
+
+    //void inq_recvar(int* nrecdimsp, int* is_recdim) const;
+
+
+    //Now returning to the stuff that was here before
 
 
     /*! Get the variable id. */
