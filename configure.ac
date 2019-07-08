@@ -281,6 +281,7 @@ AC_SUBST(HAS_NC4,[$nc_build_v4])
 AC_SUBST(NC_HAS_FILTERS, [$nc_has_filters])
 
 AC_MSG_NOTICE([generating header files and makefiles])
+AC_CONFIG_FILES(test_common.sh:test_common.in)
 AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
                  examples/Makefile
@@ -292,5 +293,7 @@ AC_CONFIG_FILES([Makefile
 if test "x$nc_has_filters" = xyes; then
    AC_CONFIG_FILES(cxx4/findplugin.sh:cxx4/findplugin.in)
 fi
+
+
 
 AC_OUTPUT()

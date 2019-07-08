@@ -123,6 +123,21 @@ EXECUTE_PROCESS(
 IF(CONFIG_DATE)
 	string(STRIP ${CONFIG_DATE} CONFIG_DATE)
 ENDIF()
+
+# Check to see if we have bash.
+FIND_PROGRAM(HAVE_BASH bash)
+IF(HAVE_BASH)
+  STRING(COMPARE EQUAL "${HAVE_BASH}" "C:/Windows/System32/bash.exe" IS_BASH_EXE)
+  IF(NOT IS_BASH_EXE)
+    MESSAGE(STATUS "Found bash: ${HAVE_BASH}")
+  ELSE()
+    MESSAGE(STATUS "Ignoring ${HAVE_BASH}")
+    SET(HAVE_BASH "")
+  ENDIF()
+ELSE()
+  MESSAGE(STATUS "Bash shell not found; disabling shell script tests.")
+ENDIF()
+
 ##
 # Allow for extra dependencies.
 ##
@@ -190,6 +205,33 @@ MACRO(add_bin_test prefix F)
     SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
       ${CMAKE_CURRENT_BINARY_DIR})
     SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
+      ${CMAKE_CURRENT_BINARY_DIR})
+  ENDIF()
+ENDMACRO()
+
+
+###
+# A macro to add a shell test.
+###
+MACRO(add_sh_test prefix F)
+  IF(HAVE_BASH)
+    ADD_TEST(${prefix}_${F} bash "-c" "export srcdir=${CMAKE_CURRENT_SOURCE_DIR};export TOPSRCDIR=${CMAKE_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}/${F}.sh")
+  ENDIF()
+ENDMACRO()
+
+# Build a binary used by a script, but don't make a test out of it.
+MACRO(build_bin_test F)
+  ADD_EXECUTABLE(${F} ${F}.cpp)
+  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4 ${ALL_TLL_LIBS})
+  IF(MSVC)
+    SET_TARGET_PROPERTIES(${F}
+      PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
+      )
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
       ${CMAKE_CURRENT_BINARY_DIR})
   ENDIF()
 ENDMACRO()
@@ -537,22 +579,12 @@ INSTALL(PROGRAMS ${NCXX_BINARY_DIR}/ncxx4-config
 #####
 
 #####
-# Build cxx4/findplugin.sh
+# Build test_common.sh
 #####
-
-
-
-#####
-# Build cxx4/findplugin.sh
-#####
-IF(NC_HAS_DEF_VAR_FILTER)
-  SET(ISCMAKE "1")
-  configure_file(${CMAKE_SOURCE_DIR}/cxx4/findplugin.in ${CMAKE_BINARY_DIR}/cxx4/findplugin.sh @ONLY NEWLINE_STYLE LF)
-ENDIF(NC_HAS_DEF_VAR_FILTER)
-#####
-# End findplugin.sh
-#####
-
+SET(EXTRA_DIST ${EXTRA_DIST} ${CMAKE_SOURCE_DIR}/test_common.in)
+SET(TOPSRCDIR "${CMAKE_SOURCE_DIR}")
+SET(TOPBUILDDIR "${CMAKE_BINARY_DIR}")
+configure_file(${CMAKE_SOURCE_DIR}/test_common.in ${CMAKE_BINARY_DIR}/test_common.sh @ONLY NEWLINE_STYLE LF)
 
 #####
 # Options
@@ -592,6 +624,7 @@ IF(NC_HAS_DEF_VAR_FILTER)
   #####
   SET(ISCMAKE "1")
   CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/cxx4/findplugin.in ${CMAKE_BINARY_DIR}/cxx4/findplugin.sh @ONLY NEWLINE_STYLE LF)
+  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/examples/findplugin.in ${CMAKE_BINARY_DIR}/examples/findplugin.sh @ONLY NEWLINE_STYLE LF)
 
   ADD_SUBDIRECTORY(plugins)
 ENDIF(NC_HAS_DEF_VAR_FILTER)

@@ -14,3 +14,6 @@ MISC=1
 # Load the findplugins function
 . ${builddir}/findplugin.sh
 echo "findplugin.sh loaded"
+
+
+exit 0
