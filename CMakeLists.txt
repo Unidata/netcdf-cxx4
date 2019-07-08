@@ -345,6 +345,10 @@ MARK_AS_ADVANCED(NCXX_CTEST_PROJECT_NAME
 # Seek out dependent libraries.
 ################################
 
+
+###
+# Find NetCDF
+###
 IF(NOT netCDF_LIBRARIES AND NOT netCDF_INCLUDE_DIR)
   FIND_PACKAGE(netCDF QUIET)
 ELSE()
@@ -387,6 +391,22 @@ CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_def_var_filter "" NC_HAS_DEF_VAR_FIL
 IF(NC_HAS_DEF_VAR_FILTER)
   SET(HAS_DEF_VAR_FILTER ${NC_HAS_DEF_VAR_FILTER} CACHE STRING "")
 ENDIF(NC_HAS_DEF_VAR_FILTER)
+
+###
+# Find HDF5
+###
+IF(MSVC)
+  SET(SEARCH_PACKAGE_NAME ${HDF5_PACKAGE_NAME})
+  FIND_PACKAGE(HDF5 NAMES ${SEARCH_PACKAGE_NAME} COMPONENTS C HL NO_MODULES REQUIRED ${NC_HDF5_LINK_TYPE})
+ELSE(MSVC)
+  FIND_PACKAGE(HDF5 COMPONENTS C HL REQUIRED)
+ENDIF(MSVC)
+
+CHECK_LIBRARY_EXISTS(${HDF5_C_LIBRARY_hdf5} H5free_memory "" HAVE_H5FREE_MEMORY)
+IF(NOT HAVE_H5FREE_MEMORY)
+  MESSAGE(STATUS "Plugin support requires libhdf5 with H5Free support. Your libhdf5 install does not provide H5Free.  Please install a newer version of libhdf5 if you require plugin compression support.")
+  SET(NC_HAS_DEF_VAR_FILTER "")
+ENDIF()
 
 ################################
 # End 'seek out dependent libraries'
@@ -616,6 +636,9 @@ install(
 ##
 INCLUDE_DIRECTORIES(cxx4 examples)
 
+ADD_SUBDIRECTORY(cxx4)
+ADD_SUBDIRECTORY(examples)
+
 IF(NC_HAS_DEF_VAR_FILTER)
   #####
   # Build cxx4/findplugin.sh
@@ -627,11 +650,11 @@ IF(NC_HAS_DEF_VAR_FILTER)
   ADD_SUBDIRECTORY(plugins)
 ENDIF(NC_HAS_DEF_VAR_FILTER)
 
-ADD_SUBDIRECTORY(cxx4)
-ADD_SUBDIRECTORY(examples)
 IF(ENABLE_DOXYGEN)
   ADD_SUBDIRECTORY(docs)
 ENDIF()
+
+
 
 ##
 # CPack, CMakeInstallation.cmake file.
