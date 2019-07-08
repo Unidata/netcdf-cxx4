@@ -53,7 +53,12 @@ export HDF5_PLUGIN_PATH
 if ! test -f ${BZIP2PATH} ; then echo "Unable to locate ${BZIP2PATH}"; exit 1; fi
 if ! test -f ${MISCPATH} ; then echo "Unable to locate ${MISCPATH}"; exit 1; fi
 
-./pres_temp_4D_plugin_wr
+echo "**** Testing plugin write"
 
+rm -f pres_temp_plugin_4D.nc
+${execdir}/pres_temp_4D_plugin_wr
+
+echo "**** Testing plugin read"
+${execdir}/pres_temp_4D_plugin_rd
 
 exit 0

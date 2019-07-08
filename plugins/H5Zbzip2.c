@@ -200,11 +200,8 @@ size_t H5Z_filter_bzip2(unsigned int flags, size_t cd_nelmts,
   }
 
   /* Always replace the input buffer with the output buffer. */
-#ifdef HAVE_H5FREE_MEMORY
+
   H5free_memory(*buf);
-#else
-  free(*buf);
-#endif
 
   *buf = outbuf;
   *buf_size = outbuflen;
@@ -212,11 +209,7 @@ size_t H5Z_filter_bzip2(unsigned int flags, size_t cd_nelmts,
 
  cleanupAndFail:
   if (outbuf)
-#ifdef HAVE_H5FREE_MEMORY
     H5free_memory(outbuf);
-#else
-  free(outbuf);
-#endif
 
   return 0;
 }

@@ -388,8 +388,6 @@ IF(NC_HAS_DEF_VAR_FILTER)
   SET(HAS_DEF_VAR_FILTER ${NC_HAS_DEF_VAR_FILTER} CACHE STRING "")
 ENDIF(NC_HAS_DEF_VAR_FILTER)
 
-
-
 ################################
 # End 'seek out dependent libraries'
 ################################

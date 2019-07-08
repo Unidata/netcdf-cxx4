@@ -22,7 +22,7 @@ using namespace netCDF;
 using namespace netCDF::exceptions;
 
 // This is the name of the data file we will create.
-#define FILE_NAME "pres_temp_4D.nc"
+#define FILE_NAME "pres_temp_plugin_4D.nc"
 
 // We are writing 4D data, a 2 x 6 x 12 lvl-lat-lon grid, with 2
 // timesteps of data.
@@ -39,7 +39,6 @@ using namespace netCDF::exceptions;
 unsigned int level = BZIP2_LEVEL;
 unsigned int idp = BZIP2_ID;
 size_t nparamsp = BZIP2_NPARAMS;
-
 
 // Names of things.
 #define LVL_NAME "level"
@@ -72,7 +71,8 @@ string LON_UNITS = "degrees_east";
 
 int main()
 {
-   // We will write latitude and longitude fields.
+  nc_set_log_level(5);
+  // We will write latitude and longitude fields.
    float lats[NLAT],lons[NLON];
 
    // Program variables to hold the data we will write out. We will
@@ -103,7 +103,7 @@ int main()
 
       // Create the file.
       NcFile test(FILE_NAME, NcFile::replace);
-
+      nc_set_log_level(5);
       // Define the dimensions. NetCDF will hand back an ncDim object for
       // each.
       NcDim lvlDim = test.addDim(LVL_NAME, NLVL);
@@ -141,14 +141,19 @@ int main()
 
       //latVar.putVar(lats);
       //lonVar.putVar(lons);
+      vector<size_t> chunks;
+      for(int i = 0; i < NDIMS; i++) {
+        chunks.push_back(4);
+      }
 
-
-
+      latVar.setChunking(NcVar::nc_CHUNKED,chunks);
       //Testing the filter ability in a write function
       cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " level: "<< level;
       latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
 
       latVar.getFilter(&idp,&nparamsp, &level);
+
+
 
       latVar.putVar(lats);
       lonVar.putVar(lons);
@@ -179,6 +184,7 @@ int main()
       // flushes any buffers.
 
       //cout << "*** SUCCESS writing example file " << FILE_NAME << "!" << endl;
+      test.close();
       return 0;
    }
    catch(NcException& e)
