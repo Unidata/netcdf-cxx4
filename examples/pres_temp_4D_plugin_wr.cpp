@@ -3,7 +3,7 @@
    See COPYRIGHT file for conditions of use.
 
    This is an example program which writes some 4D pressure and
-   temperatures. This example demonstrates the netCDF C++ API. 
+   temperatures. This example demonstrates the netCDF C++ API.
 
    This is part of the netCDF tutorial:
    http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
@@ -21,7 +21,7 @@ using namespace std;
 using namespace netCDF;
 using namespace netCDF::exceptions;
 
-// This is the name of the data file we will create. 
+// This is the name of the data file we will create.
 #define FILE_NAME "pres_temp_4D.nc"
 
 // We are writing 4D data, a 2 x 6 x 12 lvl-lat-lon grid, with 2
@@ -32,7 +32,16 @@ using namespace netCDF::exceptions;
 #define NLON     12
 #define NREC     2
 
-// Names of things. 
+// Filter specs.
+#define BZIP2_ID 307
+#define BZIP2_LEVEL 9
+#define BZIP2_NPARAMS 1
+unsigned int level = BZIP2_LEVEL;
+unsigned int idp = BZIP2_ID;
+size_t nparamsp = BZIP2_NPARAMS;
+
+
+// Names of things.
 #define LVL_NAME "level"
 #define LAT_NAME "latitude"
 #define LON_NAME "longitude"
@@ -40,7 +49,7 @@ using namespace netCDF::exceptions;
 #define PRES_NAME     "pressure"
 #define TEMP_NAME     "temperature"
 #define MAX_ATT_LEN  80
-// These are used to construct some example data. 
+// These are used to construct some example data.
 #define SAMPLE_PRESSURE 900
 #define SAMPLE_TEMP     9.0
 #define START_LAT       25.0
@@ -52,7 +61,7 @@ string  DEGREES_EAST =  "degrees_east";
 string  DEGREES_NORTH = "degrees_north";
 
 
-// For the units attributes. 
+// For the units attributes.
 string PRES_UNITS = "hPa";
 string TEMP_UNITS = "celsius";
 string LAT_UNITS = "degrees_north";
@@ -63,7 +72,7 @@ string LON_UNITS = "degrees_east";
 
 int main()
 {
-   // We will write latitude and longitude fields. 
+   // We will write latitude and longitude fields.
    float lats[NLAT],lons[NLON];
 
    // Program variables to hold the data we will write out. We will
@@ -72,7 +81,7 @@ int main()
    float temp_out[NLVL][NLAT][NLON];
 
    int i=0;  //used in the data generation loop
-  
+
    // create some pretend data. If this wasn't an example program, we
    // would have some real data to write for example, model output.
    for (int lat = 0; lat < NLAT; lat++)
@@ -87,11 +96,11 @@ int main()
 	   pres_out[lvl][lat][lon] =(float) (SAMPLE_PRESSURE + i);
 	   temp_out[lvl][lat][lon]  = (float)(SAMPLE_TEMP + i++);
 	 }
-   
+
    try
    {
-    
-   
+
+
       // Create the file.
       NcFile test(FILE_NAME, NcFile::replace);
 
@@ -101,17 +110,17 @@ int main()
       NcDim latDim = test.addDim(LAT_NAME, NLAT);
       NcDim lonDim = test.addDim(LON_NAME, NLON);
       NcDim recDim = test.addDim(REC_NAME);  //adds an unlimited dimension
-       
+
       // Define the coordinate variables.
       NcVar latVar = test.addVar(LAT_NAME, ncFloat, latDim);
       NcVar lonVar = test.addVar(LON_NAME, ncFloat, lonDim);
-       
+
       // Define units attributes for coordinate vars. This attaches a
       // text attribute to each of the coordinate variables, containing
       // the units.
       latVar.putAtt(UNITS, DEGREES_NORTH);
       lonVar.putAtt(UNITS, DEGREES_EAST);
-       
+
       // Define the netCDF variables for the pressure and temperature
       // data.
       vector<NcDim> dimVector;
@@ -121,7 +130,7 @@ int main()
       dimVector.push_back(lonDim);
       NcVar pressVar = test.addVar(PRES_NAME, ncFloat, dimVector);
       NcVar tempVar = test.addVar(TEMP_NAME, ncFloat, dimVector);
-       
+
       // Define units attributes for coordinate vars. This attaches a
       // text attribute to each of the coordinate variables, containing
       // the units.
@@ -129,9 +138,24 @@ int main()
       tempVar.putAtt(UNITS, TEMP_UNITS);
 
       // Write the coordinate variable data to the file.
+
+      //latVar.putVar(lats);
+      //lonVar.putVar(lons);
+
+
+
+      //Testing the filter ability in a write function
+      cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
+      latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
+
+      latVar.getFilter(&idp,&nparamsp, &level);
+
+      //<<<<<<< HEAD
+      //=======
       latVar.putVar(lats);
       lonVar.putVar(lons);
-            
+      //>>>>>>> e404ec174e8de27e10b846a6122e84d975de3c77
+
       // Write the pretend data. This will write our surface pressure and
       // surface temperature data. The arrays only hold one timestep
       // worth of data. We will just rewrite the same data for each
@@ -146,7 +170,7 @@ int main()
       countp.push_back(NLVL);
       countp.push_back(NLAT);
       countp.push_back(NLON);
-      for (size_t rec = 0; rec < NREC; rec++) 
+      for (size_t rec = 0; rec < NREC; rec++)
       {
 	startp[0]=rec;
 	pressVar.putVar(startp,countp,pres_out);
@@ -156,13 +180,13 @@ int main()
       // The file is automatically closed by the destructor. This frees
       // up any internal netCDF resources associated with the file, and
       // flushes any buffers.
-   
+
       //cout << "*** SUCCESS writing example file " << FILE_NAME << "!" << endl;
       return 0;
    }
    catch(NcException& e)
    {
-      e.what(); 
+      e.what();
       return NC_ERR;
    }
 }
