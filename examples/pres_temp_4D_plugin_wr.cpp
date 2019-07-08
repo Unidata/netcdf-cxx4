@@ -145,16 +145,13 @@ int main()
 
 
       //Testing the filter ability in a write function
-      cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " &level: "<< &level;
+      cout<<"BZIP2_ID: " << BZIP2_ID <<"BZIP2_NPARAMS: "<< BZIP2_NPARAMS << " level: "<< level;
       latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
 
       latVar.getFilter(&idp,&nparamsp, &level);
 
-      //<<<<<<< HEAD
-      //=======
       latVar.putVar(lats);
       lonVar.putVar(lons);
-      //>>>>>>> e404ec174e8de27e10b846a6122e84d975de3c77
 
       // Write the pretend data. This will write our surface pressure and
       // surface temperature data. The arrays only hold one timestep
@@ -171,11 +168,11 @@ int main()
       countp.push_back(NLAT);
       countp.push_back(NLON);
       for (size_t rec = 0; rec < NREC; rec++)
-      {
-	startp[0]=rec;
-	pressVar.putVar(startp,countp,pres_out);
-	tempVar.putVar(startp,countp,temp_out);
-      }
+        {
+          startp[0]=rec;
+          pressVar.putVar(startp,countp,pres_out);
+          tempVar.putVar(startp,countp,temp_out);
+        }
 
       // The file is automatically closed by the destructor. This frees
       // up any internal netCDF resources associated with the file, and
