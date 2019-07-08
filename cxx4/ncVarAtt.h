@@ -21,7 +21,7 @@ namespace netCDF
     NcVarAtt ();
 
 
-    void inq_atttype(const char *name, nc_type *xtypep) const;
+    void inq_atttype(const char *name, nc_type *xtypep);
 
     /*! The copy constructor. */
     NcVarAtt(const NcVarAtt& rhs) ;

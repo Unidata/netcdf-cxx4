@@ -61,7 +61,7 @@ NcVarAtt::NcVarAtt(const NcGroup& grp, const NcVar& ncVar, const int index):
 //Finds the type of an attribute.
 
 
-void NcVarAtt::inq_atttype(const char *name, nc_type *xtypep) const
+void NcVarAtt::inq_atttype(const char *name, nc_type *xtypep)
 {
   ncCheck(nc_inq_atttype(groupId, varId, name, xtypep),__FILE__,__LINE__);
 }

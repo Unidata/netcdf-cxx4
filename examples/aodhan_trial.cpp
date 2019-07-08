@@ -1,6 +1,4 @@
 //Trial of making my own netcdf code to become more comfortable
-
-
 #include <iostream>
 #include <string>
 #include <netcdf>
@@ -29,16 +27,8 @@ int main(){
 
   string newname_is = "new_file";
 
-  /*NcVar grid_data;
-  grid_data = dataFile.getVar("data");
-  grid_data.rename(newname_is);*/
-
   NcVar grid_data;
   grid_data = dataFile.getVar("data");
-
-
-
-
 
   cout<<"there are "<<dataFile.getVarCount()<<" variables"<<endl;
   cout<<"there are "<<dataFile.getAttCount()<<" attributes"<<endl;
@@ -47,18 +37,21 @@ int main(){
   cout<<"there are "<<dataFile.getTypeCount()<<" types"<<endl;
 
 
-  //Ncfile dataFile("simple_xy_nc4.nc", NcFile::read);
-
-  //NcVar Filtered_data = dataFile.filter(307,9);
-
   NcFile data("sfc_pres_temp.nc", NcFile::write);
   NcVar filtered_data;
 
+
   data.open("sfc_pres_temp.nc", NcFile::write);
+
+  //using redef() wrapper
   data.redef();
+
+  //using set_Fill() wrapper
+  data.set_Fill(NC_NOFILL, NC_FILL);
+
+  //using filter functionality
   filtered_data = data.getVar("latitude");
   filtered_data.setFilter(BZIP2_ID,1,&level);
-
 
   NcVar latitude = data.getVar("latitude");
   NcVar longitude = data.getVar("longitude");
@@ -69,7 +62,6 @@ int main(){
   latitude.getVar(lats);
   longitude.getVar(lons);
   pressure.getVar(pres);
-  //temperature.getVar(temp);
 
 
   return 0;
