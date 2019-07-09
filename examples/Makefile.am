@@ -10,7 +10,7 @@ LDADD = -lnetcdf
 # These are the example programs.
 TESTPROGRAMS = simple_xy_wr sfc_pres_temp_wr pres_temp_4D_wr		\
  pres_temp_4D_rd simple_xy_rd sfc_pres_temp_rd simple_xy_wr_formats     \
- aodhan_trial
+ aodhan_trial pres_temp_4D_plugin_wr pres_temp_4D_plugin_rd
 check_PROGRAMS = $(TESTPROGRAMS)
 
 # Ship also this script, which compares the output of these C++
@@ -25,6 +25,8 @@ sfc_pres_temp_wr_SOURCES = sfc_pres_temp_wr.cpp
 sfc_pres_temp_rd_SOURCES = sfc_pres_temp_rd.cpp
 pres_temp_4D_wr_SOURCES = pres_temp_4D_wr.cpp
 pres_temp_4D_rd_SOURCES = pres_temp_4D_rd.cpp
+pres_temp_4D_plugin_wr_SOURCES = pres_temp_4D_plugin_wr.cpp
+pres_temp_4D_plugin_rd_SOURCES = pres_temp_4D_plugin_rd.cpp
 simple_xy_wr_formats_SOURCES = simple_xy_wr_formats.cpp
 aodhan_trial_SOURCES = aodhan_trial.cpp
 

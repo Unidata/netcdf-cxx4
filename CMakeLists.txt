@@ -123,6 +123,21 @@ EXECUTE_PROCESS(
 IF(CONFIG_DATE)
 	string(STRIP ${CONFIG_DATE} CONFIG_DATE)
 ENDIF()
+
+# Check to see if we have bash.
+FIND_PROGRAM(HAVE_BASH bash)
+IF(HAVE_BASH)
+  STRING(COMPARE EQUAL "${HAVE_BASH}" "C:/Windows/System32/bash.exe" IS_BASH_EXE)
+  IF(NOT IS_BASH_EXE)
+    MESSAGE(STATUS "Found bash: ${HAVE_BASH}")
+  ELSE()
+    MESSAGE(STATUS "Ignoring ${HAVE_BASH}")
+    SET(HAVE_BASH "")
+  ENDIF()
+ELSE()
+  MESSAGE(STATUS "Bash shell not found; disabling shell script tests.")
+ENDIF()
+
 ##
 # Allow for extra dependencies.
 ##
@@ -190,6 +205,33 @@ MACRO(add_bin_test prefix F)
     SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
       ${CMAKE_CURRENT_BINARY_DIR})
     SET_TARGET_PROPERTIES(${CUR_TEST} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
+      ${CMAKE_CURRENT_BINARY_DIR})
+  ENDIF()
+ENDMACRO()
+
+
+###
+# A macro to add a shell test.
+###
+MACRO(add_sh_test prefix F)
+  IF(HAVE_BASH)
+    ADD_TEST(${prefix}_${F} bash "-c" "export srcdir=${CMAKE_CURRENT_SOURCE_DIR};export TOPSRCDIR=${CMAKE_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}/${F}.sh")
+  ENDIF()
+ENDMACRO()
+
+# Build a binary used by a script, but don't make a test out of it.
+MACRO(build_bin_test F)
+  ADD_EXECUTABLE(${F} ${F}.cpp)
+  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4 ${ALL_TLL_LIBS})
+  IF(MSVC)
+    SET_TARGET_PROPERTIES(${F}
+      PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
+      )
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
+      ${CMAKE_CURRENT_BINARY_DIR})
+    SET_TARGET_PROPERTIES(${F} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
       ${CMAKE_CURRENT_BINARY_DIR})
   ENDIF()
 ENDMACRO()
@@ -303,6 +345,10 @@ MARK_AS_ADVANCED(NCXX_CTEST_PROJECT_NAME
 # Seek out dependent libraries.
 ################################
 
+
+###
+# Find NetCDF
+###
 IF(NOT netCDF_LIBRARIES AND NOT netCDF_INCLUDE_DIR)
   FIND_PACKAGE(netCDF QUIET)
 ELSE()
@@ -311,7 +357,6 @@ ENDIF()
 
 IF (netCDF_FOUND)
   INCLUDE_DIRECTORIES(SYSTEM ${netCDF_INCLUDE_DIR})
-  LINK_DIRECTORIES(${netCDF_LIB_DIR})
   SET(NETCDF_C_LIBRARY ${netCDF_LIBRARIES})
   SET(NETCDF_C_INCLUDE_DIR ${netCDF_INCLUDE_DIR})
 ELSE()
@@ -326,7 +371,6 @@ ELSE()
       MESSAGE(FATAL_ERROR "Directory containing netcdf.h cannot be found. Please reinstall and try again.")
     ELSE()
       GET_FILENAME_COMPONENT(netCDF_LIB_DIR "${NETCDF_C_LIBRARY}" REALPATH)
-      LINK_DIRECTORIES(${netCDF_LIB_DIR})
       INCLUDE_DIRECTORIES(SYSTEM ${NC_H_INCLUDE_DIR})
     ENDIF()
   ENDIF()
@@ -338,6 +382,30 @@ ENDIF()
 CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_use_parallel_enabled "" NC_IS_PARALLEL)
 IF(NC_IS_PARALLEL)
   SET(BUILD_PARALLEL ${NC_IS_PARALLEL} CACHE STRING "")
+ENDIF()
+
+###
+# Check to see if netcdf-c was built with plugin support.
+###
+CHECK_LIBRARY_EXISTS(${NETCDF_C_LIBRARY} nc_def_var_filter "" NC_HAS_DEF_VAR_FILTER)
+IF(NC_HAS_DEF_VAR_FILTER)
+  SET(HAS_DEF_VAR_FILTER ${NC_HAS_DEF_VAR_FILTER} CACHE STRING "")
+ENDIF(NC_HAS_DEF_VAR_FILTER)
+
+###
+# Find HDF5
+###
+IF(MSVC)
+  SET(SEARCH_PACKAGE_NAME ${HDF5_PACKAGE_NAME})
+  FIND_PACKAGE(HDF5 NAMES ${SEARCH_PACKAGE_NAME} COMPONENTS C HL NO_MODULES REQUIRED ${NC_HDF5_LINK_TYPE})
+ELSE(MSVC)
+  FIND_PACKAGE(HDF5 COMPONENTS C HL REQUIRED)
+ENDIF(MSVC)
+
+CHECK_LIBRARY_EXISTS(${HDF5_C_LIBRARY_hdf5} H5free_memory "" HAVE_H5FREE_MEMORY)
+IF(NOT HAVE_H5FREE_MEMORY)
+  MESSAGE(STATUS "Plugin support requires libhdf5 with H5Free support. Your libhdf5 install does not provide H5Free.  Please install a newer version of libhdf5 if you require plugin compression support.")
+  SET(NC_HAS_DEF_VAR_FILTER "")
 ENDIF()
 
 ################################
@@ -528,6 +596,13 @@ INSTALL(PROGRAMS ${NCXX_BINARY_DIR}/ncxx4-config
 # End ncxx4-config section
 #####
 
+#####
+# Build test_common.sh
+#####
+SET(EXTRA_DIST ${EXTRA_DIST} ${CMAKE_SOURCE_DIR}/test_common.in)
+SET(TOPSRCDIR "${CMAKE_SOURCE_DIR}")
+SET(TOPBUILDDIR "${CMAKE_BINARY_DIR}")
+configure_file(${CMAKE_SOURCE_DIR}/test_common.in ${CMAKE_BINARY_DIR}/test_common.sh @ONLY NEWLINE_STYLE LF)
 
 #####
 # Options
@@ -554,6 +629,8 @@ install(
 # Traverse into subdirectories.
 #####
 
+
+
 ##
 # Set up include directories.
 ##
@@ -561,9 +638,23 @@ INCLUDE_DIRECTORIES(cxx4 examples)
 
 ADD_SUBDIRECTORY(cxx4)
 ADD_SUBDIRECTORY(examples)
+
+IF(NC_HAS_DEF_VAR_FILTER)
+  #####
+  # Build cxx4/findplugin.sh
+  #####
+  SET(ISCMAKE "1")
+  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/cxx4/findplugin.in ${CMAKE_BINARY_DIR}/cxx4/findplugin.sh @ONLY NEWLINE_STYLE LF)
+  CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/examples/findplugin.in ${CMAKE_BINARY_DIR}/examples/findplugin.sh @ONLY NEWLINE_STYLE LF)
+
+  ADD_SUBDIRECTORY(plugins)
+ENDIF(NC_HAS_DEF_VAR_FILTER)
+
 IF(ENABLE_DOXYGEN)
   ADD_SUBDIRECTORY(docs)
 ENDIF()
+
+
 
 ##
 # CPack, CMakeInstallation.cmake file.

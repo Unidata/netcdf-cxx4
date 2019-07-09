@@ -637,7 +637,11 @@ void NcVar::setFilter( unsigned int id, size_t nparams,
             const unsigned int* parms) const
 {
   cout<<"\nBZIP2_ID: " << id <<"\nBZIP2_NPARAMS: "<< nparams << "\n&level: "<< parms;
+<<<<<<< HEAD
   cout<<"\ngoupID: "<< groupId <<"\nmyId: "<< myId <<"\nnparams: "<< nparams << "\nparms" <<parms;
+=======
+  cout<<"\ngoupID: "<< groupId <<"\nmyId: "<< myId <<"\nnparams: "<< nparams << "\nparms: " << *parms;
+>>>>>>> 52a1eeaa0035b3e1c40b616ae5eb9e0f4cca16d4
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
   cout<< "\n setFilter filtering completed"<<endl;
   //above is returning error because of definition outside of enddef
