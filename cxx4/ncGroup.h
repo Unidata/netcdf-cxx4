@@ -68,9 +68,6 @@ namespace netCDF
     /*! The copy constructor. */
     NcGroup(const NcGroup& rhs);
 
-    NcGroup(NcGroup&&) = default;
-    NcGroup &operator=(NcGroup&&) = default;
-
     /*! destructor  */
     virtual ~NcGroup();
 
