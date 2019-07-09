@@ -32,7 +32,7 @@ ncUint64.cpp ncString.cpp
 TESTFILES = test_classic$(EXEEXT) test_group$(EXEEXT)	\
 test_dim$(EXEEXT) test_att$(EXEEXT) test_var$(EXEEXT)	\
 test_var2$(EXEEXT) test_type$(EXEEXT) test_open_close$(EXEEXT) \
-test_ncFile_Flags$(EXEEXT)
+test_ncFile_Flags$(EXEEXT) test_move$(EXEEXT)
 
 test_classic_SOURCES = test_classic.cpp
 test_group_SOURCES = test_group.cpp
@@ -43,6 +43,7 @@ test_var2_SOURCES = test_var2.cpp test_utilities.h
 test_type_SOURCES = test_type.cpp test_utilities.h
 test_open_close_SOURCES = test_open_close.cpp test_utilities.h
 test_ncFile_Flags_SOURCES = test_ncFile_Flags.cpp test_utilities.h
+test_move_SOURCES = test_move.cpp
 
 # Build and run these tests.
 check_PROGRAMS = $(TESTFILES)
