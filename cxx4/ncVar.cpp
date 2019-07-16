@@ -626,29 +626,20 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
 
 
 ////////////////////
-
-// setting filter details
 //Aodhan adding stuff
-
 ////////////////////
 
-//set filter details
+// Define a new variable filter
 void NcVar::setFilter( unsigned int id, size_t nparams,
             const unsigned int* parms) const
 {
-  cout<<"\nBZIP2_ID: " << id <<"\nBZIP2_NPARAMS: "<< nparams << "\n&level: "<< parms;
-<<<<<<< HEAD
+  cout<<"\n++++++++++++\n inside setFilter() \n++++++++++++\n";
   cout<<"\ngoupID: "<< groupId <<"\nmyId: "<< myId <<"\nnparams: "<< nparams << "\nparms" <<parms;
-=======
-  cout<<"\ngoupID: "<< groupId <<"\nmyId: "<< myId <<"\nnparams: "<< nparams << "\nparms: " << *parms;
->>>>>>> 52a1eeaa0035b3e1c40b616ae5eb9e0f4cca16d4
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
   cout<< "\n setFilter filtering completed"<<endl;
-  //above is returning error because of definition outside of enddef
-  //To fix we will be adding enddef() wrapper to ncFile and trying again
 }
 
-//retrieve filter details
+// Find filter details (if any) associated with a variable
 void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params) const
 {
   cout<<"\n++++++++++++\n inside getFilter() \n++++++++++++\n";
@@ -657,40 +648,24 @@ void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params
   cout<<"\n++++++++++++\n getFilter() completed \n++++++++++++\n";
 }
 
+// returns length of type
 void NcVar::getTypeLen(nc_type type) const
 {
   ncCheck(nctypelen(type),__FILE__,__LINE__);
 }
 
+// Free string space allocated by the library
 void NcVar::freeString(size_t len, char **data) const
 {
   ncCheck(nc_free_string(len, data),__FILE__,__LINE__);
 }
 
+// Change the cache settings for a chunked variable
 void NcVar::setChunkCache(size_t size, size_t nelems, float preemption) const
 {
   ncCheck(nc_set_var_chunk_cache(groupId, myId, size, nelems, preemption),__FILE__,__LINE__);
 }
 
-
-/*void NcVar::getShape(int ndims, size_t* shape) const
-{
-  ncCheck(NC_getshape(groupId, myId, ndims, shape),__FILE__,__LINE__);
-}*/
-/*
-//NOT CURRENTLY Working
-//query whether a variable has a record dimension
-void NcVar::is_recvar(size_t* nrecs)
-{
-  ncCheck(NC_is_recvar(groupId, myId, nrecs),__FILE__,__LINE__);
-}*/
-/*
-//retrieve the actual number of record dimensions for a variable
-void NcVar::inq_recvar(int* nrecdimsp, int* is_recdim) const
-{
-  ncCheck(NC_inq_recvar(groupId, myId, nrecdimsp, is_recdim),__FILE__,__LINE__);
-}
-*/
 ////////////////////
 //End of Aodhan adding stuff
 ////////////////////

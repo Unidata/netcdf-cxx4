@@ -23,10 +23,7 @@ int main(){
   std::cout<<"============================\n this is the example output \n ";
 
   NcFile dataFile("simple_xy_nc4.nc", NcFile::read);
-
-
   string newname_is = "new_file";
-
   NcVar grid_data;
   grid_data = dataFile.getVar("data");
 
@@ -38,7 +35,6 @@ int main(){
 
 
   NcFile data("sfc_pres_temp.nc", NcFile::write);
-  NcVar filtered_data;
 
 
   data.open("sfc_pres_temp.nc", NcFile::write);
@@ -47,12 +43,8 @@ int main(){
   data.redef();
 
   //using set_Fill() wrapper
-  data.set_Fill(NC_NOFILL, NC_FILL);
 
   //using filter functionality
-  filtered_data = data.getVar("latitude");
-  filtered_data.setFilter(BZIP2_ID,1,&level);
-
   NcVar latitude = data.getVar("latitude");
   NcVar longitude = data.getVar("longitude");
   NcVar pressure = data.getVar("pressure");

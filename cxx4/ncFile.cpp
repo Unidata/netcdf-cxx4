@@ -167,7 +167,7 @@ void NcFile::open(const string& filePath, const FileMode fMode, const FileFormat
 void NcFile::sync(){
   ncCheck(nc_sync(myId),__FILE__,__LINE__);
 }
-//Aodhan adding fill functionality
+// Set fill mode for netCDF dataset open for writing and return current fill mode
 void NcFile::set_Fill(int fillmode, int *old_modep){
   cout<<"\n+++++++++++++++++++++ \n inside set_Fill() \n+++++++++++++++++++++\n";
   ncCheck(nc_set_fill(myId, fillmode, old_modep),__FILE__,__LINE__);
@@ -175,7 +175,7 @@ void NcFile::set_Fill(int fillmode, int *old_modep){
 }
 
 
-// Aodhan adding a redef() function
+// Put open netCDF dataset into define mode
 void NcFile::redef(){
   cout<<"\n+++++++++++++++++++++ \n inside redef() \n+++++++++++++++++++++\n";
   ncCheck(nc_redef(myId),__FILE__,__LINE__);

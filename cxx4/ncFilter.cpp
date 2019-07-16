@@ -16,7 +16,7 @@ NcFilter::~NcFilter() {
 
 };
 
-// open a file from path and mode
+// Define a new variable filter
 void NcFilter::setFilter(unsigned int ncid, unsigned int varid, unsigned int filterId, size_t nparams, const unsigned int* parms)
 {
   ncCheck(nc_def_var_filter(ncid,varid,filterId,nparams,parms),__FILE__,__LINE__);
