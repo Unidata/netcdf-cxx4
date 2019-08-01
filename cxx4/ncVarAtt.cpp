@@ -57,10 +57,7 @@ NcVarAtt::NcVarAtt(const NcGroup& grp, const NcVar& ncVar, const int index):
   myName = attName;
 }
 
-//Aodhan Entry
-//Finds the type of an attribute.
-
-
+// Query a variable attribute type
 void NcVarAtt::inq_atttype(const char *name, nc_type *xtypep)
 {
   ncCheck(nc_inq_atttype(groupId, varId, name, xtypep),__FILE__,__LINE__);

@@ -610,7 +610,6 @@ void NcVar::setCompression(bool enableShuffleFilter, bool enableDeflateFilter, i
 			     deflateLevel),__FILE__,__LINE__);
 }
 
-
 // Gets the compression parameters
 void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFilterEnabled, int& deflateLevel) const {
 
@@ -624,31 +623,20 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
   deflateFilterEnabled =  static_cast<bool> (enableDeflateFilterInt);
 }
 
-
-////////////////////
-//Aodhan adding stuff
-////////////////////
-
-// Define a new variable filter
+// Define a variable filter to be used for compression (decompression)
 void NcVar::setFilter( unsigned int id, size_t nparams,
             const unsigned int* parms) const
 {
-  cout<<"\n++++++++++++\n inside setFilter() \n++++++++++++\n";
-  cout<<"\ngoupID: "<< groupId <<"\nmyId: "<< myId <<"\nnparams: "<< nparams << "\nparms" <<parms;
   ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
-  cout<< "\n setFilter filtering completed"<<endl;
 }
 
-// Find filter details (if any) associated with a variable
+// Query filter details (if any) associated with a variable
 void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params) const
 {
-  cout<<"\n++++++++++++\n inside getFilter() \n++++++++++++\n";
-  cout<<"\nidp: " << idp << "\n nparamsp: " << nparamsp << "\n params: " << params;
   ncCheck(nc_inq_var_filter(groupId, myId, idp, nparamsp, params),__FILE__,__LINE__);
-  cout<<"\n++++++++++++\n getFilter() completed \n++++++++++++\n";
 }
 
-// returns length of type
+// Query the length of a given Type
 void NcVar::getTypeLen(nc_type type) const
 {
   ncCheck(nctypelen(type),__FILE__,__LINE__);
@@ -665,12 +653,6 @@ void NcVar::setChunkCache(size_t size, size_t nelems, float preemption) const
 {
   ncCheck(nc_set_var_chunk_cache(groupId, myId, size, nelems, preemption),__FILE__,__LINE__);
 }
-
-////////////////////
-//End of Aodhan adding stuff
-////////////////////
-
-
 
 ////////////////////
 

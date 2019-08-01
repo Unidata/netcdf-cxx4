@@ -1,7 +1,6 @@
 // Purpose: Converts ida3 format xma data to netcdf4
 // Usage:   xma2netcdf <shot number>
 
-
 #include <iostream>
 #include <ncFile.h>
 #include <ncVar.h>
@@ -43,23 +42,13 @@ int main()
       // the units.
       latVar.putAtt(UNITS, DEGREES_NORTH);
 
-      //latVar.putVar(lats);
-      //lonVar.putVar(lons);
+
       vector<size_t> chunks;
       for(int i = 0; i < NDIMS; i++) {
         chunks.push_back(4);
       }
 
       latVar.setChunking(NcVar::nc_CHUNKED,chunks);
-
-      /*cout << "Opening file...";
-      try {
-        file.open("test_ncFile_Flags_newFile.nc",NC_SHARE | NC_NOWRITE);
-        cout << "Success." << endl;
-      } catch (NcException &e) {
-        cout << "Caught unexpected exception." << endl;
-        return e.errorCode();
-      }*/
 
       cout<<"Setting Filter....";
       try{

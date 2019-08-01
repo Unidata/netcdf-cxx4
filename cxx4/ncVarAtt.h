@@ -20,7 +20,7 @@ namespace netCDF
     /*! Constructor generates a \ref isNull "null object". */
     NcVarAtt ();
 
-
+    /*! Query a variable attribute type. */ 
     void inq_atttype(const char *name, nc_type *xtypep);
 
     /*! The copy constructor. */

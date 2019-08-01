@@ -111,10 +111,10 @@ namespace netCDF
       //! Synchronize an open netcdf dataset to disk
       void sync();
 
-      //! Aodhan adding setFill
+      //! Elect a fill parameter different that the one currently being used
       void set_Fill(int fillmode, int *old_modep);
 
-      //! Aodhan adding in the redef function declaration
+      //! Redefine variable
       void redef();
 
       //! Leave define mode, used for classic model

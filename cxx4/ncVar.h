@@ -104,30 +104,20 @@ namespace netCDF
     /*! Rename the variable. */
     void rename( const std::string& newname ) const;
 
+    /*! Define new variable for compression/decompression. */
+    void setFilter(unsigned int id, size_t nparams, const unsigned int* parms) const;
 
-
-
-    /*Aodhan Adding function for filter*/
-    void setFilter(unsigned int id, size_t nparams,
-                const unsigned int* parms) const;
-
+    /*! Query filter properties (if a filter has been applied). */
     void getFilter(unsigned int* idp, size_t* nparamsp, unsigned int* params) const;
 
+    /*! Query the length of a given ncType. */
     void getTypeLen(nc_type type) const;
 
+    /*! Free memory allocated for a string. */
     void freeString(size_t len, char **data) const;
 
+    /*! Change cache setttings for a chunked variable.  */
     void setChunkCache(size_t size, size_t nelems, float preemption) const;
-
-    //void getShape(int ndims, size_t* shape) const;
-
-    //void is_recvar(size_t* nrecs);
-
-    //void inq_recvar(int* nrecdimsp, int* is_recdim) const;
-
-
-    //Now returning to the stuff that was here before
-
 
     /*! Get the variable id. */
     int  getId() const;
