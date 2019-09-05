@@ -286,12 +286,14 @@ AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
                  examples/Makefile
                  docs/Makefile
+                 plugins/Makefile
                  ncxx4-config
                  netcdf-cxx4.pc],
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])
 
 if test "x$nc_has_filters" = xyes; then
    AC_CONFIG_FILES(cxx4/findplugin.sh:cxx4/findplugin.in)
+   AC_CONFIG_LINKS([examples/tst_filter.sh:examples/tst_filter.sh])
    AC_CONFIG_FILES(examples/findplugin.sh:examples/findplugin.in)
 fi
 

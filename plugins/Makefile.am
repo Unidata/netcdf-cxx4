@@ -2,7 +2,8 @@
 #    See netcdf/COPYRIGHT file for copying and redistribution conditions.
 
 # Put Together AM_CPPFLAGS and AM_LDFLAGS
-include $(top_srcdir)/lib_flags.am
+AM_LDFLAGS = ${top_builddir}/cxx4/libnetcdf_c++4.la
+AM_CPPFLAGS = -I${top_srcdir}/cxx4
 
 BZIP2HDRS=bzlib.h bzlib_private.h
 BZIP2SRC= blocksort.c huffman.c crctable.c randtable.c compress.c decompress.c bzlib.c
