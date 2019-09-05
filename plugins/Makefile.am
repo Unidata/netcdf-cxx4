@@ -18,7 +18,7 @@ EXTRA_DIST=${PLUGINSRC} ${BZIP2SRC} ${PLUGINHDRS} ${BZIP2HDRS} \
 # AC_CONFIG_LINK commands near the end of configure.ac.
 HDF5PLUGINSRC=${PLUGINSRC} ${BZIP2SRC} ${PLUGINHDRS} ${BZIP2HDRS}
 
-if ENABLE_FILTER_TESTING
+if NC_HAS_FILTERS
 
 noinst_LTLIBRARIES = libmisc.la
 lib_LTLIBRARIES = libh5bzip2.la
@@ -29,4 +29,4 @@ libh5bzip2_la_LDFLAGS = -module -avoid-version -shared -export-dynamic -no-undef
 libmisc_la_SOURCES = H5Zmisc.c H5Zutil.c h5misc.h
 libmisc_la_LDFLAGS = -module -avoid-version -shared -export-dynamic -no-undefined -rpath ${abs_builddir}
 
-endif #ENABLE_FILTER_TESTING
+endif #NC_HAS_FILTERS

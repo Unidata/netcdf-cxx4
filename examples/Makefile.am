@@ -42,7 +42,7 @@ simple_xy_wr_formats_SOURCES = simple_xy_wr_formats.cpp
 # Ship also this script, which compares the output of these C++
 # examples with the output of the C examples. The output data files
 # are identical.
-EXTRA_DIST = do_comps.sh
+EXTRA_DIST = do_comps.sh tst_filter.sh findplugin.sh
 
 # Cleaning up files created during the process.
 CLEANFILES = simple_xy.nc sfc_pres_temp.nc pres_temp_4D.nc		\

@@ -293,7 +293,8 @@ AC_CONFIG_FILES([Makefile
 
 if test "x$nc_has_filters" = xyes; then
    AC_CONFIG_FILES(cxx4/findplugin.sh:cxx4/findplugin.in)
-   AC_CONFIG_LINKS([examples/tst_filter.sh:examples/tst_filter.sh])
+   AC_CONFIG_FILES([examples/tst_filter.sh:examples/tst_filter.sh], [chmod ugo+x examples/tst_filter.sh])
+   #AC_CONFIG_LINKS([examples/tst_filter.sh:examples/tst_filter.sh])
    AC_CONFIG_FILES(examples/findplugin.sh:examples/findplugin.in)
 fi
 
