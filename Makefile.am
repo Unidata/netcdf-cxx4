@@ -16,6 +16,10 @@ bin_SCRIPTS = ncxx4-config
 # Build and test in these directories.
 SUBDIRS = cxx4 examples docs
 
+if ENABLE_FILTER_TESTING
+SUBDIRS += plugins
+endif
+
 # Remove these generated files, for a distclean.
 DISTCLEANFILES = VERSION
 

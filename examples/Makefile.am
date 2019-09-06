@@ -17,11 +17,11 @@ check_PROGRAMS = $(TESTPROGRAMS)
 
 TESTS = $(TESTPROGRAMS) #do_comps.sh
 
-if NC_HAS_FILTERS
+if ENABLE_FILTER_TESTING
 extradir =
 extra_PROGRAMS = pres_temp_4D_plugin_wr pres_temp_4D_plugin_rd
 TESTS += tst_filter.sh
-endif # NC_HAS_FILTERS
+endif # ENABLE_FILTER_TESTING
 
 # Here's the source code for the programs.
 simple_xy_wr_SOURCES = simple_xy_wr.cpp
