@@ -44,11 +44,14 @@ test_type_SOURCES = test_type.cpp test_utilities.h
 test_open_close_SOURCES = test_open_close.cpp test_utilities.h
 test_ncFile_Flags_SOURCES = test_ncFile_Flags.cpp test_utilities.h
 
+
 # Build and run these tests.
 check_PROGRAMS = $(TESTFILES)
 TESTS = $(TESTFILES)
 
 CLEANFILES = firstFile.cdf test*.nc
+
+EXTRA_DIST = test_filter.cpp
 
 # Empty file that gets time-stamped after docs are generated
 doxygen_stamp: $(libnetcdf_c__4_la_SOURCES) $(include_HEADERS)
