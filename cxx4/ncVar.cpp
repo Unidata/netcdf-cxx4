@@ -610,7 +610,6 @@ void NcVar::setCompression(bool enableShuffleFilter, bool enableDeflateFilter, i
 			     deflateLevel),__FILE__,__LINE__);
 }
 
-
 // Gets the compression parameters
 void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFilterEnabled, int& deflateLevel) const {
 
@@ -624,7 +623,36 @@ void NcVar::getCompressionParameters(bool& shuffleFilterEnabled, bool& deflateFi
   deflateFilterEnabled =  static_cast<bool> (enableDeflateFilterInt);
 }
 
+// Define a variable filter to be used for compression (decompression)
+void NcVar::setFilter( unsigned int id, size_t nparams,
+            const unsigned int* parms) const
+{
+  ncCheck(nc_def_var_filter(groupId,myId,id,nparams,parms),__FILE__,__LINE__);
+}
 
+// Query filter details (if any) associated with a variable
+void NcVar::getFilter( unsigned int* idp, size_t* nparamsp, unsigned int* params) const
+{
+  ncCheck(nc_inq_var_filter(groupId, myId, idp, nparamsp, params),__FILE__,__LINE__);
+}
+
+// Query the length of a given Type
+void NcVar::getTypeLen(nc_type type) const
+{
+  ncCheck(nctypelen(type),__FILE__,__LINE__);
+}
+
+// Free string space allocated by the library
+void NcVar::freeString(size_t len, char **data) const
+{
+  ncCheck(nc_free_string(len, data),__FILE__,__LINE__);
+}
+
+// Change the cache settings for a chunked variable
+void NcVar::setChunkCache(size_t size, size_t nelems, float preemption) const
+{
+  ncCheck(nc_set_var_chunk_cache(groupId, myId, size, nelems, preemption),__FILE__,__LINE__);
+}
 
 ////////////////////
 

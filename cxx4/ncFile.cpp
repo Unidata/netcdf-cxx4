@@ -167,6 +167,16 @@ void NcFile::open(const string& filePath, const FileMode fMode, const FileFormat
 void NcFile::sync(){
   ncCheck(nc_sync(myId),__FILE__,__LINE__);
 }
+// Set fill mode for netCDF dataset open for writing and return current fill mode
+void NcFile::set_Fill(int fillmode, int *old_modep){
+  ncCheck(nc_set_fill(myId, fillmode, old_modep),__FILE__,__LINE__);
+}
+
+
+// Put open netCDF dataset into define mode
+void NcFile::redef(){
+  ncCheck(nc_redef(myId),__FILE__,__LINE__);
+}
 
 // Leave define mode, used for classic model
 void NcFile::enddef() {

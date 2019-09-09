@@ -104,6 +104,20 @@ namespace netCDF
     /*! Rename the variable. */
     void rename( const std::string& newname ) const;
 
+    /*! Define new variable for compression/decompression. */
+    void setFilter(unsigned int id, size_t nparams, const unsigned int* parms) const;
+
+    /*! Query filter properties (if a filter has been applied). */
+    void getFilter(unsigned int* idp, size_t* nparamsp, unsigned int* params) const;
+
+    /*! Query the length of a given ncType. */
+    void getTypeLen(nc_type type) const;
+
+    /*! Free memory allocated for a string. */
+    void freeString(size_t len, char **data) const;
+
+    /*! Change cache setttings for a chunked variable.  */
+    void setChunkCache(size_t size, size_t nelems, float preemption) const;
 
     /*! Get the variable id. */
     int  getId() const;
