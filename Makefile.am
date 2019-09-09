@@ -1,8 +1,5 @@
 # This is the main automake file for the netCDF CXX4 C++ library.
 
-# These files get added to the distribution.
-EXTRA_DIST = COPYRIGHT ncxx4-config.in
-
 # Directory for autotools to put scripts during build.
 ACLOCAL_AMFLAGS = -I m4
 
@@ -19,6 +16,15 @@ SUBDIRS = cxx4 examples docs
 if ENABLE_FILTER_TESTING
 SUBDIRS += plugins
 endif
+
+# These files get added to the distribution.
+EXTRA_DIST = CMakeLists.txt README.md CTestCustom.cmake \
+	cxx4/CMakeLists.txt docs/CMakeLists.txt         \
+	examples/CMakeLists.txt plugins/CMakeLists.txt test_common.in \
+	ncxx4-config.in netcdf-cxx4.pc.in RELEASE_NOTES.md \
+	ncxx4-config.cmake.in libnetcdf-cxx.settings.in \
+	CMakeInstallation.cmake COPYRIGHT cmake_uninstall.cmake.in \
+	CTestConfig.cmake.in
 
 # Remove these generated files, for a distclean.
 DISTCLEANFILES = VERSION

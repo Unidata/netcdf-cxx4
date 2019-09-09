@@ -51,6 +51,8 @@ TESTS = $(TESTFILES)
 
 CLEANFILES = firstFile.cdf test*.nc
 
+EXTRA_DIST = test_filter.cpp
+
 # Empty file that gets time-stamped after docs are generated
 doxygen_stamp: $(libnetcdf_c__4_la_SOURCES) $(include_HEADERS)
 	doxygen
