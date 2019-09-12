@@ -8,7 +8,7 @@ Note that this file was created and maintained starting with the `netcdf-cxx4 4.
 
 ## netCDF-CXX4 4.3.2 TBD
 
-## netCDF-CXX4 v4.3.1 September 11, 2019
+## netCDF-CXX4 v4.3.1 September 12, 2019
 
 ### Requirements
 
