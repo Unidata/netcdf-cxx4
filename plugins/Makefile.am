@@ -20,10 +20,11 @@ lib_LTLIBRARIES = libh5bzip2.la
 
 libh5bzip2_la_SOURCES = ${HDF5PLUGINSRC}
 libh5bzip2_la_LDFLAGS = -module -avoid-version -shared -export-dynamic -no-undefined
+libh5bzip2_la_LIBADD = -lhdf5
 
 libmisc_la_SOURCES = H5Zmisc.c H5Zutil.c h5misc.h
 libmisc_la_LDFLAGS = -module -avoid-version -shared -export-dynamic -no-undefined -rpath ${abs_builddir}
-
+libmisc_la_LIBADD = -lhdf5
 
 EXTRA_DIST=${PLUGINSRC} ${BZIP2SRC} ${PLUGINHDRS} ${BZIP2HDRS} \
 		H5Ztemplate.c H5Zmisc.c H5Zutil.c CMakeLists.txt
