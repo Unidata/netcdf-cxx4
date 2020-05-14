@@ -6,8 +6,17 @@ This file contains a high-level description of this package's evolution. Release
 
 Note that this file was created and maintained starting with the `netcdf-cxx4 4.3.0 release`.
 
-## netCDF-CXX4 v4.3.1 released TBD
+## netCDF-CXX4 4.3.2 TBD
 
+## netCDF-CXX4 v4.3.1 September 12, 2019
+
+### Requirements
+
+* netCDF-C 4.6.0 or greater
+
+### Changes
+
+* [Enhancement] Added cmake support to distribution files created by `make dist`.
 * [Bug Fix] Added `ncFile::create()`, also added a new `open` function and constructor to allow for more flexibility when opening a file.  See [GitHub #55](https://github.com/Unidata/netcdf-cxx4/issues/55) for more information.
 * [Enhancement] Addressed an issue reported with `Intel Compilers 17.0.0`. See [GitHub #41](https://github.com/Unidata/netcdf-cxx4/issues/41) for more information.
 * [Enhancement] Updated how `configure` determines information about the existing netCDF-C install.  See [GitHub pull request #39](https://github.com/Unidata/netcdf-cxx4/pull/39) for more information.

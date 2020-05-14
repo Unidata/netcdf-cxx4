@@ -3,7 +3,7 @@
 # the COPYRIGHT file for more information.
 
 AC_PREREQ([2.66])
-AC_INIT([netCDF-cxx4], [4.3.1-developer], [support-netcdf@unidata.ucar.edu])
+AC_INIT([netCDF-cxx4], [4.3.2-developer], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
@@ -41,6 +41,7 @@ if test "x$enable_extra_tests" = xyes; then
    AC_DEFINE([EXTRA_TESTS], [1], [if true, run extra tests which may not work yet])
 fi
 AM_CONDITIONAL(EXTRA_TESTS, [test x$enable_extra_tests = xyes])
+
 
 # Does the user want to run tests for large files (> 2GiB)?
 AC_MSG_CHECKING([whether large file (> 2GB) tests should be run])
@@ -212,6 +213,24 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       nc_has_pnetcdf=$ac_cv_func_nc_use_parallel_enabled
     ])
 
+###
+# Check for Filter support
+###
+AC_CHECK_LIB([netcdf],[nc_def_var_filter],[nc_has_filters=yes],[nc_has_filters=no])
+
+if test "x$nc_has_filters" != xno; then
+   # Do we want to run
+   AC_MSG_CHECKING([whether filter testing should be run])
+   AC_ARG_ENABLE([filter-testing],
+              [AS_HELP_STRING([--disable-filter-testing],
+                              [Do not run filter test and example; requires shared libraries and netCDF-4])])
+   test "x$enable_filter_testing" = xno || enable_filter_testing=yes
+   AC_MSG_RESULT($enable_filter_testing)
+fi
+
+AM_CONDITIONAL(ENABLE_FILTER_TESTING, [test x$enable_filter_testing = xyes])
+
+
 AC_MSG_CHECKING([netCDF v2 API present])
 AC_MSG_RESULT([$nc_build_v2])
 
@@ -227,6 +246,9 @@ AC_MSG_RESULT([$nc_has_dap])
 AC_MSG_CHECKING([netCDF has pnetcdf])
 AC_MSG_RESULT([$nc_has_pnetcdf])
 
+AC_MSG_CHECKING([netCDF has filter support])
+AC_MSG_RESULT([$nc_has_filters])
+
 if test "x$nc_build_v4" = xyes; then
    AC_DEFINE([USE_NETCDF4], [1], [if true, build netCDF-4])
 else
@@ -238,7 +260,7 @@ AM_CONDITIONAL([BUILD_V2], [test "x$nc_build_v2" = xyes])
 AM_CONDITIONAL([USE_LOGGING], [test "x$nc_has_logging" = xyes])
 AM_CONDITIONAL([BUILD_DAP], [test "x$nc_has_dap" = xyes])
 AM_CONDITIONAL([BUILD_PARALLEL], [test "x$nc_has_pnetcdf" = xyes])
-
+AM_CONDITIONAL([NC_HAS_FILTERS], [test "x$nc_has_filters" = xyes])
 AM_CONDITIONAL([BUILD_DOCS], [test x$enable_doxygen = xyes])
 AM_CONDITIONAL(USE_VALGRIND_TESTS, [test "x$enable_valgrind_tests" = xyes])
 
@@ -270,8 +292,16 @@ AC_SUBST(NC_LIBS,[$NC_LIBS])
 AC_SUBST(HAS_DAP,[$nc_has_dap])
 AC_SUBST(HAS_NC2,[$nc_build_v2])
 AC_SUBST(HAS_NC4,[$nc_build_v4])
+AC_SUBST(NC_HAS_FILTERS, [$nc_has_filters])
+AC_SUBST(ENABLE_FILTER_TESTING, [$enable_filter_testing])
+# This would be true for a cmake build.
+AC_SUBST([ISCMAKE], [])
+
+# This would be true for a visual studio build.
+AC_SUBST([MSVC], [])
 
 AC_MSG_NOTICE([generating header files and makefiles])
+AC_CONFIG_FILES(test_common.sh:test_common.in)
 AC_CONFIG_FILES([Makefile
                  cxx4/Makefile
                  examples/Makefile
@@ -279,5 +309,18 @@ AC_CONFIG_FILES([Makefile
                  ncxx4-config
                  netcdf-cxx4.pc],
                  [test -f  ncxx4-config && chmod 755 ncxx4-config ])
+
+
+
+if test "x$nc_has_filters" = xyes; then
+   AC_CONFIG_FILES(cxx4/findplugin.sh:cxx4/findplugin.in)
+
+   if test "x$enable_filter_testing" != xno; then
+      AC_CONFIG_FILES(plugins/Makefile)
+      AC_CONFIG_FILES([examples/tst_filter.sh:examples/tst_filter.sh], [chmod ugo+x examples/tst_filter.sh])
+      AC_CONFIG_FILES(examples/findplugin.sh:examples/findplugin.in)
+   fi
+fi
+
 
 AC_OUTPUT()

@@ -8,13 +8,13 @@ using namespace std;
 
 namespace netCDF {
   //  Global comparator operator ==============
-  // comparator operator 
+  // comparator operator
   bool operator<(const NcVarAtt& lhs,const NcVarAtt& rhs)
   {
     return false;
   }
-  
-  // comparator operator 
+
+  // comparator operator
   bool operator>(const NcVarAtt& lhs,const NcVarAtt& rhs)
   {
     return true;
@@ -33,7 +33,7 @@ NcVarAtt& NcVarAtt::operator=(const NcVarAtt & rhs)
 }
 
 //! The copy constructor.
-NcVarAtt::NcVarAtt(const NcVarAtt& rhs): 
+NcVarAtt::NcVarAtt(const NcVarAtt& rhs):
   NcAtt(rhs) // invoke base class copy constructor
 {}
 
@@ -56,6 +56,13 @@ NcVarAtt::NcVarAtt(const NcGroup& grp, const NcVar& ncVar, const int index):
   ncCheck(nc_inq_attname(groupId,varId,index,attName),__FILE__,__LINE__);
   myName = attName;
 }
+
+// Query a variable attribute type
+void NcVarAtt::inq_atttype(const char *name, nc_type *xtypep)
+{
+  ncCheck(nc_inq_atttype(groupId, varId, name, xtypep),__FILE__,__LINE__);
+}
+
 
 // Returns the NcVar parent object.
 NcVar NcVarAtt::getParentVar() const {
