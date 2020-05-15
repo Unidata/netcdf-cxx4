@@ -653,20 +653,6 @@ install(
   COMPONENT headers
   )
 
-#####
-# Traverse into subdirectories.
-#####
-
-
-
-##
-# Set up include directories.
-##
-INCLUDE_DIRECTORIES(cxx4 examples)
-
-ADD_SUBDIRECTORY(cxx4)
-ADD_SUBDIRECTORY(examples)
-
 IF(NC_HAS_DEF_VAR_FILTER)
   #####
   # Build cxx4/findplugin.sh
@@ -681,9 +667,6 @@ ENDIF(NC_HAS_DEF_VAR_FILTER)
 IF(ENABLE_DOXYGEN)
   ADD_SUBDIRECTORY(docs)
 ENDIF()
-
-
-
 
 ##
 # CPack, CMakeInstallation.cmake file.
