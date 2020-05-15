@@ -185,7 +185,6 @@ MACRO(add_bin_test prefix F)
   ADD_EXECUTABLE(${CUR_TEST} ${F}.cpp)
   TARGET_LINK_LIBRARIES(${CUR_TEST}
     netcdf-cxx4
-    ${NETCDF_C_LIBRARY}
     ${EXTRA_LIBS}
     )
   IF(MSVC)
@@ -222,7 +221,7 @@ ENDMACRO()
 # Build a binary used by a script, but don't make a test out of it.
 MACRO(build_bin_test F)
   ADD_EXECUTABLE(${F} ${F}.cpp)
-  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4 ${ALL_TLL_LIBS})
+  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4)
   IF(MSVC)
     SET_TARGET_PROPERTIES(${F}
       PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
