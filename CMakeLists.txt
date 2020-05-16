@@ -376,9 +376,9 @@ ELSE()
 ENDIF()
 
 
-if (NOT TARGET netcdf)
-  add_library(netcdf UNKNOWN IMPORTED)
-  set_target_properties(netcdf PROPERTIES
+if (NOT TARGET netCDF::netcdf)
+  add_library(netCDF::netcdf UNKNOWN IMPORTED)
+  set_target_properties(netCDF::netcdf PROPERTIES
     IMPORTED_LOCATION "${NETCDF_C_LIBRARY}"
     INTERFACE_INCLUDE_DIRECTORIES "${NETCDF_C_INCLUDE_DIR}"
   )
