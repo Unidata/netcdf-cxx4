@@ -185,7 +185,6 @@ MACRO(add_bin_test prefix F)
   ADD_EXECUTABLE(${CUR_TEST} ${F}.cpp)
   TARGET_LINK_LIBRARIES(${CUR_TEST}
     netcdf-cxx4
-    ${NETCDF_C_LIBRARY}
     ${EXTRA_LIBS}
     )
   IF(MSVC)
@@ -222,7 +221,7 @@ ENDMACRO()
 # Build a binary used by a script, but don't make a test out of it.
 MACRO(build_bin_test F)
   ADD_EXECUTABLE(${F} ${F}.cpp)
-  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4 ${ALL_TLL_LIBS})
+  TARGET_LINK_LIBRARIES(${F} netcdf-cxx4)
   IF(MSVC)
     SET_TARGET_PROPERTIES(${F}
       PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
@@ -356,18 +355,18 @@ ELSE()
 ENDIF()
 
 IF (netCDF_FOUND)
-  INCLUDE_DIRECTORIES(SYSTEM ${netCDF_INCLUDE_DIR})
   SET(NETCDF_C_LIBRARY ${netCDF_LIBRARIES})
   SET(NETCDF_C_INCLUDE_DIR ${netCDF_INCLUDE_DIR})
+  message(STATUS "Found netCDF CMake package: ${NETCDF_C_LIBRARY}")
 ELSE()
   # netCDF not properly packaged. Try to find it manually.
   FIND_LIBRARY(NETCDF_C_LIBRARY NAMES netcdf libnetcdf)
   IF(NOT NETCDF_C_LIBRARY)
     MESSAGE(FATAL_ERROR "libnetcdf not found. Please reinstall and try again.")
   ELSE()
+    FIND_PATH(NETCDF_C_INCLUDE_DIR "netcdf.h")
     MESSAGE(STATUS "Found netcdf: ${NETCDF_C_LIBRARY}")
-    FIND_PATH(NC_H_INCLUDE_DIR "netcdf.h")
-    IF(NOT NC_H_INCLUDE_DIR)
+    IF(NOT NETCDF_C_INCLUDE_DIR)
       MESSAGE(FATAL_ERROR "Directory containing netcdf.h cannot be found. Please reinstall and try again.")
     ELSE()
       GET_FILENAME_COMPONENT(netCDF_LIB_DIR "${NETCDF_C_LIBRARY}" REALPATH)
@@ -375,6 +374,15 @@ ELSE()
     ENDIF()
   ENDIF()
 ENDIF()
+
+
+if (NOT TARGET netCDF::netcdf)
+  add_library(netCDF::netcdf UNKNOWN IMPORTED)
+  set_target_properties(netCDF::netcdf PROPERTIES
+    IMPORTED_LOCATION "${NETCDF_C_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "${NETCDF_C_INCLUDE_DIR}"
+  )
+endif()
 
 ###
 # Check to see if netcdf-c was built with parallel.
@@ -575,6 +583,21 @@ INSTALL(
 #####
 
 #####
+# Traverse into subdirectories.
+#####
+
+##
+# Set up include directories.
+##
+# INCLUDE_DIRECTORIES(cxx4 examples)
+
+ADD_SUBDIRECTORY(cxx4)
+ADD_SUBDIRECTORY(examples)
+IF(ENABLE_DOXYGEN)
+  ADD_SUBDIRECTORY(docs)
+ENDIF()
+
+#####
 # Begin ncxx4-config section
 #####
 
@@ -607,34 +630,36 @@ configure_file(${CMAKE_SOURCE_DIR}/test_common.in ${CMAKE_BINARY_DIR}/test_commo
 
 include(CMakePackageConfigHelpers)
 
+set(ConfigPackageLocation "${CMAKE_INSTALL_LIBDIR}/cmake/netCDF")
+
 # Create export configuration
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfigVersion.cmake"
   VERSION ${NCXX_VERSION}
   COMPATIBILITY SameMajorVersion
   )
 
 install(
-  FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/netCDF/netCDFCxxConfigVersion.cmake"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/netCDFCxx
-  COMPONENT headers
+  EXPORT netcdf-cxx4Targets
+  FILE netcdf-cxx4Targets.cmake
+  NAMESPACE netCDF::
+  DESTINATION ${ConfigPackageLocation}
+  )
+
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/netCDFCxxConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfig.cmake"
+  INSTALL_DESTINATION "${ConfigPackageLocation}"
   )
 
 
-#####
-# Traverse into subdirectories.
-#####
-
-
-
-##
-# Set up include directories.
-##
-INCLUDE_DIRECTORIES(cxx4 examples)
-
-ADD_SUBDIRECTORY(cxx4)
-ADD_SUBDIRECTORY(examples)
+install(
+  FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfigVersion.cmake"
+  DESTINATION "${ConfigPackageLocation}"
+  COMPONENT headers
+  )
 
 IF(NC_HAS_DEF_VAR_FILTER)
   #####
@@ -650,8 +675,6 @@ ENDIF(NC_HAS_DEF_VAR_FILTER)
 IF(ENABLE_DOXYGEN)
   ADD_SUBDIRECTORY(docs)
 ENDIF()
-
-
 
 ##
 # CPack, CMakeInstallation.cmake file.
