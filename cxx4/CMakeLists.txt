@@ -35,7 +35,7 @@ TARGET_INCLUDE_DIRECTORIES(netcdf-cxx4 PUBLIC
   )
 TARGET_LINK_LIBRARIES(netcdf-cxx4 PUBLIC netCDF::netcdf)
 TARGET_LINK_LIBRARIES(netcdf-cxx4 PUBLIC ${ALL_TLL_LIBS})
-target_include_directories(netcdf-cxx4 SYSTEM PUBLIC "${HDF5_C_INCLUDE_DIRS}")
+target_include_directories(netcdf-cxx4 SYSTEM PUBLIC "${HDF5_INCLUDE_DIRS}")
 
 SET_TARGET_PROPERTIES(netcdf-cxx4 PROPERTIES
   VERSION ${NCXX_LIB_VERSION}
