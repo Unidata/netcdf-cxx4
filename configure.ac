@@ -197,6 +197,8 @@ AS_IF([test "x$ac_cv_path_NCCONF" != "x"],
       nc_has_logging=`$ac_cv_path_NCCONF --has-logging`
       nc_has_dap=`$ac_cv_path_NCCONF --has-dap`
       nc_has_pnetcdf=`$ac_cv_path_NCCONF --has-pnetcdf`
+      nc_libs=`$ac_cv_path_NCCONF --libs`
+      LIBS="$nc_libs $LIBS"
     ],
     [
       # See if these functions are in the library.
