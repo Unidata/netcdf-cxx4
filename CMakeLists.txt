@@ -646,6 +646,12 @@ install(
   DESTINATION ${ConfigPackageLocation}
   )
 
+export(
+  EXPORT netcdf-cxx4Targets
+  FILE netcdf-cxx4Targets.cmake
+  NAMESPACE netCDF::
+  )
+
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/netCDFCxxConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/netCDFCxxConfig.cmake"
