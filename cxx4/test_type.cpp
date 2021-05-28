@@ -267,9 +267,9 @@ try
     cout <<"    -----------   passed\n";
 
     cout <<left<<setw(57)<<"Testing NcEnumType::addMember()";
-    enumType1.addMember("Monday",1);
-    enumType1.addMember("Tuesday",7);
-    enumType1.addMember("Wednesday",-20);
+    enumType1.addMember("Monday",(short)1);
+    enumType1.addMember("Tuesday",(short)7);
+    enumType1.addMember("Wednesday",(short)-20);
     cout <<"    -----------   passed\n";
 
     cout <<left<<setw(57)<<"Testing NcEnumType::getBaseType() == and !=";
