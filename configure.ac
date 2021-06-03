@@ -7,7 +7,7 @@ AC_INIT([netCDF-cxx4], [4.3.2-developer], [support-netcdf@unidata.ucar.edu])
 
 # Create the VERSION file, which contains the package version from
 # AC_INIT.
-echo -n AC_PACKAGE_VERSION>VERSION
+echo -n AC_PACKAGE_VERSION>VERSION.txt
 AC_SUBST(PACKAGE_VERSION)
 
 AC_MSG_NOTICE([netCDF-cxx4 AC_PACKAGE_VERSION])
