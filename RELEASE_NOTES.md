@@ -8,6 +8,8 @@ Note that this file was created and maintained starting with the `netcdf-cxx4 4.
 
 ## netCDF-CXX4 4.3.2 TBD
 
+* [Bug Fix][Compression] Fixed an issue where `plugins/` were not being properly built.  See [GitHub #82](https://github.com/Unidata/netcdf-cxx4/issues/82) for more information.
+
 ## netCDF-CXX4 v4.3.1 September 12, 2019
 
 ### Requirements
