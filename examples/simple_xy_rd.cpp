@@ -6,10 +6,10 @@
    sample data produced by simple_xy_wr.cpp.
 
    This example is part of the netCDF tutorial:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
 
    Full documentation of the netCDF C++ API can be found at:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
 
    $Id: simple_xy_rd.cpp,v 1.5 2010/02/11 22:36:43 russ Exp $
 */

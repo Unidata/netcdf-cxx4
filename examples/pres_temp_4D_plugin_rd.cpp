@@ -8,10 +8,10 @@
    the use of the netCDF C++ API.
 
    This program is part of the netCDF tutorial:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
 
    Full documentation of the netCDF C++ API can be found at:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
 
    $Id: pres_temp_4D_rd.cpp,v 1.5 2010/02/11 22:36:42 russ Exp $
 */

@@ -7,10 +7,10 @@
    dimensions, "x" and "y", and a netCDF variable, called "data".
 
    This example is part of the netCDF tutorial:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-tutorial
 
    Full documentation of the netCDF C++ API can be found at:
-   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
+   https://www.unidata.ucar.edu/software/netcdf/docs/netcdf-cxx
 
    $Id: simple_xy_wr_formats.cpp,v 1.1 2010/04/09 02:15:05 russ Exp $
 */
