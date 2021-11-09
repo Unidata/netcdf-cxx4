@@ -47,9 +47,9 @@ IF(WIN32)
   SET(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
   SET(CPACK_NSIS_MENU_LINKS
 	"https://www.unidata.ucar.edu/netcdf" "Unidata Website"
-	"https://www.unidata.ucar.edu/netcdf/docs" "NetCDF Stable Documentation"
-    "https://www.unidata.ucar.edu/netcdf/docs/cxx4" "NetCDF CXX4 Stable Documentation"
-	"https://www.unidata.ucar.edu/netcdf/docs_rc" "NetCDF Unstable Documentation")
+	"https://docs.unidata.ucar.edu/netcdf-c" "NetCDF Stable Documentation"
+    "https://docs.unidata.ucar.edu/netcdf-cxx4" "NetCDF CXX4 Stable Documentation"
+	"https://docs.unidata.ucar.edu/netcdf-c" "NetCDF Unstable Documentation")
 
 ENDIF()
 
