@@ -37,6 +37,7 @@ CMakeLists.txt.user
 scan-build
 .deps
 .libs
+.idea
 *.zip
 Makefile
 .DS_Store
