@@ -11,8 +11,6 @@ lib_LTLIBRARIES = libnetcdf_c++4.la
 libnetcdf_c__4_la_LDFLAGS = -version-info 2:0:1 -no-undefined
 libnetcdf_c__4_la_LIBADD = -lnetcdf
 
-libnetcdf_c__4_la_LIBADD = -lnetcdf
-
 # These headers will be installed in the users header directory.
 include_HEADERS = netcdf ncAtt.h ncCheck.h ncDim.h ncException.h	\
 ncGroup.h ncOpaqueType.h ncVar.h ncVlenType.h ncCompoundType.h		\
