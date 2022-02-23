@@ -149,7 +149,7 @@ int main(void)
    //cout << "*** SUCCESS reading example file sfc_pres_temp.nc!" << endl;
    return 0;
   }
-  catch(NcException e)
+  catch(NcException& e)
   {
       cout<<"FAILURE**************************\n";
       cout << e.what() << endl;
