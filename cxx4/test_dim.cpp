@@ -287,43 +287,43 @@ int main()
 
       cout <<left<<setw(55)<<"Testing NcGroup::getDim(\"name\",[netCDF::Location])";
       {
-	if( ncFile.getDim("dim1",NcGroup::All).getName() !="dim1") throw NcException("Error in test 9.1",__FILE__,__LINE__);
-	if( ncFile.getDim("dim2",NcGroup::All).getName() !="dim2") throw NcException("Error in test 9.2",__FILE__,__LINE__);
-	if( ncFile.getDim("dim3",NcGroup::All).getName() !="dim3") throw NcException("Error in test 9.3",__FILE__,__LINE__);
-	if( ncFile.getDim("dim4",NcGroup::All).getName() !="dim4") throw NcException("Error in test 9.4",__FILE__,__LINE__);
-	if( ncFile.getDim("dim5",NcGroup::All).getName() !="dim5") throw NcException("Error in test 9.5",__FILE__,__LINE__);
-	if( ncFile.getDim("dim6",NcGroup::All).getName() !="dim6") throw NcException("Error in test 9.6",__FILE__,__LINE__);
-	if( ncFile.getDim("dim7",NcGroup::All).getName() !="dim7") throw NcException("Error in test 9.7",__FILE__,__LINE__);
-	if( groupB.getDim("dim1",NcGroup::All).getName() !="dim1") throw NcException("Error in test 9.8",__FILE__,__LINE__);
-	if( groupB.getDim("dim2",NcGroup::All).getName() !="dim2") throw NcException("Error in test 9.9",__FILE__,__LINE__);
-	if( groupB.getDim("dim3",NcGroup::All).getName() !="dim3") throw NcException("Error in test 9.10",__FILE__,__LINE__);
-	if( groupB.getDim("dim4",NcGroup::All).getName() !="dim4") throw NcException("Error in test 9.11",__FILE__,__LINE__);
-	if( groupB.getDim("dim5",NcGroup::All).getName() !="dim5") throw NcException("Error in test 9.12",__FILE__,__LINE__);
-	if( groupB.getDim("dim6",NcGroup::All).getName() !="dim6") throw NcException("Error in test 9.13",__FILE__,__LINE__);
-	if( groupB.getDim("dim7",NcGroup::All).getName() !="dim7") throw NcException("Error in test 9.14",__FILE__,__LINE__);
-	if( !ncFile.getDim("dim7").isNull())                            throw NcException("Error in test 9.15",__FILE__,__LINE__);
-	if( !ncFile.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.16",__FILE__,__LINE__);
-	if( !ncFile.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.17",__FILE__,__LINE__);
-	if(  ncFile.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.18",__FILE__,__LINE__);
-	if( !ncFile.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.19",__FILE__,__LINE__);
-	if(  ncFile.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.20",__FILE__,__LINE__);
+        if( ncFile.getDim("dim1",NcGroup::All).getName() !="dim1") throw NcException("Error in test 9.1",__FILE__,__LINE__);
+        if( ncFile.getDim("dim2",NcGroup::All).getName() !="dim2") throw NcException("Error in test 9.2",__FILE__,__LINE__);
+        if( ncFile.getDim("dim3",NcGroup::All).getName() !="dim3") throw NcException("Error in test 9.3",__FILE__,__LINE__);
+        if( ncFile.getDim("dim4",NcGroup::All).getName() !="dim4") throw NcException("Error in test 9.4",__FILE__,__LINE__);
+        if( ncFile.getDim("dim5",NcGroup::All).getName() !="dim5") throw NcException("Error in test 9.5",__FILE__,__LINE__);
+        if( ncFile.getDim("dim6",NcGroup::All).getName() !="dim6") throw NcException("Error in test 9.6",__FILE__,__LINE__);
+        if( ncFile.getDim("dim7",NcGroup::All).getName() !="dim7") throw NcException("Error in test 9.7",__FILE__,__LINE__);
+        if( groupB.getDim("dim1",NcGroup::All).getName() !="dim1") throw NcException("Error in test 9.8",__FILE__,__LINE__);
+        if( groupB.getDim("dim2",NcGroup::All).getName() !="dim2") throw NcException("Error in test 9.9",__FILE__,__LINE__);
+        if( groupB.getDim("dim3",NcGroup::All).getName() !="dim3") throw NcException("Error in test 9.10",__FILE__,__LINE__);
+        if( groupB.getDim("dim4",NcGroup::All).getName() !="dim4") throw NcException("Error in test 9.11",__FILE__,__LINE__);
+        if( groupB.getDim("dim5",NcGroup::All).getName() !="dim5") throw NcException("Error in test 9.12",__FILE__,__LINE__);
+        if( groupB.getDim("dim6",NcGroup::All).getName() !="dim6") throw NcException("Error in test 9.13",__FILE__,__LINE__);
+        if( groupB.getDim("dim7",NcGroup::All).getName() !="dim7") throw NcException("Error in test 9.14",__FILE__,__LINE__);
+        if( !ncFile.getDim("dim7").isNull())                            throw NcException("Error in test 9.15",__FILE__,__LINE__);
+        if( !ncFile.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.16",__FILE__,__LINE__);
+        if( !ncFile.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.17",__FILE__,__LINE__);
+        if(  ncFile.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.18",__FILE__,__LINE__);
+        if( !ncFile.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.19",__FILE__,__LINE__);
+        if(  ncFile.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.20",__FILE__,__LINE__);
 
-	if( !groupA.getDim("dim7").isNull())                            throw NcException("Error in test 9.21",__FILE__,__LINE__);
-	if( !groupA.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.22",__FILE__,__LINE__);
-	if( !groupA.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.23",__FILE__,__LINE__);
-	if(  groupA.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.24",__FILE__,__LINE__);
-	if( !groupA.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.25",__FILE__,__LINE__);
-	if(  groupA.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.26",__FILE__,__LINE__);
-	if(  groupA.getDim("dim7",NcGroup::All).isNull())               throw NcException("Error in test 9.27",__FILE__,__LINE__);
+        if( !groupA.getDim("dim7").isNull())                            throw NcException("Error in test 9.21",__FILE__,__LINE__);
+        if( !groupA.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.22",__FILE__,__LINE__);
+        if( !groupA.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.23",__FILE__,__LINE__);
+        if(  groupA.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.24",__FILE__,__LINE__);
+        if( !groupA.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.25",__FILE__,__LINE__);
+        if(  groupA.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.26",__FILE__,__LINE__);
+        if(  groupA.getDim("dim7",NcGroup::All).isNull())               throw NcException("Error in test 9.27",__FILE__,__LINE__);
 
-	if(  groupB.getDim("dim7").isNull())                            throw NcException("Error in test 9.28",__FILE__,__LINE__);
-	if(  groupB.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.29",__FILE__,__LINE__);
-	if( !groupB.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.30",__FILE__,__LINE__);
-	if( !groupB.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.31",__FILE__,__LINE__);
-	if(  groupB.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.32",__FILE__,__LINE__);
-	if(  groupB.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.33",__FILE__,__LINE__);
-	if(  groupB.getDim("dim7",NcGroup::All).isNull())               throw NcException("Error in test 9.34",__FILE__,__LINE__);
-	if( !ncFile.getDim("dimX",NcGroup::All).isNull())               throw NcException("Error in test 9.35",__FILE__,__LINE__);
+        if(  groupB.getDim("dim7").isNull())                            throw NcException("Error in test 9.28",__FILE__,__LINE__);
+        if(  groupB.getDim("dim7",NcGroup::Current).isNull())           throw NcException("Error in test 9.29",__FILE__,__LINE__);
+        if( !groupB.getDim("dim7",NcGroup::Parents).isNull())           throw NcException("Error in test 9.30",__FILE__,__LINE__);
+        if( !groupB.getDim("dim7",NcGroup::Children).isNull())          throw NcException("Error in test 9.31",__FILE__,__LINE__);
+        if(  groupB.getDim("dim7",NcGroup::ParentsAndCurrent).isNull()) throw NcException("Error in test 9.32",__FILE__,__LINE__);
+        if(  groupB.getDim("dim7",NcGroup::ChildrenAndCurrent).isNull())throw NcException("Error in test 9.33",__FILE__,__LINE__);
+        if(  groupB.getDim("dim7",NcGroup::All).isNull())               throw NcException("Error in test 9.34",__FILE__,__LINE__);
+        if( !ncFile.getDim("dimX",NcGroup::All).isNull())               throw NcException("Error in test 9.35",__FILE__,__LINE__);
       }
 
       cout <<"    -----------   passed\n";
@@ -376,7 +376,7 @@ int main()
       {
         NcDim dim;
         NcVar var;
-        
+
         ncFile.getCoordVar("dim1", dim, var, NcGroup::Current);
         if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.1", __FILE__, __LINE__);
         ncFile.getCoordVar("dim1", dim, var, NcGroup::Parents);
