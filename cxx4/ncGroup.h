@@ -559,7 +559,7 @@ namespace netCDF
       \param location Enumeration type controlling the groups to search.
       \return         The set of names of dimension variables.
     */
-    void getCoordVar(std::string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGroup::Location location=Current) const;
+    void getCoordVar(const std::string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGroup::Location location=Current) const;
 
 
   protected:
