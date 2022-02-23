@@ -37,6 +37,12 @@ int main()
       NcDim dim7 = groupB.addDim("dim7",17);
       cout <<"    -----------   passed\n";
 
+      cout <<left<<setw(55)<<"Testing addVar(\"dimensionName\")";
+      // Coordinate variables
+      NcVar var1 = ncFile.addVar("dim1", NcInt{});
+      NcVar var4 = groupB.addVar("dim4", NcInt{});
+      cout <<"    -----------   passed\n";
+
       cout <<left<<setw(55)<<"Testing NcDim::isUnlimited()";
       if( dim1.isUnlimited())    throw NcException("Error in test 1.1",__FILE__,__LINE__);
       if( !dim2.isUnlimited())   throw NcException("Error in test 1.2",__FILE__,__LINE__);
@@ -322,12 +328,140 @@ int main()
 
       cout <<"    -----------   passed\n";
 
+      cout <<left<<setw(55)<<"Testing NcGroup::getCoordVars([netCDF::Location])";
+      {
+        if (ncFile.getCoordVars(NcGroup::Current).count("dim1") != 1) throw NcException("Error in test 10.1", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::Current).count("dim4") != 0) throw NcException("Error in test 10.2", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::Children).count("dim1") != 0) throw NcException("Error in test 10.3", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::Children).count("dim4") != 1) throw NcException("Error in test 10.4", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim1") != 1) throw NcException("Error in test 10.5", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim4") != 1) throw NcException("Error in test 10.6", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::Parents).count("dim1") != 0) throw NcException("Error in test 10.7", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::Parents).count("dim4") != 0) throw NcException("Error in test 10.8", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::ParentsAndCurrent).count("dim1") != 1) throw NcException("Error in test 10.9", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::ParentsAndCurrent).count("dim4") != 0) throw NcException("Error in test 10.10", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::All).count("dim1") != 1) throw NcException("Error in test 10.11", __FILE__, __LINE__);
+        if (ncFile.getCoordVars(NcGroup::All).count("dim4") != 1) throw NcException("Error in test 10.12", __FILE__, __LINE__);
+
+        if (groupA.getCoordVars(NcGroup::Current).count("dim1") != 0) throw NcException("Error in test 10.13", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::Current).count("dim4") != 0) throw NcException("Error in test 10.14", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::Children).count("dim1") != 0) throw NcException("Error in test 10.15", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::Children).count("dim4") != 1) throw NcException("Error in test 10.16", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim1") != 0) throw NcException("Error in test 10.17", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim4") != 1) throw NcException("Error in test 10.18", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::Parents).count("dim1") != 1) throw NcException("Error in test 10.19", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::Parents).count("dim4") != 0) throw NcException("Error in test 10.20", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::ParentsAndCurrent).count("dim1") != 1) throw NcException("Error in test 10.21", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::ParentsAndCurrent).count("dim4") != 0) throw NcException("Error in test 10.22", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::All).count("dim1") != 1) throw NcException("Error in test 10.23", __FILE__, __LINE__);
+        if (groupA.getCoordVars(NcGroup::All).count("dim4") != 1) throw NcException("Error in test 10.24", __FILE__, __LINE__);
+
+        if (groupB.getCoordVars(NcGroup::Current).count("dim1") != 0) throw NcException("Error in test 10.25", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::Current).count("dim4") != 1) throw NcException("Error in test 10.26", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::Children).count("dim1") != 0) throw NcException("Error in test 10.27", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::Children).count("dim4") != 0) throw NcException("Error in test 10.28", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim1") != 0) throw NcException("Error in test 10.29", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::ChildrenAndCurrent).count("dim4") != 1) throw NcException("Error in test 10.30", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::Parents).count("dim1") != 1) throw NcException("Error in test 10.31", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::Parents).count("dim4") != 0) throw NcException("Error in test 10.32", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::ParentsAndCurrent).count("dim1") != 1) throw NcException("Error in test 10.33", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::ParentsAndCurrent).count("dim4") != 1) throw NcException("Error in test 10.34", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::All).count("dim1") != 1) throw NcException("Error in test 10.35", __FILE__, __LINE__);
+        if (groupB.getCoordVars(NcGroup::All).count("dim4") != 1) throw NcException("Error in test 10.36", __FILE__, __LINE__);
+      }
+
+      cout <<"    -----------   passed\n";
+
+      cout <<left<<setw(55)<<"Testing NcGroup::getCoordVars([netCDF::Location])";
+      {
+        NcDim dim;
+        NcVar var;
+        
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::Current);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.1", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::Parents);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.2", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::ParentsAndCurrent);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.3", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::Children);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.4", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::ChildrenAndCurrent);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.5", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim1", dim, var, NcGroup::All);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.6", __FILE__, __LINE__);
+
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::Current);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.7", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::Parents);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.8", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::ParentsAndCurrent);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.9", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::Children);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.10", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::ChildrenAndCurrent);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.11", __FILE__, __LINE__);
+        ncFile.getCoordVar("dim4", dim, var, NcGroup::All);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.12", __FILE__, __LINE__);
+
+        groupA.getCoordVar("dim1", dim, var, NcGroup::Current);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.13", __FILE__, __LINE__);
+        groupA.getCoordVar("dim1", dim, var, NcGroup::Parents);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.14", __FILE__, __LINE__);
+        groupA.getCoordVar("dim1", dim, var, NcGroup::ParentsAndCurrent);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.15", __FILE__, __LINE__);
+        groupA.getCoordVar("dim1", dim, var, NcGroup::Children);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.16", __FILE__, __LINE__);
+        groupA.getCoordVar("dim1", dim, var, NcGroup::ChildrenAndCurrent);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.17", __FILE__, __LINE__);
+        groupA.getCoordVar("dim1", dim, var, NcGroup::All);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.18", __FILE__, __LINE__);
+
+        groupA.getCoordVar("dim4", dim, var, NcGroup::Current);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.19", __FILE__, __LINE__);
+        groupA.getCoordVar("dim4", dim, var, NcGroup::Parents);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.20", __FILE__, __LINE__);
+        groupA.getCoordVar("dim4", dim, var, NcGroup::ParentsAndCurrent);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.21", __FILE__, __LINE__);
+        groupA.getCoordVar("dim4", dim, var, NcGroup::Children);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.22", __FILE__, __LINE__);
+        groupA.getCoordVar("dim4", dim, var, NcGroup::ChildrenAndCurrent);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.23", __FILE__, __LINE__);
+        groupA.getCoordVar("dim4", dim, var, NcGroup::All);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.24", __FILE__, __LINE__);
+
+        groupB.getCoordVar("dim1", dim, var, NcGroup::Current);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.25", __FILE__, __LINE__);
+        groupB.getCoordVar("dim1", dim, var, NcGroup::Parents);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.26", __FILE__, __LINE__);
+        groupB.getCoordVar("dim1", dim, var, NcGroup::ParentsAndCurrent);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.27", __FILE__, __LINE__);
+        groupB.getCoordVar("dim1", dim, var, NcGroup::Children);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.28", __FILE__, __LINE__);
+        groupB.getCoordVar("dim1", dim, var, NcGroup::ChildrenAndCurrent);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.29", __FILE__, __LINE__);
+        groupB.getCoordVar("dim1", dim, var, NcGroup::All);
+        if (dim.getName() != "dim1" || var.getName() != "dim1") throw NcException("Error in test 11.30", __FILE__, __LINE__);
+
+        groupB.getCoordVar("dim4", dim, var, NcGroup::Current);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.31", __FILE__, __LINE__);
+        groupB.getCoordVar("dim4", dim, var, NcGroup::Parents);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.32", __FILE__, __LINE__);
+        groupB.getCoordVar("dim4", dim, var, NcGroup::ParentsAndCurrent);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.33", __FILE__, __LINE__);
+        groupB.getCoordVar("dim4", dim, var, NcGroup::Children);
+        if (!dim.isNull() || !var.isNull()) throw NcException("Error in test 11.34", __FILE__, __LINE__);
+        groupB.getCoordVar("dim4", dim, var, NcGroup::ChildrenAndCurrent);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.35", __FILE__, __LINE__);
+        groupB.getCoordVar("dim4", dim, var, NcGroup::All);
+        if (dim.getName() != "dim4" || var.getName() != "dim4") throw NcException("Error in test 11.36", __FILE__, __LINE__);
+      }
+      cout <<"    -----------   passed\n";
 
     }
   catch (NcException& e)
     {
       cout <<"\n";
-      e.what();
-      return e.errorCode();
+      cout << e.what() << std::endl;
+      return 1;
     }
 }
