@@ -1304,30 +1304,39 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
   NcGroup tmpGroup(*this);
   multimap<string,NcDim>::iterator itD;
   multimap<string,NcVar>::iterator itV;
+  bool check_current_group = !(location == Parents || location == Children);
+  const bool check_parent_groups = (location == Parents || location == ParentsAndCurrent || location == All);
+  const bool check_child_groups = (location == Children || location == ChildrenAndCurrent || location == All);
+
   while(1) {
     // get the collection of NcDim objects defined in this group.
-    multimap<string,NcDim> dimTmp(tmpGroup.getDims());
-    multimap<string,NcVar> varTmp(tmpGroup.getVars());
-    for (itD=dimTmp.begin();itD!=dimTmp.end();itD++) {
-      string coordName(itD->first);
-      itV = varTmp.find(coordName);
-      if(itV != varTmp.end()) {
-	coordVars.insert(pair<const string,NcGroup>(string(coordName),tmpGroup));
+    if (check_current_group) {
+      multimap<string,NcDim> dimTmp(tmpGroup.getDims());
+      multimap<string,NcVar> varTmp(tmpGroup.getVars());
+      for (itD=dimTmp.begin();itD!=dimTmp.end();itD++) {
+        string coordName(itD->first);
+        itV = varTmp.find(coordName);
+        if(itV != varTmp.end()) {
+          coordVars.insert(pair<const string,NcGroup>(string(coordName),tmpGroup));
+        }
       }
     }
-    if(location != ParentsAndCurrent || location != All || tmpGroup.isRootGroup()) {
+
+    if (!check_parent_groups || tmpGroup.isRootGroup()) {
       break;
     }
+    check_current_group = true;
+
     // continue loop with the parent.
     tmpGroup=tmpGroup.getParentGroup();
   }
 
   // search in child groups (makes recursive calls).
-  if(location == ChildrenAndCurrent || location == All ) {
+  if (check_child_groups) {
     multimap<string,NcGroup>::iterator it;
     multimap<string,NcGroup> groups(getGroups());
     for (it=groups.begin();it!=groups.end();it++) {
-      map<string,NcGroup> coordVarsTmp=getCoordVars(ChildrenAndCurrent);
+      map<string,NcGroup> coordVarsTmp = it->second.getCoordVars(ChildrenAndCurrent);
       coordVars.insert(coordVarsTmp.begin(),coordVarsTmp.end());
     }
   }
@@ -1336,47 +1345,47 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
 }
 
 // Get the NcDim and NcVar object pair for a named coordinate variables.
-void NcGroup::getCoordVar(string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGroup::Location location) const {
+void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGroup::Location location) const {
+  // Nullify existing dim/var in case no coordinate variable found
+  ncDim = NcDim{};
+  ncVar = NcVar{};
 
   // search in current group and parent groups.
   multimap<string,NcDim>::iterator itD;
   NcGroup tmpGroup(*this);
   multimap<string,NcVar>::iterator itV;
+  bool check_current_group = !(location == Parents || location == Children);
+  const bool check_parent_groups = (location == Parents || location == ParentsAndCurrent || location == All);
+  const bool check_child_groups = (location == Children || location == ChildrenAndCurrent || location == All);
+
   while(1) {
     // get the collection of NcDim objects defined in this group.
-    multimap<string,NcDim> dimTmp(tmpGroup.getDims());
-    multimap<string,NcVar> varTmp(tmpGroup.getVars());
-    itD=dimTmp.find(coordVarName);
-    itV=varTmp.find(coordVarName);
-    if(itD != dimTmp.end() && itV != varTmp.end()) {
-      ncDim=itD->second;
-      ncVar=itV->second;
-      return;
+    if (check_current_group) {
+      multimap<string,NcDim> dimTmp(tmpGroup.getDims());
+      multimap<string,NcVar> varTmp(tmpGroup.getVars());
+      itD=dimTmp.find(coordVarName);
+      itV=varTmp.find(coordVarName);
+      if(itD != dimTmp.end() && itV != varTmp.end()) {
+        ncDim=itD->second;
+        ncVar=itV->second;
+        return;
+      }
     }
-    if(location != ParentsAndCurrent || location != All || tmpGroup.isRootGroup()) {
+    if(!check_parent_groups || tmpGroup.isRootGroup()) {
       break;
     }
+    check_current_group = true;
     // continue loop with the parent.
     tmpGroup=tmpGroup.getParentGroup();
   }
 
   // search in child groups (makes recursive calls).
-  if(location == ChildrenAndCurrent || location == All ) {
+  if (check_child_groups) {
     multimap<string,NcGroup>::iterator it;
     multimap<string,NcGroup> groups(getGroups());
     for (it=groups.begin();it!=groups.end();it++) {
-      getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
+      it->second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
       if(!ncDim.isNull()) break;
     }
   }
-
-  if(ncDim.isNull()) {
-    // return null objects as no coordinates variables were obtained.
-    NcDim dimTmp;
-    NcVar varTmp;
-    ncDim=dimTmp;
-    ncVar=varTmp;
-    return;
-  }
-
 }
