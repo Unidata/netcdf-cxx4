@@ -1327,7 +1327,7 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
     multimap<string,NcGroup>::iterator it;
     multimap<string,NcGroup> groups(getGroups());
     for (it=groups.begin();it!=groups.end();it++) {
-      map<string,NcGroup> coordVarsTmp=getCoordVars(ChildrenAndCurrent);
+      map<string,NcGroup> coordVarsTmp = it->second.getCoordVars(ChildrenAndCurrent);
       coordVars.insert(coordVarsTmp.begin(),coordVarsTmp.end());
     }
   }
@@ -1365,7 +1365,7 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
     multimap<string,NcGroup>::iterator it;
     multimap<string,NcGroup> groups(getGroups());
     for (it=groups.begin();it!=groups.end();it++) {
-      getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
+      it->second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
       if(!ncDim.isNull()) break;
     }
   }
