@@ -189,7 +189,8 @@ int main()
    }
    catch(NcException& e)
    {
-      e.what();
+      cout<<"FAILURE**************************\n";
+      cout << e.what() << endl;
       return NC_ERR;
    }
 }

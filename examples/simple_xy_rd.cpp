@@ -54,8 +54,8 @@ int main()
    return 0;
    }catch(NcException& e)
      {
-       e.what();
-       cout<<"FAILURE*************************************"<<endl;
-       return NC_ERR;
+      cout<<"FAILURE**************************\n";
+      cout << e.what() << endl;
+      return NC_ERR;
      }
 }
