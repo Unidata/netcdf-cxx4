@@ -186,8 +186,7 @@ int main()
     }
   catch (NcException& e)
     {
-      cout << "unknown error"<<endl;
-      e.what();
-      return e.errorCode();
+      cout << e.what() << endl;
+      return EXIT_FAILURE;
     }
 }
