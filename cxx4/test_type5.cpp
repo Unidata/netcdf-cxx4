@@ -78,8 +78,7 @@ try
   }
  catch (NcException& e)
    {
-     cout << "unknown error"<<endl;
-     e.what();
+     cout << e.what() << endl;
      return e.errorCode();
    }
 }

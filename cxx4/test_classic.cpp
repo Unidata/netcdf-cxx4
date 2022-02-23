@@ -52,7 +52,7 @@ int main()
    }
    catch(NcException& e)
    {
-      cout << "Error!\n";
-      return e.errorCode();
+     cout << e.what() << endl;
+     return EXIT_FAILURE;
    }
 }

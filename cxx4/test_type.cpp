@@ -530,7 +530,6 @@ try
       vlenPointer[0] = 1;
       vlenPointer[1] = 31;
       vlenPointer[2] = -20;
-      dummyData2.mem1[0];
       dummyData2.mem1[0].p = vlenPointer;
       dummyData2.mem1[0].len=3;
       //      vlenPointer = new short int[2];
@@ -558,8 +557,7 @@ try
 }
 catch (NcException& e)
   {
-    cout << "unknown error"<<endl;
-    cout << e.what();
-    exit(e.errorCode());
+      cout << e.what() << endl;
+      return EXIT_FAILURE;
   }
 }
