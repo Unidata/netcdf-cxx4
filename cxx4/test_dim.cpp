@@ -460,8 +460,10 @@ int main()
     }
   catch (NcException& e)
     {
+
       cout <<"\n";
       cout << e.what() << std::endl;
       return 1;
+
     }
 }
