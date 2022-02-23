@@ -1346,6 +1346,9 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
 
 // Get the NcDim and NcVar object pair for a named coordinate variables.
 void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar, NcGroup::Location location) const {
+  // Nullify existing dim/var in case no coordinate variable found
+  ncDim = NcDim{};
+  ncVar = NcVar{};
 
   // search in current group and parent groups.
   multimap<string,NcDim>::iterator itD;
@@ -1385,14 +1388,4 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
       if(!ncDim.isNull()) break;
     }
   }
-
-  if(ncDim.isNull()) {
-    // return null objects as no coordinates variables were obtained.
-    NcDim dimTmp;
-    NcVar varTmp;
-    ncDim=dimTmp;
-    ncVar=varTmp;
-    return;
-  }
-
 }
