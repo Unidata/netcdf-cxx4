@@ -45,7 +45,7 @@ namespace netCDF
         \aram ncFileFlags File flags from netcdf.h
       */
 
-      NcFile(const std::string& filePath, int ncFileFlags);
+      NcFile(const std::string& filePath, const int ncFileFlags);
 
 
       /*!
@@ -57,14 +57,14 @@ namespace netCDF
 	                    - 'replace' Create new file, even it already exists.
 	                    - 'newFile' Create new file, fail it exists already.
       */
-      NcFile(const std::string& filePath, FileMode fMode);
+      NcFile(const std::string& filePath, const FileMode fMode);
 
       /*!
         Create a netCDF file.
         \param filePath    Name of netCDF optional path.
         \param ncFileFlags File flags from netcdf.h
       */
-      void create(const std::string& filePath, int ncFileFlags);
+      void create(const std::string& filePath, const int ncFileFlags);
 
       /*!
         Opens a netCDF file.
@@ -83,7 +83,7 @@ namespace netCDF
         - 'replace' Create new file, even it already exists.
         - 'newFile' Create new file, fail it exists already.
       */
-      void open(const std::string& filePath, FileMode fMode);
+      void open(const std::string& filePath, const FileMode fMode);
 
       /*!
 	Creates a netCDF file of a specified format.
@@ -92,7 +92,7 @@ namespace netCDF
 	                    - 'replace' Create new file, even it already exists.
 	                    - 'newFile' Create new file, fail it exists already.
       */
-      NcFile(const std::string& filePath, FileMode fMode, FileFormat fFormat);
+      NcFile(const std::string& filePath, const FileMode fMode, const FileFormat fFormat);
       /*!
       Creates a netCDF file of a specified format.
       \param filePath    Name of netCDF optional path.
@@ -100,7 +100,7 @@ namespace netCDF
                           - 'replace' Create new file, even it already exists.
                           - 'newFile' Create new file, fail it exists already.
       */
-      void open(const std::string& filePath, FileMode fMode, FileFormat fFormat);
+      void open(const std::string& filePath, const FileMode fMode, const FileFormat fFormat);
 
       //! Close a file before destructor call
       void close();
