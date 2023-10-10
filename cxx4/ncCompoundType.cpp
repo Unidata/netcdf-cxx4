@@ -155,8 +155,7 @@ int NcCompoundType::getMemberDimCount(int memberIndex) const
 // Returns the shape of the given member.
 vector<int> NcCompoundType::getMemberShape(int memberIndex) const 
 {
-  vector<int> dim_size;
-  dim_size.resize(getMemberDimCount(memberIndex));
+  vector<int> dim_size(static_cast<std::size_t>(getMemberDimCount(memberIndex)));
   if(!dim_size.empty())
     ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
   return dim_size;
