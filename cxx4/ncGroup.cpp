@@ -165,14 +165,14 @@ int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
   // search in parent groups
   if(location == ParentsGrps || location == ParentsAndCurrentGrps || location == AllGrps ) {
     multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    ngroups += groups.size();
+    ngroups += static_cast<int>(groups.size());
   }
 
 
   // get the number of all children that are childreof children
   if(location == ChildrenOfChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     multimap<string,NcGroup> groups(getGroups(ChildrenOfChildrenGrps));
-    ngroups += groups.size();
+    ngroups += static_cast<int>(groups.size());
   }
 
   return ngroups;
@@ -465,7 +465,7 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
   // finally define a new netCDF variable
   int varId;
   int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(), static_cast<int>(dimIds.size()), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
@@ -493,7 +493,7 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
   // finally define a new netCDF variable
   int varId;
   int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(), static_cast<int>(dimIds.size()), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
