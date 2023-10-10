@@ -79,7 +79,7 @@ NcCompoundType::NcCompoundType(const NcType& rhs):
 //  Inserts a named field.
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType,size_t offset)
 {
-  ncCheck(nc_insert_compound(groupId,myId,const_cast<char*>(memberName.c_str()),offset,newMemberType.getId()),__FILE__,__LINE__);
+  ncCheck(nc_insert_compound(groupId,myId, memberName.c_str(),offset,newMemberType.getId()),__FILE__,__LINE__);
 }
 
 
@@ -88,7 +88,7 @@ void NcCompoundType::addMember(const string& memberName, const NcType& newMember
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType, size_t offset, const vector<int>& shape)
 {
   if (!shape.empty())
-    ncCheck(nc_insert_array_compound(groupId, myId,const_cast<char*>(memberName.c_str()), offset, newMemberType.getId(), static_cast<int>(shape.size()), const_cast<int*>(&shape[0])),__FILE__,__LINE__);
+    ncCheck(nc_insert_array_compound(groupId, myId, memberName.c_str(), offset, newMemberType.getId(), static_cast<int>(shape.size()), &shape[0]),__FILE__,__LINE__);
   else
     addMember(memberName, newMemberType, offset);
 }

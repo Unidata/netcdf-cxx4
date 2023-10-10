@@ -265,7 +265,7 @@ set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation l
 NcGroup NcGroup::addGroup(const string& name) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::addGroup on a Null group",__FILE__,__LINE__);
   int new_ncid;
-  ncCheck(nc_def_grp(myId,const_cast<char*> (name.c_str()),&new_ncid),__FILE__,__LINE__);
+  ncCheck(nc_def_grp(myId, name.c_str(), &new_ncid),__FILE__,__LINE__);
   return NcGroup(new_ncid);
 }
 
@@ -1271,7 +1271,7 @@ NcEnumType NcGroup::addEnumType(const string& name,NcEnumType::ncEnumType baseTy
 NcVlenType NcGroup::addVlenType(const string& name,NcType& baseType) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_vlen(myId,  const_cast<char*>(name.c_str()),baseType.getId(),&typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_vlen(myId, name.c_str(), baseType.getId(),&typeId),__FILE__,__LINE__);
   NcVlenType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
@@ -1281,7 +1281,7 @@ NcVlenType NcGroup::addVlenType(const string& name,NcType& baseType) const {
 NcOpaqueType NcGroup::addOpaqueType(const string& name, size_t size) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_opaque(myId, size,const_cast<char*>(name.c_str()), &typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_opaque(myId, size, name.c_str(), &typeId),__FILE__,__LINE__);
   NcOpaqueType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
@@ -1290,7 +1290,7 @@ NcOpaqueType NcGroup::addOpaqueType(const string& name, size_t size) const {
 NcCompoundType NcGroup::addCompoundType(const string& name, size_t size) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_compound(myId, size,const_cast<char*>(name.c_str()),&typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_compound(myId, size, name.c_str(), &typeId),__FILE__,__LINE__);
   NcCompoundType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
