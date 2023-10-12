@@ -17,6 +17,7 @@
 #include "ncFloat.h"
 #include "ncDouble.h"
 #include "ncString.h"
+#include <cstddef>
 #include <ncException.h>
 #include "ncCheck.h"
 using namespace std;
@@ -165,14 +166,14 @@ int NcGroup::getGroupCount(NcGroup::GroupLocation location) const {
   // search in parent groups
   if(location == ParentsGrps || location == ParentsAndCurrentGrps || location == AllGrps ) {
     multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    ngroups += groups.size();
+    ngroups += static_cast<int>(groups.size());
   }
 
 
   // get the number of all children that are childreof children
   if(location == ChildrenOfChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     multimap<string,NcGroup> groups(getGroups(ChildrenOfChildrenGrps));
-    ngroups += groups.size();
+    ngroups += static_cast<int>(groups.size());
   }
 
   return ngroups;
@@ -193,13 +194,13 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
   // the child groups of the current group
   if(location == ChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     // get the number of groups
-    int groupCount = getGroupCount();
+    const auto groupCount = static_cast<std::size_t>(getGroupCount());
     if (groupCount){
       vector<int> ncids(groupCount);
       int* numgrps=NULL;
       // now get the id of each NcGroup and populate the ncGroups container.
       ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
-      for(int i=0; i<groupCount;i++){
+      for(std::size_t i=0; i<groupCount;i++){
         NcGroup tmpGroup(ncids[i]);
         ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
       }
@@ -265,7 +266,7 @@ set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation l
 NcGroup NcGroup::addGroup(const string& name) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::addGroup on a Null group",__FILE__,__LINE__);
   int new_ncid;
-  ncCheck(nc_def_grp(myId,const_cast<char*> (name.c_str()),&new_ncid),__FILE__,__LINE__);
+  ncCheck(nc_def_grp(myId, name.c_str(), &new_ncid),__FILE__,__LINE__);
   return NcGroup(new_ncid);
 }
 
@@ -319,13 +320,13 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
   NcGroup tmpGroup(*this);
   if((location == ParentsAndCurrent || location == ChildrenAndCurrent || location == Current || location ==All) && !tmpGroup.isNull()) {
     // get the number of variables.
-    int varCount = getVarCount();
+    const auto varCount = static_cast<std::size_t>(getVarCount());
     if (varCount){
       // now get the name of each NcVar object and populate the ncVars container.
       int* nvars=NULL;
       vector<int> varids(varCount);
       ncCheck(nc_inq_varids(myId, nvars,&varids[0]),__FILE__,__LINE__);
-      for(int i=0; i<varCount;i++){
+      for(std::size_t i=0; i<varCount;i++){
         NcVar tmpVar(*this,varids[i]);
         ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
       }
@@ -338,13 +339,13 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
     tmpGroup=getParentGroup();
     while(!tmpGroup.isNull()) {
       // get the number of variables
-      int varCount = tmpGroup.getVarCount();
+      const auto varCount = static_cast<std::size_t>(tmpGroup.getVarCount());
       if (varCount){
         // now get the name of each NcVar object and populate the ncVars container.
         int* nvars=NULL;
         vector<int> varids(varCount);
         ncCheck(nc_inq_varids(tmpGroup.getId(), nvars,&varids[0]),__FILE__,__LINE__);
-        for(int i=0; i<varCount;i++){
+        for(std::size_t i=0; i<varCount;i++){
           NcVar tmpVar(tmpGroup,varids[i]);
           ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
         }
@@ -465,7 +466,7 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
   // finally define a new netCDF variable
   int varId;
   int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(), static_cast<int>(dimIds.size()), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
@@ -493,7 +494,7 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
   // finally define a new netCDF variable
   int varId;
   int *dimIdsPtr = dimIds.empty() ? 0 : &dimIds[0];
-  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(),dimIds.size(), dimIdsPtr,&varId),__FILE__,__LINE__);
+  ncCheck(nc_def_var(myId,name.c_str(),tmpType.getId(), static_cast<int>(dimIds.size()), dimIdsPtr,&varId),__FILE__,__LINE__);
   // return an NcVar object for this new variable
   return NcVar(*this,varId);
 }
@@ -943,12 +944,12 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
 
   // search in current group
   if(location == Current || location == ParentsAndCurrent || location == ChildrenAndCurrent || location == All ) {
-    int dimCount = getDimCount();
+    const auto dimCount = static_cast<std::size_t>(getDimCount());
     if (dimCount){
       vector<int> dimids(dimCount);
-      ncCheck(nc_inq_dimids(getId(), &dimCount, &dimids[0], 0),__FILE__,__LINE__);
+      ncCheck(nc_inq_dimids(getId(), nullptr, &dimids[0], 0),__FILE__,__LINE__);
       // now get the name of each NcDim and populate the nDims container.
-      for(int i=0; i<dimCount;i++){
+      for(std::size_t i=0; i<dimCount;i++){
         NcDim tmpDim(*this,dimids[i]);
         ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
       }
@@ -1088,9 +1089,9 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
     int* typeidsp=NULL;
     ncCheck(nc_inq_typeids(getId(), &ntypesp,typeidsp),__FILE__,__LINE__);
     if (ntypesp){
-      vector<int> typeids(ntypesp);
+      vector<int> typeids(static_cast<std::size_t>(ntypesp));
       ncCheck(nc_inq_typeids(getId(), &ntypesp,&typeids[0]),__FILE__,__LINE__);
-      for (int i=0; i<ntypesp;i++){
+      for (std::size_t i=0; i<static_cast<std::size_t>(ntypesp); i++){
         NcType tmpType(*this,typeids[i]);
         if(tmpType.getTypeClass() == enumType) ntypes++;
       }
@@ -1126,12 +1127,12 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
 
   // search in current group
   if(location == Current || location == ParentsAndCurrent || location == ChildrenAndCurrent || location == All ) {
-    int typeCount = getTypeCount();
+    const auto typeCount = static_cast<std::size_t>(getTypeCount());
     if (typeCount){
       vector<int> typeids(typeCount);
-      ncCheck(nc_inq_typeids(getId(), &typeCount,&typeids[0]),__FILE__,__LINE__);
+      ncCheck(nc_inq_typeids(getId(), nullptr, &typeids[0]),__FILE__,__LINE__);
       // now get the name of each NcType and populate the nTypes container.
-      for(int i=0; i<typeCount;i++){
+      for(std::size_t i=0; i<typeCount;i++){
         NcType tmpType(*this,typeids[i]);
         ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
       }
@@ -1271,7 +1272,7 @@ NcEnumType NcGroup::addEnumType(const string& name,NcEnumType::ncEnumType baseTy
 NcVlenType NcGroup::addVlenType(const string& name,NcType& baseType) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_vlen(myId,  const_cast<char*>(name.c_str()),baseType.getId(),&typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_vlen(myId, name.c_str(), baseType.getId(),&typeId),__FILE__,__LINE__);
   NcVlenType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
@@ -1281,7 +1282,7 @@ NcVlenType NcGroup::addVlenType(const string& name,NcType& baseType) const {
 NcOpaqueType NcGroup::addOpaqueType(const string& name, size_t size) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_opaque(myId, size,const_cast<char*>(name.c_str()), &typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_opaque(myId, size, name.c_str(), &typeId),__FILE__,__LINE__);
   NcOpaqueType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }
@@ -1290,7 +1291,7 @@ NcOpaqueType NcGroup::addOpaqueType(const string& name, size_t size) const {
 NcCompoundType NcGroup::addCompoundType(const string& name, size_t size) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
-  ncCheck(nc_def_compound(myId, size,const_cast<char*>(name.c_str()),&typeId),__FILE__,__LINE__);
+  ncCheck(nc_def_compound(myId, size, name.c_str(), &typeId),__FILE__,__LINE__);
   NcCompoundType ncTypeTmp(*this,name);
   return ncTypeTmp;
 }

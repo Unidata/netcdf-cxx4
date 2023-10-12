@@ -4,6 +4,7 @@
 #include "ncGroup.h"
 #include "ncCheck.h"
 #include "ncException.h"
+#include <cstddef>
 #include<netcdf.h>
 using namespace std;
 using namespace netCDF::exceptions;
@@ -151,14 +152,14 @@ int NcVar::getDimCount() const
 vector<NcDim> NcVar::getDims() const
 {
   // get the number of dimensions
-  int dimCount = getDimCount();
+  const auto dimCount = static_cast<std::size_t>(getDimCount());
   // create a vector of dimensions.
   vector<NcDim> ncDims;
   if (dimCount){
     vector<int> dimids(dimCount);
     ncCheck(nc_inq_vardimid(groupId,myId, &dimids[0]),__FILE__,__LINE__);
     ncDims.reserve(dimCount);
-    for (int i=0; i<dimCount; i++){
+    for (std::size_t i = 0; i < dimCount; i++) {
       NcDim tmpDim(getParentGroup(),dimids[i]);
       ncDims.push_back(tmpDim);
     }
@@ -172,7 +173,7 @@ NcDim NcVar::getDim(int i) const
 {
   vector<NcDim> ncDims = getDims();
   if((size_t)i >= ncDims.size() || i < 0) throw NcException("Index out of range",__FILE__,__LINE__);
-  return ncDims[i];
+  return ncDims[static_cast<std::size_t>(i)];
 }
 
 
@@ -549,7 +550,7 @@ void NcVar::setChunking(ChunkMode chunkMode, vector<size_t>& chunkSizes) const {
 // Gets the chunking parameters
 void NcVar::getChunkingParameters(ChunkMode& chunkMode, vector<size_t>& chunkSizes) const {
   int chunkModeInt;
-  chunkSizes.resize(getDimCount());
+  chunkSizes.resize(static_cast<std::size_t>(getDimCount()));
   size_t *chunkSizesPtr = chunkSizes.empty() ? 0 : &chunkSizes[0];
   ncCheck(nc_inq_var_chunking(groupId,myId, &chunkModeInt, chunkSizesPtr),__FILE__,__LINE__);
   chunkMode = static_cast<ChunkMode> (chunkModeInt);

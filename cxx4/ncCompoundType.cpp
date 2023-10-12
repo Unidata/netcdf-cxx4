@@ -79,7 +79,7 @@ NcCompoundType::NcCompoundType(const NcType& rhs):
 //  Inserts a named field.
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType,size_t offset)
 {
-  ncCheck(nc_insert_compound(groupId,myId,const_cast<char*>(memberName.c_str()),offset,newMemberType.getId()),__FILE__,__LINE__);
+  ncCheck(nc_insert_compound(groupId,myId, memberName.c_str(),offset,newMemberType.getId()),__FILE__,__LINE__);
 }
 
 
@@ -88,7 +88,7 @@ void NcCompoundType::addMember(const string& memberName, const NcType& newMember
 void NcCompoundType::addMember(const string& memberName, const NcType& newMemberType, size_t offset, const vector<int>& shape)
 {
   if (!shape.empty())
-    ncCheck(nc_insert_array_compound(groupId, myId,const_cast<char*>(memberName.c_str()), offset, newMemberType.getId(), shape.size(), const_cast<int*>(&shape[0])),__FILE__,__LINE__);
+    ncCheck(nc_insert_array_compound(groupId, myId, memberName.c_str(), offset, newMemberType.getId(), static_cast<int>(shape.size()), &shape[0]),__FILE__,__LINE__);
   else
     addMember(memberName, newMemberType, offset);
 }
@@ -155,8 +155,7 @@ int NcCompoundType::getMemberDimCount(int memberIndex) const
 // Returns the shape of the given member.
 vector<int> NcCompoundType::getMemberShape(int memberIndex) const 
 {
-  vector<int> dim_size;
-  dim_size.resize(getMemberDimCount(memberIndex));
+  vector<int> dim_size(static_cast<std::size_t>(getMemberDimCount(memberIndex)));
   if(!dim_size.empty())
     ncCheck(nc_inq_compound_fielddim_sizes(groupId,myId,memberIndex,&dim_size[0]),__FILE__,__LINE__);
   return dim_size;
