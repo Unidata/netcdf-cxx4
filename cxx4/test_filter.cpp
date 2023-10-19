@@ -51,22 +51,12 @@ int main()
       latVar.setChunking(NcVar::nc_CHUNKED,chunks);
 
       cout<<"Setting Filter....";
-      try{
-        latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
-        cout<<"Success."<<endl;
-      } catch (NcException &e){
-        cout<<"Caught unexpected exception." << endl;
-        return e.errorCode();
-      }
+      latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
+      cout<<"Success\n";
 
       cout<<"Getting filter...";
-      try{
-        latVar.getFilter(&idp,&nparamsp, &level);
-        cout<<"Success."<<endl;
-      } catch (NcException &e){
-        cout<<"Caught unexpected exception." << endl;
-        return e.errorCode();
-      }
+      latVar.getFilter(&idp,&nparamsp, &level);
+      cout<<"Success\n";
     }
   catch (NcException& e)
     {
