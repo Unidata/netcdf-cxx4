@@ -5,7 +5,7 @@
 ##################################
 
 #Minimum required CMake Version
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.21.0)
 
 #Project Name
 PROJECT(NCXX C CXX)
@@ -685,4 +685,6 @@ ENDIF()
 ##
 # CPack, CMakeInstallation.cmake file.
 ##
-INCLUDE(CMakeInstallation.cmake)
+if (PROJECT_IS_TOP_LEVEL)
+  include(CMakeInstallation.cmake)
+endif()
