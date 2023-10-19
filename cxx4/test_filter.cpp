@@ -5,6 +5,7 @@
 #include <ncFile.h>
 #include <ncVar.h>
 #include <ncException.h>
+#include <netcdf_filter.h>
 #include <string>
 #include <netcdf>
 #include "test_utilities.h"
@@ -51,7 +52,7 @@ int main()
       latVar.setChunking(NcVar::nc_CHUNKED,chunks);
 
       cout<<"Setting Filter....";
-      latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
+      latVar.setFilter(H5Z_FILTER_DEFLATE, BZIP2_NPARAMS, &level);
       cout<<"Success\n";
 
       cout<<"Getting filter...";
