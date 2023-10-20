@@ -214,7 +214,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
       while(1) {
 	const NcGroup parentGroup(tmpGroup.getParentGroup());
 	if(parentGroup.isNull()) break;
-	ncGroups.insert(pair<const string,NcGroup>(parentGroup.getName(),parentGroup));
+	ncGroups.emplace(parentGroup.getName(), parentGroup);
 	tmpGroup=parentGroup;
       }
     }
@@ -222,11 +222,10 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
 
   // search in child groups of the children
   if(location == ChildrenOfChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
-    multimap<string,NcGroup>::iterator it;
     multimap<string,NcGroup> groups(getGroups(ChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcGroup> childGroups(it->second.getGroups(AllChildrenGrps));
-      ncGroups.insert(childGroups.begin(),childGroups.end());
+    for (const auto& it : groups) {
+      multimap<string,NcGroup> childGroups(it.second.getGroups(AllChildrenGrps));
+      ncGroups.insert(childGroups.begin(), childGroups.end());
     }
   }
 
@@ -236,13 +235,12 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
 // Get the named child NcGroup object.
 NcGroup NcGroup::getGroup(const string& name,NcGroup::GroupLocation location) const{
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroup on a Null group",__FILE__,__LINE__);
-  multimap<string,NcGroup> ncGroups(getGroups(location));
-  pair<multimap<string,NcGroup>::iterator,multimap<string,NcGroup>::iterator> ret;
-  ret = ncGroups.equal_range(name);
-  if(ret.first == ret.second)
+
+  const auto ret = getGroups(location).equal_range(name);
+  if (ret.first == ret.second) {
     return NcGroup();  // null group is returned
-  else
-    return ret.first->second;
+  }
+  return ret.first->second;
 }
 
 
@@ -251,12 +249,10 @@ NcGroup NcGroup::getGroup(const string& name,NcGroup::GroupLocation location) co
 set<NcGroup> NcGroup::getGroups(const std::string& name,NcGroup::GroupLocation location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getGroups on a Null group",__FILE__,__LINE__);
   // get the set of ncGroups in this group and above.
-  multimap<std::string,NcGroup> ncGroups(getGroups(location));
-  pair<multimap<string,NcGroup>::iterator,multimap<string,NcGroup>::iterator> ret;
-  multimap<string,NcGroup>::iterator it;
-  ret = ncGroups.equal_range(name);
+  const auto ncGroups(getGroups(location));
+  const auto ret = ncGroups.equal_range(name);
   set<NcGroup> tmpGroup;
-  for (it=ret.first; it!=ret.second; ++it) {
+  for (auto it=ret.first; it!=ret.second; ++it) {
     tmpGroup.insert(it->second);
   }
   return tmpGroup;
@@ -301,10 +297,8 @@ int NcGroup::getVarCount(NcGroup::Location location) const {
 
   // search recursively in all child groups
   if(location == ChildrenAndCurrent || location == Children || location == All) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      nvars += it->second.getVarCount(ChildrenAndCurrent);
+    for (auto it : getGroups()) {
+      nvars += it.second.getVarCount(ChildrenAndCurrent);
     }
   }
   return nvars;
@@ -357,10 +351,8 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
 
   // search recusively in all child groups.
   if(location == ChildrenAndCurrent || location == Children  || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcVar> vars=it->second.getVars(ChildrenAndCurrent);
+    for (auto it : getGroups()) {
+      multimap<string,NcVar> vars = it.second.getVars(ChildrenAndCurrent);
       ncVars.insert(vars.begin(),vars.end());
     }
   }
@@ -372,12 +364,10 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
 // Get all NcVar objects with a given name.
 set<NcVar> NcGroup::getVars(const string& name,NcGroup::Location location) const {
   // get the set of ncVars in this group and above.
-  multimap<std::string,NcVar> ncVars(getVars(location));
-  pair<multimap<string,NcVar>::iterator,multimap<string,NcVar>::iterator> ret;
-  multimap<string,NcVar>::iterator it;
-  ret = ncVars.equal_range(name);
+  const auto ncVars(getVars(location));
+  const auto ret = ncVars.equal_range(name);
   set<NcVar> tmpVar;
-  for (it=ret.first; it!=ret.second; ++it) {
+  for (auto it=ret.first; it!=ret.second; ++it) {
     tmpVar.insert(it->second);
   }
   return tmpVar;
@@ -387,14 +377,12 @@ set<NcVar> NcGroup::getVars(const string& name,NcGroup::Location location) const
 
 // Get the named NcVar object.
 NcVar NcGroup::getVar(const string& name,NcGroup::Location location) const {
-  multimap<std::string,NcVar> ncVars(getVars(location));
-  pair<multimap<string,NcVar>::iterator,multimap<string,NcVar>::iterator> ret;
-  ret = ncVars.equal_range(name);
-  if(ret.first == ret.second)
+  const auto ret = getVars(location).equal_range(name);
+  if (ret.first == ret.second) {
     // no matching netCDF variable found so return null object.
     return NcVar();
-  else
-    return ret.first->second;
+  }
+  return ret.first->second;
 }
 
 // Adds a new netCDF scalar variable.
@@ -481,12 +469,11 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
   if(tmpType.isNull()) throw NcNullType("Attempt to invoke NcGroup::addVar failed: NcType must be defined in either the current group or a parent group",__FILE__,__LINE__);
 
   // check NcDim objects are valid
-  vector<NcDim>::const_iterator iter;
   vector<int> dimIds;
   dimIds.reserve(ncDimVector.size());
-  for (iter=ncDimVector.begin();iter < ncDimVector.end(); iter++) {
-    if(iter->isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
-    NcDim tmpDim(getDim(iter->getName(),NcGroup::ParentsAndCurrent));
+  for (const auto& iter : ncDimVector) {
+    if(iter.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
+    NcDim tmpDim(getDim(iter.getName(),NcGroup::ParentsAndCurrent));
     if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
     dimIds.push_back(tmpDim.getId());
   }
@@ -529,10 +516,8 @@ int NcGroup::getAttCount(NcGroup::Location location) const {
 
   // search recursively in all child groups
   if(location == ChildrenAndCurrent || location == Children || location == All) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      ngatts += it->second.getAttCount(ChildrenAndCurrent);
+    for (const auto& it : getGroups()) {
+      ngatts += it.second.getAttCount(ChildrenAndCurrent);
     }
   }
 
@@ -579,10 +564,8 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
 
   // search recusively in all child groups.
   if(location == ChildrenAndCurrent || location == Children  || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcGroupAtt> atts=it->second.getAtts(ChildrenAndCurrent);
+    for (const auto& it : getGroups()) {
+      const auto atts = it.second.getAtts(ChildrenAndCurrent);
       ncAtts.insert(atts.begin(),atts.end());
     }
   }
@@ -593,24 +576,21 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
 // Get the named NcGroupAtt object.
 NcGroupAtt NcGroup::getAtt(const std::string& name,NcGroup::Location location) const {
   multimap<std::string,NcGroupAtt> ncAtts(getAtts(location));
-  pair<multimap<string,NcGroupAtt>::iterator,multimap<string,NcGroupAtt>::iterator> ret;
-  ret = ncAtts.equal_range(name);
-  if(ret.first == ret.second)
+  const auto ret = ncAtts.equal_range(name);
+  if (ret.first == ret.second) {
     // no matching groupAttribute so return null object.
     return NcGroupAtt();
-  else
-    return ret.first->second;
+  }
+  return ret.first->second;
 }
 
 // Get all NcGroupAtt objects with a given name.
 set<NcGroupAtt> NcGroup::getAtts(const string& name,NcGroup::Location location) const {
   // get the set of ncGroupAtts in this group and above.
-  multimap<std::string,NcGroupAtt> ncAtts(getAtts(location));
-  pair<multimap<string,NcGroupAtt>::iterator,multimap<string,NcGroupAtt>::iterator> ret;
-  multimap<string,NcGroupAtt>::iterator it;
-  ret = ncAtts.equal_range(name);
+  const auto ncAtts(getAtts(location));
+  const auto ret = ncAtts.equal_range(name);
   set<NcGroupAtt> tmpAtt;
-  for (it=ret.first; it!=ret.second; ++it) {
+  for (auto it=ret.first; it!=ret.second; ++it) {
     tmpAtt.insert(it->second);
   }
   return tmpAtt;
@@ -917,19 +897,15 @@ int NcGroup::getDimCount(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ndims += it->second.getDimCount();
+    for (const auto& it : getGroups(ParentsGrps)) {
+      ndims += it.second.getDimCount();
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(AllChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ndims += it->second.getDimCount();
+    for (const auto& it : getGroups(AllChildrenGrps)) {
+      ndims += it.second.getDimCount();
     }
   }
   return ndims;
@@ -958,20 +934,16 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcDim> dimTmp(it->second.getDims());
+    for (const auto& it: getGroups(ParentsGrps)) {
+      const auto dimTmp(it.second.getDims());
       ncDims.insert(dimTmp.begin(),dimTmp.end());
     }
   }
 
   // search in child groups (makes recursive calls).
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(AllChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcDim> dimTmp(it->second.getDims());
+    for (const auto& it : getGroups(AllChildrenGrps)) {
+      const auto dimTmp(it.second.getDims());
       ncDims.insert(dimTmp.begin(),dimTmp.end());
     }
   }
@@ -985,12 +957,11 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
 NcDim NcGroup::getDim(const string& name,NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDim on a Null group",__FILE__,__LINE__);
   multimap<string,NcDim> ncDims(getDims(location));
-  pair<multimap<string,NcDim>::iterator,multimap<string,NcDim>::iterator> ret;
-  ret = ncDims.equal_range(name);
-  if(ret.first == ret.second)
+  const auto ret = ncDims.equal_range(name);
+  if (ret.first == ret.second) {
     return NcDim(); // null group is returned
-  else
-    return ret.first->second;
+  }
+  return ret.first->second;
 }
 
 
@@ -998,12 +969,10 @@ NcDim NcGroup::getDim(const string& name,NcGroup::Location location) const {
 set<NcDim> NcGroup::getDims(const string& name,NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getDims on a Null group",__FILE__,__LINE__);
   // get the set of ncDims in this group and above.
-  multimap<string,NcDim> ncDims(getDims(location));
-  pair<multimap<string,NcDim>::iterator,multimap<string,NcDim>::iterator> ret;
-  multimap<string,NcDim>::iterator it;
-  ret = ncDims.equal_range(name);
+  const auto ncDims(getDims(location));
+  const auto ret = ncDims.equal_range(name);
   set<NcDim> tmpDim;
-  for (it=ret.first; it!=ret.second; ++it) {
+  for (auto it=ret.first; it!=ret.second; ++it) {
     tmpDim.insert(it->second);
   }
   return tmpDim;
@@ -1055,19 +1024,15 @@ int NcGroup::getTypeCount(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ntypes += it->second.getTypeCount();
+    for (const auto& it : getGroups(ParentsGrps)) {
+      ntypes += it.second.getTypeCount();
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(AllChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ntypes += it->second.getTypeCount();
+    for (const auto& it : getGroups(AllChildrenGrps)) {
+      ntypes += it.second.getTypeCount();
     }
   }
   return ntypes;
@@ -1100,19 +1065,15 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ntypes += it->second.getTypeCount(enumType);
+    for (const auto& it : getGroups(ParentsGrps)) {
+      ntypes += it.second.getTypeCount(enumType);
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(AllChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      ntypes += it->second.getTypeCount(enumType);
+    for (const auto& it : getGroups(AllChildrenGrps)) {
+      ntypes += it.second.getTypeCount(enumType);
     }
   }
   return ntypes;
@@ -1141,20 +1102,16 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(ParentsGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcType> typeTmp(it->second.getTypes());
+    for (const auto& it : getGroups(ParentsGrps)) {
+      multimap<string,NcType> typeTmp(it.second.getTypes());
       ncTypes.insert(typeTmp.begin(),typeTmp.end());
     }
   }
 
   // search in child groups (makes recursive calls).
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups(AllChildrenGrps));
-    for (it=groups.begin();it!=groups.end();it++) {
-      multimap<string,NcType> typeTmp(it->second.getTypes());
+    for (const auto& it : getGroups(AllChildrenGrps)) {
+      multimap<string,NcType> typeTmp(it.second.getTypes());
       ncTypes.insert(typeTmp.begin(),typeTmp.end());
     }
   }
@@ -1166,17 +1123,12 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
 // Gets the collection of NcType objects with a given name.
 set<NcType> NcGroup::getTypes(const string& name, NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
-  // iterator for the multimap container.
-  multimap<string,NcType>::iterator it;
-  // return argument of equal_range: iterators to lower and upper bounds of the range.
-  pair<multimap<string,NcType>::iterator,multimap<string,NcType>::iterator> ret;
   // get the entire collection of types.
-  multimap<string,NcType> types(getTypes(location));
-  // define STL set object to hold the result
-  set<NcType> tmpType;
+  const auto types(getTypes(location));
   // get the set of NcType objects with a given name
-  ret=types.equal_range(name);
-  for (it=ret.first;it!=ret.second;it++) {
+  const auto ret = types.equal_range(name);
+  set<NcType> tmpType;
+  for (auto it=ret.first;it!=ret.second;it++) {
     tmpType.insert(it->second);
   }
   return tmpType;
@@ -1186,16 +1138,13 @@ set<NcType> NcGroup::getTypes(const string& name, NcGroup::Location location) co
 // Gets the collection of NcType objects with a given data type.
 set<NcType> NcGroup::getTypes(NcType::ncType enumType, NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
-  // iterator for the multimap container.
-  multimap<string,NcType>::iterator it;
-  // get the entire collection of types.
-  multimap<string,NcType> types(getTypes(location));
+
   // define STL set object to hold the result
   set<NcType> tmpType;
   // get the set of NcType objects with a given data type
-  for (it=types.begin();it!=types.end();it++) {
-    if(it->second.getTypeClass() == enumType) {
-      tmpType.insert(it->second);
+  for (const auto& it : getTypes(location)) {
+    if (it.second.getTypeClass() == enumType) {
+      tmpType.insert(it.second);
     }
   }
   return(tmpType);
@@ -1205,18 +1154,15 @@ set<NcType> NcGroup::getTypes(NcType::ncType enumType, NcGroup::Location locatio
 // Gets the collection of NcType objects with a given name and data type.
 set<NcType> NcGroup::getTypes(const string& name, NcType::ncType enumType, NcGroup::Location location) const {
   if(isNull()) throw NcNullGrp("Attempt to invoke NcGroup::getTypes on a Null group",__FILE__,__LINE__);
-  // iterator for the multimap container.
-  multimap<string,NcType>::iterator it;
-  // return argument of equal_range: iterators to lower and upper bounds of the range.
-  pair<multimap<string,NcType>::iterator,multimap<string,NcType>::iterator> ret;
+
   // get the entire collection of types.
   multimap<string,NcType> types(getTypes(location));
   // define STL set object to hold the result
   set<NcType> tmpType;
   // get the set of NcType objects with a given name
-  ret=types.equal_range(name);
-  for (it=ret.first;it!=ret.second;it++) {
-    if((*it).second.getTypeClass() == enumType) {
+  const auto ret=types.equal_range(name);
+  for (auto it=ret.first;it!=ret.second;it++) {
+    if(it->second.getTypeClass() == enumType) {
       tmpType.insert(it->second);
     }
   }
@@ -1241,20 +1187,16 @@ NcType NcGroup::getType(const string& name, NcGroup::Location location) const {
   if(name ==  "string"  ) return ncString;
 
   // this is a user defined type
-  // iterator for the multimap container.
-  multimap<string,NcType>::iterator it;
-  // return argument of equal_range: iterators to lower and upper bounds of the range.
-  pair<multimap<string,NcType>::iterator,multimap<string,NcType>::iterator> ret;
   // get the entire collection of types.
   multimap<string,NcType> types(getTypes(location));
   // define STL set object to hold the result
   set<NcType> tmpType;
     // get the set of NcType objects with a given name
-  ret=types.equal_range(name);
-  if(ret.first == ret.second)
+  const auto ret=types.equal_range(name);
+  if(ret.first == ret.second) {
     return NcType();
-  else
-    return ret.first->second;
+  }
+  return ret.first->second;
 }
 
 
@@ -1303,8 +1245,6 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
 
   // search in current group and parent groups.
   NcGroup tmpGroup(*this);
-  multimap<string,NcDim>::iterator itD;
-  multimap<string,NcVar>::iterator itV;
   bool check_current_group = !(location == Parents || location == Children);
   const bool check_parent_groups = (location == Parents || location == ParentsAndCurrent || location == All);
   const bool check_child_groups = (location == Children || location == ChildrenAndCurrent || location == All);
@@ -1312,13 +1252,12 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
   while(1) {
     // get the collection of NcDim objects defined in this group.
     if (check_current_group) {
-      multimap<string,NcDim> dimTmp(tmpGroup.getDims());
       multimap<string,NcVar> varTmp(tmpGroup.getVars());
-      for (itD=dimTmp.begin();itD!=dimTmp.end();itD++) {
-        string coordName(itD->first);
-        itV = varTmp.find(coordName);
+      for (const auto& itD : tmpGroup.getDims()) {
+        string coordName(itD.first);
+        const auto itV = varTmp.find(coordName);
         if(itV != varTmp.end()) {
-          coordVars.insert(pair<const string,NcGroup>(string(coordName),tmpGroup));
+          coordVars.insert(pair<const string,NcGroup>(coordName, tmpGroup));
         }
       }
     }
@@ -1334,10 +1273,8 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
 
   // search in child groups (makes recursive calls).
   if (check_child_groups) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      map<string,NcGroup> coordVarsTmp = it->second.getCoordVars(ChildrenAndCurrent);
+    for (const auto& it : getGroups()) {
+      map<string,NcGroup> coordVarsTmp = it.second.getCoordVars(ChildrenAndCurrent);
       coordVars.insert(coordVarsTmp.begin(),coordVarsTmp.end());
     }
   }
@@ -1352,9 +1289,7 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
   ncVar = NcVar{};
 
   // search in current group and parent groups.
-  multimap<string,NcDim>::iterator itD;
   NcGroup tmpGroup(*this);
-  multimap<string,NcVar>::iterator itV;
   bool check_current_group = !(location == Parents || location == Children);
   const bool check_parent_groups = (location == Parents || location == ParentsAndCurrent || location == All);
   const bool check_child_groups = (location == Children || location == ChildrenAndCurrent || location == All);
@@ -1364,8 +1299,8 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
     if (check_current_group) {
       multimap<string,NcDim> dimTmp(tmpGroup.getDims());
       multimap<string,NcVar> varTmp(tmpGroup.getVars());
-      itD=dimTmp.find(coordVarName);
-      itV=varTmp.find(coordVarName);
+      const auto itD = dimTmp.find(coordVarName);
+      const auto itV = varTmp.find(coordVarName);
       if(itD != dimTmp.end() && itV != varTmp.end()) {
         ncDim=itD->second;
         ncVar=itV->second;
@@ -1382,10 +1317,8 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
 
   // search in child groups (makes recursive calls).
   if (check_child_groups) {
-    multimap<string,NcGroup>::iterator it;
-    multimap<string,NcGroup> groups(getGroups());
-    for (it=groups.begin();it!=groups.end();it++) {
-      it->second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
+    for (const auto& it : getGroups()) {
+      it.second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
       if(!ncDim.isNull()) break;
     }
   }

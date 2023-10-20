@@ -116,10 +116,9 @@ NcType NcVar::getType() const {
   if(xtypep ==  ncDouble.getId()  ) return ncDouble;
   if(xtypep ==  ncString.getId()  ) return ncString;
 
-  multimap<string,NcType>::const_iterator it;
   multimap<string,NcType> types(NcGroup(groupId).getTypes(NcGroup::ParentsAndCurrent));
-  for(it=types.begin(); it!=types.end(); it++) {
-    if(it->second.getId() == xtypep) return it->second;
+  for (const auto& it : types) {
+    if(it.second.getId() == xtypep) return it.second;
   }
   // we will never reach here
   return true;
@@ -212,8 +211,7 @@ map<string,NcVarAtt> NcVar::getAtts() const
 NcVarAtt NcVar::getAtt(const string& name) const
 {
   map<string,NcVarAtt> attributeList = getAtts();
-  map<string,NcVarAtt>::iterator myIter;
-  myIter = attributeList.find(name);
+  const auto myIter = attributeList.find(name);
   if(myIter == attributeList.end()){
     string msg("Attribute '"+name+"' not found");
     throw NcException(msg.c_str(),__FILE__,__LINE__);
