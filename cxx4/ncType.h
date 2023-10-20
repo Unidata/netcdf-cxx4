@@ -150,13 +150,6 @@ namespace netCDF
 
     /*! the group Id */
     int groupId;
-
-    /*! An ncid associated with a particular open file
-      (returned from nc_open).
-      This is required by many of the functions ncType uses,
-      such as nc_inq_type */
-    int g_fileId;
-
   };
 
 }
