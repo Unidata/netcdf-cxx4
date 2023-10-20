@@ -223,8 +223,8 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
   // search in child groups of the children
   if(location == ChildrenOfChildrenGrps || location == AllChildrenGrps || location == AllGrps ) {
     multimap<string,NcGroup> groups(getGroups(ChildrenGrps));
-    for (const auto& it : groups) {
-      multimap<string,NcGroup> childGroups(it.second.getGroups(AllChildrenGrps));
+    for (const auto& group : groups) {
+      multimap<string,NcGroup> childGroups(group.second.getGroups(AllChildrenGrps));
       ncGroups.insert(childGroups.begin(), childGroups.end());
     }
   }
@@ -297,8 +297,8 @@ int NcGroup::getVarCount(NcGroup::Location location) const {
 
   // search recursively in all child groups
   if(location == ChildrenAndCurrent || location == Children || location == All) {
-    for (auto it : getGroups()) {
-      nvars += it.second.getVarCount(ChildrenAndCurrent);
+    for (auto group : getGroups()) {
+      nvars += group.second.getVarCount(ChildrenAndCurrent);
     }
   }
   return nvars;
@@ -351,8 +351,8 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
 
   // search recusively in all child groups.
   if(location == ChildrenAndCurrent || location == Children  || location == All ) {
-    for (auto it : getGroups()) {
-      multimap<string,NcVar> vars = it.second.getVars(ChildrenAndCurrent);
+    for (auto group : getGroups()) {
+      multimap<string,NcVar> vars = group.second.getVars(ChildrenAndCurrent);
       ncVars.insert(vars.begin(),vars.end());
     }
   }
@@ -471,9 +471,9 @@ NcVar NcGroup::addVar(const string& name, const NcType& ncType, const vector<NcD
   // check NcDim objects are valid
   vector<int> dimIds;
   dimIds.reserve(ncDimVector.size());
-  for (const auto& iter : ncDimVector) {
-    if(iter.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
-    NcDim tmpDim(getDim(iter.getName(),NcGroup::ParentsAndCurrent));
+  for (const auto& dim : ncDimVector) {
+    if(dim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar with a Null NcDim object",__FILE__,__LINE__);
+    NcDim tmpDim(getDim(dim.getName(),NcGroup::ParentsAndCurrent));
     if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group",__FILE__,__LINE__);
     dimIds.push_back(tmpDim.getId());
   }
@@ -516,8 +516,8 @@ int NcGroup::getAttCount(NcGroup::Location location) const {
 
   // search recursively in all child groups
   if(location == ChildrenAndCurrent || location == Children || location == All) {
-    for (const auto& it : getGroups()) {
-      ngatts += it.second.getAttCount(ChildrenAndCurrent);
+    for (const auto& group : getGroups()) {
+      ngatts += group.second.getAttCount(ChildrenAndCurrent);
     }
   }
 
@@ -564,8 +564,8 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
 
   // search recusively in all child groups.
   if(location == ChildrenAndCurrent || location == Children  || location == All ) {
-    for (const auto& it : getGroups()) {
-      const auto atts = it.second.getAtts(ChildrenAndCurrent);
+    for (const auto& group : getGroups()) {
+      const auto atts = group.second.getAtts(ChildrenAndCurrent);
       ncAtts.insert(atts.begin(),atts.end());
     }
   }
@@ -897,15 +897,15 @@ int NcGroup::getDimCount(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    for (const auto& it : getGroups(ParentsGrps)) {
-      ndims += it.second.getDimCount();
+    for (const auto& group : getGroups(ParentsGrps)) {
+      ndims += group.second.getDimCount();
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    for (const auto& it : getGroups(AllChildrenGrps)) {
-      ndims += it.second.getDimCount();
+    for (const auto& group : getGroups(AllChildrenGrps)) {
+      ndims += group.second.getDimCount();
     }
   }
   return ndims;
@@ -934,16 +934,16 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    for (const auto& it: getGroups(ParentsGrps)) {
-      const auto dimTmp(it.second.getDims());
+    for (const auto& group: getGroups(ParentsGrps)) {
+      const auto dimTmp(group.second.getDims());
       ncDims.insert(dimTmp.begin(),dimTmp.end());
     }
   }
 
   // search in child groups (makes recursive calls).
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    for (const auto& it : getGroups(AllChildrenGrps)) {
-      const auto dimTmp(it.second.getDims());
+    for (const auto& group : getGroups(AllChildrenGrps)) {
+      const auto dimTmp(group.second.getDims());
       ncDims.insert(dimTmp.begin(),dimTmp.end());
     }
   }
@@ -1024,15 +1024,15 @@ int NcGroup::getTypeCount(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    for (const auto& it : getGroups(ParentsGrps)) {
-      ntypes += it.second.getTypeCount();
+    for (const auto& group : getGroups(ParentsGrps)) {
+      ntypes += group.second.getTypeCount();
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    for (const auto& it : getGroups(AllChildrenGrps)) {
-      ntypes += it.second.getTypeCount();
+    for (const auto& group : getGroups(AllChildrenGrps)) {
+      ntypes += group.second.getTypeCount();
     }
   }
   return ntypes;
@@ -1065,15 +1065,15 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    for (const auto& it : getGroups(ParentsGrps)) {
-      ntypes += it.second.getTypeCount(enumType);
+    for (const auto& group : getGroups(ParentsGrps)) {
+      ntypes += group.second.getTypeCount(enumType);
     }
   }
 
   // search in child groups.
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    for (const auto& it : getGroups(AllChildrenGrps)) {
-      ntypes += it.second.getTypeCount(enumType);
+    for (const auto& group : getGroups(AllChildrenGrps)) {
+      ntypes += group.second.getTypeCount(enumType);
     }
   }
   return ntypes;
@@ -1102,16 +1102,16 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
 
   // search in parent groups.
   if(location == Parents || location == ParentsAndCurrent || location == All ) {
-    for (const auto& it : getGroups(ParentsGrps)) {
-      multimap<string,NcType> typeTmp(it.second.getTypes());
+    for (const auto& group : getGroups(ParentsGrps)) {
+      multimap<string,NcType> typeTmp(group.second.getTypes());
       ncTypes.insert(typeTmp.begin(),typeTmp.end());
     }
   }
 
   // search in child groups (makes recursive calls).
   if(location == Children || location == ChildrenAndCurrent || location == All ) {
-    for (const auto& it : getGroups(AllChildrenGrps)) {
-      multimap<string,NcType> typeTmp(it.second.getTypes());
+    for (const auto& group : getGroups(AllChildrenGrps)) {
+      multimap<string,NcType> typeTmp(group.second.getTypes());
       ncTypes.insert(typeTmp.begin(),typeTmp.end());
     }
   }
@@ -1142,9 +1142,9 @@ set<NcType> NcGroup::getTypes(NcType::ncType enumType, NcGroup::Location locatio
   // define STL set object to hold the result
   set<NcType> tmpType;
   // get the set of NcType objects with a given data type
-  for (const auto& it : getTypes(location)) {
-    if (it.second.getTypeClass() == enumType) {
-      tmpType.insert(it.second);
+  for (const auto& type : getTypes(location)) {
+    if (type.second.getTypeClass() == enumType) {
+      tmpType.insert(type.second);
     }
   }
   return(tmpType);
@@ -1253,10 +1253,10 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
     // get the collection of NcDim objects defined in this group.
     if (check_current_group) {
       multimap<string,NcVar> varTmp(tmpGroup.getVars());
-      for (const auto& itD : tmpGroup.getDims()) {
-        string coordName(itD.first);
-        const auto itV = varTmp.find(coordName);
-        if(itV != varTmp.end()) {
+      for (const auto& dim : tmpGroup.getDims()) {
+        string coordName(dim.first);
+        const auto var = varTmp.find(coordName);
+        if(var != varTmp.end()) {
           coordVars.insert(pair<const string,NcGroup>(coordName, tmpGroup));
         }
       }
@@ -1273,8 +1273,8 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
 
   // search in child groups (makes recursive calls).
   if (check_child_groups) {
-    for (const auto& it : getGroups()) {
-      map<string,NcGroup> coordVarsTmp = it.second.getCoordVars(ChildrenAndCurrent);
+    for (const auto& group : getGroups()) {
+      map<string,NcGroup> coordVarsTmp = group.second.getCoordVars(ChildrenAndCurrent);
       coordVars.insert(coordVarsTmp.begin(),coordVarsTmp.end());
     }
   }
@@ -1299,11 +1299,11 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
     if (check_current_group) {
       multimap<string,NcDim> dimTmp(tmpGroup.getDims());
       multimap<string,NcVar> varTmp(tmpGroup.getVars());
-      const auto itD = dimTmp.find(coordVarName);
-      const auto itV = varTmp.find(coordVarName);
-      if(itD != dimTmp.end() && itV != varTmp.end()) {
-        ncDim=itD->second;
-        ncVar=itV->second;
+      const auto dim = dimTmp.find(coordVarName);
+      const auto var = varTmp.find(coordVarName);
+      if(dim != dimTmp.end() && var != varTmp.end()) {
+        ncDim=dim->second;
+        ncVar=var->second;
         return;
       }
     }
@@ -1317,8 +1317,8 @@ void NcGroup::getCoordVar(const string& coordVarName, NcDim& ncDim, NcVar& ncVar
 
   // search in child groups (makes recursive calls).
   if (check_child_groups) {
-    for (const auto& it : getGroups()) {
-      it.second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
+    for (const auto& group : getGroups()) {
+      group.second.getCoordVar(coordVarName,ncDim,ncVar,ChildrenAndCurrent);
       if(!ncDim.isNull()) break;
     }
   }

@@ -117,8 +117,8 @@ NcType NcVar::getType() const {
   if(xtypep ==  ncString.getId()  ) return ncString;
 
   multimap<string,NcType> types(NcGroup(groupId).getTypes(NcGroup::ParentsAndCurrent));
-  for (const auto& it : types) {
-    if(it.second.getId() == xtypep) return it.second;
+  for (const auto& type : types) {
+    if(type.second.getId() == xtypep) return type.second;
   }
   // we will never reach here
   return true;

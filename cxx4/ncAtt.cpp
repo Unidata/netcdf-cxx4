@@ -73,8 +73,8 @@ NcType  NcAtt::getType() const{
   // now get the set of NcType objects in this file.
   multimap<string,NcType> typeMap(getParentGroup().getTypes(NcGroup::ParentsAndCurrent));
   // identify the Nctype object with the same id as this attribute.
-  for (const auto& iter: typeMap) {
-    if(iter.second.getId() == xtypep) return iter.second;
+  for (const auto& type: typeMap) {
+    if(type.second.getId() == xtypep) return type.second;
   }
   // return a null object, as no type was identified.
   return NcType();
