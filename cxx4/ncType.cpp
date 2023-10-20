@@ -164,3 +164,13 @@ string NcType::getTypeClassName() const{
   // we never get here!
   return "Dummy";
 }
+
+bool NcType::isNonPrimitive() const {
+  NcType::ncType typeClass {getTypeClass()};
+  return (
+    typeClass == NcType::nc_VLEN
+    || typeClass == NcType::nc_OPAQUE
+    || typeClass == NcType::nc_ENUM
+    || typeClass == NcType::nc_COMPOUND
+  );
+}
