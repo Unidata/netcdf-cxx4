@@ -11,10 +11,6 @@ namespace netCDF {
 NcUshort::NcUshort() : NcType(NC_USHORT){
 }
 
-NcUshort::~NcUshort() {
-}
-
-
 // equivalence operator
 bool NcUshort::operator==(const NcUshort & rhs)    {
   // simply check the netCDF id.

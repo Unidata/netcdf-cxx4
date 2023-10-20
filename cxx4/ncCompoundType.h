@@ -17,9 +17,12 @@ namespace netCDF
   class NcCompoundType : public NcType
   {
   public:
-
-    /*! Constructor generates a \ref isNull "null object". */
-    NcCompoundType();
+    NcCompoundType() = default;
+    ~NcCompoundType() = default;
+    NcCompoundType(const NcCompoundType& rhs) = default;
+    NcCompoundType(NcCompoundType&& rhs) = default;
+    NcCompoundType& operator=(const NcCompoundType& rhs) = default;
+    NcCompoundType& operator=(NcCompoundType&& rhs) = default;
 
     /*! 
       Constructor.
@@ -37,25 +40,15 @@ namespace netCDF
     */
     NcCompoundType(const NcType& ncType);
 
-    /*! assignment operator */
-    NcCompoundType& operator=(const NcCompoundType& rhs);
-      
     /*! 
       Assignment operator.
       This assigns from the base type NcType object. Will throw an exception if the NcType is not the base of a Compound type.
     */
     NcCompoundType& operator=(const NcType& rhs);
       
-    /*! The copy constructor. */
-    NcCompoundType(const NcCompoundType& rhs);
-      
     /*! equivalence operator */
     bool operator==(const NcCompoundType & rhs);
 
-    /*! destructor */
-    ~NcCompoundType(){;}
-      
-      
     /*!  
       Adds a named field.
       \param memName       Name of new field.

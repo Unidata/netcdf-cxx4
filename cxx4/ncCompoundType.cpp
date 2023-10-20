@@ -22,13 +22,6 @@ using namespace netCDF::exceptions;
 // Class represents a netCDF variable.
 
 // assignment operator
-NcCompoundType& NcCompoundType::operator=(const NcCompoundType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
-
-// assignment operator
 NcCompoundType& NcCompoundType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
@@ -40,13 +33,6 @@ NcCompoundType& NcCompoundType::operator=(const NcType& rhs)
   return *this;
 }
 
-// The copy constructor.
-NcCompoundType::NcCompoundType(const NcCompoundType& rhs): 
-  NcType(rhs)
-{
-}
-
-
 // equivalence operator
 bool NcCompoundType::operator==(const NcCompoundType& rhs)
 {
@@ -55,11 +41,6 @@ bool NcCompoundType::operator==(const NcCompoundType& rhs)
   else
     return myId ==rhs.myId && groupId == rhs.groupId;
 }  
-  
-// Constructor generates a null object.
-NcCompoundType::NcCompoundType() : 
-  NcType()   // invoke base class constructor
-{}
   
 // constructor
 NcCompoundType::NcCompoundType(const NcGroup& grp, const string& name): 

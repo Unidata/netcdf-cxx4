@@ -23,28 +23,6 @@ namespace netCDF {
 
 using namespace netCDF;
 
-// assignment operator
-NcType& NcType::operator=(const NcType & rhs)
-{
-  nullObject = rhs.nullObject;
-  myId= rhs.myId;
-  groupId = rhs.groupId;
-  return *this;
-}
-
-// The copy constructor.
-NcType::NcType(const NcType& rhs):
-  nullObject(rhs.nullObject),
-  myId(rhs.myId),
-  groupId(rhs.groupId)
-{}
-
-
-// Constructor generates a null object.
-NcType::NcType() :
-  nullObject(true)
-{}
-
 // constructor
 NcType::NcType(const NcGroup& grp, const string& name) :
   nullObject (false)
@@ -52,14 +30,6 @@ NcType::NcType(const NcGroup& grp, const string& name) :
   groupId= grp.getId();
   NcType typTmp(grp.getType(name,NcGroup::ParentsAndCurrent));
   myId = typTmp.getId();
-}
-
-// constructor for a global type
-NcType::NcType(nc_type id) :
-  nullObject(false),
-  myId(id),
-  groupId(0)
-{
 }
 
 // Constructor for a non-global type

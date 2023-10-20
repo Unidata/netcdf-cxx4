@@ -14,17 +14,15 @@ namespace netCDF
   {
   public:
     
-    /*! destructor */
-    virtual ~NcAtt()=0;
-
     /*! Constructor generates a \ref isNull "null object". */
-    NcAtt ();
+    NcAtt () = default;
+    virtual ~NcAtt() = default;
+    NcAtt(const NcAtt& rhs) = default;
+    NcAtt(NcAtt&&) = default;
     
     /*! Constructor for non-null instances. */
-    NcAtt(bool nullObject); 
+    NcAtt(bool nullObject_) : nullObject(nullObject_) {}
 
-    /*! The copy constructor. */
-    NcAtt(const NcAtt& rhs);
 
     /*! Get the attribute name. */
     std::string getName() const {return myName;}
@@ -103,17 +101,13 @@ namespace netCDF
     bool isNull() const {return nullObject;}
 
   protected:
-    /*! assignment operator */
-    NcAtt& operator= (const NcAtt& rhs);
+    NcAtt& operator= (const NcAtt& rhs) = default;
+    NcAtt& operator= (NcAtt&&) = default;
       
-    bool nullObject;
-
+    bool nullObject{true};
     std::string myName;
-    
-    int groupId;
-      
-    int varId;
-    
+    int groupId{-1};
+    int varId{-1};
   };
   
 }

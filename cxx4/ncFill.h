@@ -20,13 +20,7 @@ namespace netCDF
   class NcFill
     {
       public:
-        ~NcFill();
-
-        //constructor
-        NcFill();
-
-        //member function
-        void set_Fill(int, int, int*);
+        void set_Fill(int ncid, int fillmode, int* old_modep);
       };
 
 }
