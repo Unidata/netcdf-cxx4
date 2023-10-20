@@ -200,8 +200,8 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
       int* numgrps=NULL;
       // now get the id of each NcGroup and populate the ncGroups container.
       ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
-      for(std::size_t i=0; i<groupCount;i++){
-        NcGroup tmpGroup(ncids[i]);
+      for (auto ncid : ncids) {
+        NcGroup tmpGroup(ncid);
         ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
       }
     }
@@ -320,8 +320,8 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
       int* nvars=NULL;
       vector<int> varids(varCount);
       ncCheck(nc_inq_varids(myId, nvars,&varids[0]),__FILE__,__LINE__);
-      for(std::size_t i=0; i<varCount;i++){
-        NcVar tmpVar(*this,varids[i]);
+      for (auto varid : varids) {
+        NcVar tmpVar(*this,varid);
         ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
       }
     }
@@ -339,8 +339,8 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
         int* nvars=NULL;
         vector<int> varids(varCount);
         ncCheck(nc_inq_varids(tmpGroup.getId(), nvars,&varids[0]),__FILE__,__LINE__);
-        for(std::size_t i=0; i<varCount;i++){
-          NcVar tmpVar(tmpGroup,varids[i]);
+        for (auto varid : varids) {
+          NcVar tmpVar(tmpGroup, varid);
           ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
         }
       }
@@ -445,8 +445,8 @@ NcVar NcGroup::addVar(const string& name, const string& typeName, const vector<s
   // get a set of NcDim objects corresponding to the given dimension names.
   vector<int> dimIds;
   dimIds.reserve(dimNames.size());
-  for (size_t i=0; i<dimNames.size();i++){
-    NcDim tmpDim(getDim(dimNames[i],NcGroup::ParentsAndCurrent));
+  for (const auto& dimName : dimNames) {
+    NcDim tmpDim(getDim(dimName, NcGroup::ParentsAndCurrent));
     if(tmpDim.isNull()) throw NcNullDim("Attempt to invoke NcGroup::addVar failed: dimNames must be defined in either the current group or a parent group",__FILE__,__LINE__);
     dimIds.push_back(tmpDim.getId());
   }
@@ -925,8 +925,8 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
       vector<int> dimids(dimCount);
       ncCheck(nc_inq_dimids(getId(), nullptr, &dimids[0], 0),__FILE__,__LINE__);
       // now get the name of each NcDim and populate the nDims container.
-      for(std::size_t i=0; i<dimCount;i++){
-        NcDim tmpDim(*this,dimids[i]);
+      for (auto dimid : dimids) {
+        NcDim tmpDim(*this,dimid);
         ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
       }
     }
@@ -1056,8 +1056,8 @@ int NcGroup::getTypeCount(NcType::ncType enumType, NcGroup::Location location) c
     if (ntypesp){
       vector<int> typeids(static_cast<std::size_t>(ntypesp));
       ncCheck(nc_inq_typeids(getId(), &ntypesp,&typeids[0]),__FILE__,__LINE__);
-      for (std::size_t i=0; i<static_cast<std::size_t>(ntypesp); i++){
-        NcType tmpType(*this,typeids[i]);
+      for (auto typeid_ : typeids) {
+        NcType tmpType(*this, typeid_);
         if(tmpType.getTypeClass() == enumType) ntypes++;
       }
     }
@@ -1093,8 +1093,8 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
       vector<int> typeids(typeCount);
       ncCheck(nc_inq_typeids(getId(), nullptr, &typeids[0]),__FILE__,__LINE__);
       // now get the name of each NcType and populate the nTypes container.
-      for(std::size_t i=0; i<typeCount;i++){
-        NcType tmpType(*this,typeids[i]);
+      for (auto typeid_ : typeids) {
+        NcType tmpType(*this,typeid_);
         ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
       }
     }

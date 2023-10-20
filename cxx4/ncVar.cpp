@@ -158,8 +158,8 @@ vector<NcDim> NcVar::getDims() const
     vector<int> dimids(dimCount);
     ncCheck(nc_inq_vardimid(groupId,myId, &dimids[0]),__FILE__,__LINE__);
     ncDims.reserve(dimCount);
-    for (std::size_t i = 0; i < dimCount; i++) {
-      NcDim tmpDim(getParentGroup(),dimids[i]);
+    for (auto dimid : dimids) {
+      NcDim tmpDim(getParentGroup(), dimid);
       ncDims.push_back(tmpDim);
     }
   }
