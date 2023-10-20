@@ -201,7 +201,7 @@ map<string,NcVarAtt> NcVar::getAtts() const
   map<string,NcVarAtt> ncAtts;
   for (int i=0; i<attCount; i++){
     NcVarAtt tmpAtt(getParentGroup(),*this,i);
-    ncAtts.insert(pair<const string,NcVarAtt>(tmpAtt.getName(),tmpAtt));
+    ncAtts.emplace(tmpAtt.getName(), tmpAtt);
   }
   return ncAtts;
 }

@@ -19,6 +19,8 @@
 #include "ncString.h"
 #include <cstddef>
 #include <ncException.h>
+#include <tuple>
+#include <utility>
 #include "ncCheck.h"
 using namespace std;
 using namespace netCDF::exceptions;
@@ -188,7 +190,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
 
   // record this group
   if(location == ParentsAndCurrentGrps || location == AllGrps) {
-    ncGroups.insert(pair<const string,NcGroup>(getName(),*this));
+    ncGroups.emplace(getName(), *this);
   }
 
   // the child groups of the current group
@@ -202,7 +204,7 @@ multimap<std::string,NcGroup> NcGroup::getGroups(NcGroup::GroupLocation location
       ncCheck(nc_inq_grps(myId, numgrps,&ncids[0]),__FILE__,__LINE__);
       for (auto ncid : ncids) {
         NcGroup tmpGroup(ncid);
-        ncGroups.insert(pair<const string,NcGroup>(tmpGroup.getName(),tmpGroup));
+        ncGroups.emplace(tmpGroup.getName(), tmpGroup);
       }
     }
   }
@@ -321,8 +323,8 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
       vector<int> varids(varCount);
       ncCheck(nc_inq_varids(myId, nvars,&varids[0]),__FILE__,__LINE__);
       for (auto varid : varids) {
-        NcVar tmpVar(*this,varid);
-        ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+        NcVar tmpVar(*this, varid);
+        ncVars.emplace(tmpVar.getName(), tmpVar);
       }
     }
   }
@@ -341,7 +343,7 @@ multimap<std::string,NcVar> NcGroup::getVars(NcGroup::Location location) const {
         ncCheck(nc_inq_varids(tmpGroup.getId(), nvars,&varids[0]),__FILE__,__LINE__);
         for (auto varid : varids) {
           NcVar tmpVar(tmpGroup, varid);
-          ncVars.insert(pair<const string,NcVar>(tmpVar.getName(),tmpVar));
+          ncVars.emplace(tmpVar.getName(), tmpVar);
         }
       }
       // continue loop with the parent.
@@ -539,8 +541,9 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
     for(int i=0; i<attCount;i++){
       char charName[NC_MAX_NAME+1];
       ncCheck(nc_inq_attname(tmpGroup.getId(),NC_GLOBAL,i,charName),__FILE__,__LINE__);
-      NcGroupAtt tmpAtt(tmpGroup.getId(),i);
-      ncAtts.insert(pair<const string,NcGroupAtt>(string(charName),tmpAtt));
+      ncAtts.emplace(std::piecewise_construct,
+                     std::forward_as_tuple(charName),
+                     std::forward_as_tuple(tmpGroup, i));
     }
   }
 
@@ -554,8 +557,9 @@ multimap<std::string,NcGroupAtt> NcGroup::getAtts(NcGroup::Location location) co
       for(int i=0; i<attCount;i++){
         char charName[NC_MAX_NAME+1];
         ncCheck(nc_inq_attname(tmpGroup.getId(),NC_GLOBAL,i,charName),__FILE__,__LINE__);
-        NcGroupAtt tmpAtt(tmpGroup.getId(),i);
-        ncAtts.insert(pair<const string,NcGroupAtt>(string(charName),tmpAtt));
+        ncAtts.emplace(std::piecewise_construct,
+                       std::forward_as_tuple(charName),
+                       std::forward_as_tuple(tmpGroup, i));
       }
       // continue loop with the parent.
       tmpGroup=tmpGroup.getParentGroup();
@@ -927,7 +931,7 @@ multimap<string,NcDim> NcGroup::getDims(NcGroup::Location location) const {
       // now get the name of each NcDim and populate the nDims container.
       for (auto dimid : dimids) {
         NcDim tmpDim(*this,dimid);
-        ncDims.insert(pair<const string,NcDim>(tmpDim.getName(),tmpDim));
+        ncDims.emplace(tmpDim.getName(), tmpDim);
       }
     }
   }
@@ -1094,8 +1098,8 @@ multimap<string,NcType> NcGroup::getTypes(NcGroup::Location location) const {
       ncCheck(nc_inq_typeids(getId(), nullptr, &typeids[0]),__FILE__,__LINE__);
       // now get the name of each NcType and populate the nTypes container.
       for (auto typeid_ : typeids) {
-        NcType tmpType(*this,typeid_);
-        ncTypes.insert(pair<const string,NcType>(tmpType.getName(),tmpType));
+        NcType tmpType(*this, typeid_);
+        ncTypes.emplace(tmpType.getName(), tmpType);
       }
     }
   }
@@ -1257,7 +1261,7 @@ map<string,NcGroup> NcGroup::getCoordVars(NcGroup::Location location) const {
         string coordName(dim.first);
         const auto var = varTmp.find(coordName);
         if(var != varTmp.end()) {
-          coordVars.insert(pair<const string,NcGroup>(coordName, tmpGroup));
+          coordVars.emplace(coordName, tmpGroup);
         }
       }
     }
