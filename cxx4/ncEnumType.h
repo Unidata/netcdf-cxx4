@@ -28,17 +28,7 @@ namespace netCDF
 	nc_UINT64   = NC_UINT64	//!< unsigned 8-byte int
       };
       
-      /*! Constructor generates a \ref isNull "null object". */
-      NcEnumType();
-
-      /*! 
-	Constructor.
-	The enum Type must already exist in the netCDF file. New netCDF enum types can 
-	be added using NcGroup::addNcEnumType();
-	\param grp        The parent group where this type is defined.
-	\param name       Name of new type.
-      */
-      NcEnumType(const NcGroup& grp, const std::string& name);
+      using NcType::NcType;
 
       /*! 
 	Constructor.
@@ -47,22 +37,15 @@ namespace netCDF
       */
       NcEnumType(const NcType& ncType);
 
-      /*! assignment operator */
-      NcEnumType& operator=(const NcEnumType& rhs);
+      NcEnumType(const NcEnumType& rhs) = default;
+      NcEnumType& operator=(const NcEnumType& rhs) = default;
       
       /*! 
 	Assignment operator.
        This assigns from the base type NcType object. Will throw an exception if the NcType is not the base of an Enum type.
       */
       NcEnumType& operator=(const NcType& rhs);
-      
-      /*! The copy constructor. */
-      NcEnumType(const NcEnumType& rhs);
-      
-      /*! Destructor */
-      ~NcEnumType(){}
-      
-      
+
       /*! 
 	Adds a new member to this NcEnumType type.
 	\param name         Name for this new Enum memebr.
