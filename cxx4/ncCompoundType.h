@@ -84,12 +84,6 @@ the offset of a member "mem4" in structure struct1 is: offsetof(struct1,mem4).
       \return The size of the dimensions of the field. Non-array fields have 0 dimensions.
     */
     std::vector<int> getMemberShape(int memberIndex) const;
-      
-      
-  private:
-      
-    int myOffset;
-      
   };
   
 }
