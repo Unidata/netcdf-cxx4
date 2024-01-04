@@ -6,18 +6,6 @@
 #include "netcdf.h"
 #include "ncVarAtt.h"
 #include "ncGroup.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
 
 #ifndef NcVarClass
 #define NcVarClass

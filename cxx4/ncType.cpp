@@ -19,6 +19,19 @@ namespace netCDF {
   {
     return true;
   }
+
+  const NcByte ncByte{};
+  const NcUbyte ncUbyte{};
+  const NcChar ncChar{};
+  const NcShort ncShort{};
+  const NcUshort ncUshort{};
+  const NcInt ncInt{};
+  const NcUint ncUint{};
+  const NcInt64 ncInt64{};
+  const NcUint64 ncUint64{};
+  const NcFloat ncFloat{};
+  const NcDouble ncDouble{};
+  const NcString ncString{};
 }
 
 using namespace netCDF;

@@ -5,18 +5,7 @@
 #include "ncCompoundType.h"
 #include "ncOpaqueType.h"
 #include "ncGroupAtt.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
+
 #include <cstddef>
 #include <ncException.h>
 #include "ncCheck.h"
@@ -1237,7 +1226,7 @@ NcEnumType NcGroup::addEnumType(const string& name,NcEnumType::ncEnumType baseTy
 
 
 // Adds a new netCDF Vlen type.
-NcVlenType NcGroup::addVlenType(const string& name,NcType& baseType) const {
+NcVlenType NcGroup::addVlenType(const string& name, const NcType& baseType) const {
   ncCheckDefineMode(myId);
   nc_type typeId;
   ncCheck(nc_def_vlen(myId, name.c_str(), baseType.getId(),&typeId),__FILE__,__LINE__);

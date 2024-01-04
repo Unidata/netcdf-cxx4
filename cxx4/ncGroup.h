@@ -511,7 +511,7 @@ namespace netCDF
       \param basetype    A NcType object to be used for the basetype.
       \return            The NcVlenType object for this new netCDF vlen type.
     */
-    NcVlenType addVlenType(const std::string& name,NcType& basetype) const;
+    NcVlenType addVlenType(const std::string& name, const NcType& basetype) const;
 
 
     /*!

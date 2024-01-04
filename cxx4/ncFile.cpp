@@ -1,7 +1,6 @@
 #include "ncFile.h"
 #include "ncCheck.h"
 #include "ncException.h"
-#include "ncByte.h"
 #include<iostream>
 #include<string>
 #include<sstream>
