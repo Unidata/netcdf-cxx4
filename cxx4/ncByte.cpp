@@ -11,11 +11,7 @@ namespace netCDF {
 NcByte::NcByte() : NcType(NC_BYTE){
 }
 
-NcByte::~NcByte() {
-}
-
 int NcByte::sizeoff(){char a;return sizeof(a);};
-
 
 // equivalence operator
 bool NcByte::operator==(const NcByte & rhs)    {

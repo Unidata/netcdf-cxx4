@@ -23,13 +23,6 @@ using namespace netCDF::exceptions;
 using namespace netCDF;
 
 // assignment operator
-NcVlenType& NcVlenType::operator=(const NcVlenType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
-
-// assignment operator
 NcVlenType& NcVlenType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
@@ -40,18 +33,6 @@ NcVlenType& NcVlenType::operator=(const NcType& rhs)
   }
   return *this;
 }
-
-// The copy constructor.
-NcVlenType::NcVlenType(const NcVlenType& rhs):   
-  NcType(rhs)
-{
-}
-
-
-// Constructor generates a null object.
-NcVlenType::NcVlenType() :
-  NcType()   // invoke base class constructor
-{}
 
 // constructor
 NcVlenType::NcVlenType(const NcGroup& grp, const string& name) :

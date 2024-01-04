@@ -55,21 +55,16 @@ namespace netCDF
 	All                 //!< Select from contents of current, parents and child groups.
       };
 
-
-    /*! assignment operator  */
-    NcGroup& operator=(const NcGroup& rhs);
+    //* constructor */
+    NcGroup(int groupId) : nullObject(false), myId(groupId) {}
 
     /*! Constructor generates a \ref isNull "null object". */
-    NcGroup();
-
-    //* constructor */
-    NcGroup(int groupId);
-
-    /*! The copy constructor. */
-    NcGroup(const NcGroup& rhs);
-
-    /*! destructor  */
-    virtual ~NcGroup();
+    NcGroup() = default;
+    virtual ~NcGroup() = default;
+    NcGroup(const NcGroup& rhs) = default;
+    NcGroup(NcGroup&& rhs) = default;
+    NcGroup& operator=(const NcGroup& rhs) = default;
+    NcGroup& operator=(NcGroup&& rhs) = default;
 
     /*! equivalence operator */
     bool operator==(const NcGroup& rhs) const;
@@ -563,14 +558,8 @@ namespace netCDF
 
 
   protected:
-
-    /*! assignment operator  */
-    /* NcGroup& operator=(const NcGroup& rhs); */
-
-    bool nullObject;
-
-    int myId;
-
+    bool nullObject{true};
+    int myId{-1};
   };
 
 }

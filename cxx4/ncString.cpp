@@ -11,10 +11,6 @@ namespace netCDF {
 NcString::NcString() : NcType(NC_STRING){
 }
 
-NcString::~NcString() {
-}
-
-
 // equivalence operator
 bool NcString::operator==(const NcString & rhs)    {
   // simply check the netCDF id.

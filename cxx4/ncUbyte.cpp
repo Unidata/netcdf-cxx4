@@ -11,10 +11,6 @@ namespace netCDF {
 NcUbyte::NcUbyte() : NcType(NC_UBYTE){
 }
 
-NcUbyte::~NcUbyte() {
-}
-
-
 // equivalence operator
 bool NcUbyte::operator==(const NcUbyte & rhs)    {
   // simply check the netCDF id.
