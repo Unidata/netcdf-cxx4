@@ -17,21 +17,7 @@ namespace netCDF
   class NcCompoundType : public NcType
   {
   public:
-    NcCompoundType() = default;
-    ~NcCompoundType() = default;
-    NcCompoundType(const NcCompoundType& rhs) = default;
-    NcCompoundType(NcCompoundType&& rhs) = default;
-    NcCompoundType& operator=(const NcCompoundType& rhs) = default;
-    NcCompoundType& operator=(NcCompoundType&& rhs) = default;
-
-    /*! 
-      Constructor.
-      The compound Type must already exist in the netCDF file. New netCDF compound types can be 
-      added using NcGroup::addNcCompoundType();
-      \param grp        The parent group where this type is defined.
-      \param name       Name of new type.
-    */
-    NcCompoundType(const NcGroup& grp, const std::string& name);
+    using NcType::NcType;
 
     /*! 
       Constructor.

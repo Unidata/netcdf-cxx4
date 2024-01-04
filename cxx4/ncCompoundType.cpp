@@ -43,12 +43,6 @@ bool NcCompoundType::operator==(const NcCompoundType& rhs)
 }  
   
 // constructor
-NcCompoundType::NcCompoundType(const NcGroup& grp, const string& name): 
-  NcType(grp,name)
-{
-}
-
-// constructor
 // The copy constructor.
 NcCompoundType::NcCompoundType(const NcType& rhs): 
   NcType()
