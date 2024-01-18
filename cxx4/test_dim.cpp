@@ -39,8 +39,8 @@ int main()
 
       cout <<left<<setw(55)<<"Testing addVar(\"dimensionName\")";
       // Coordinate variables
-      NcVar var1 = ncFile.addVar("dim1", NcInt{});
-      NcVar var4 = groupB.addVar("dim4", NcInt{});
+      NcVar var1 = ncFile.addVar("dim1", NcInt());
+      NcVar var4 = groupB.addVar("dim4", NcInt());
       cout <<"    -----------   passed\n";
 
       cout <<left<<setw(55)<<"Testing NcDim::isUnlimited()";
