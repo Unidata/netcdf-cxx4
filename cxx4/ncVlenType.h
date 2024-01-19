@@ -14,9 +14,12 @@ namespace netCDF
   class NcVlenType : public NcType
   {
   public:
-
-    /*! Constructor generates a \ref isNull "null object". */
-    NcVlenType();
+    NcVlenType() = default;
+    NcVlenType(const NcVlenType& rhs) = default;
+    NcVlenType(NcVlenType&& rhs) = default;
+    NcVlenType& operator=(const NcVlenType& rhs) = default;
+    NcVlenType& operator=(NcVlenType&& rhs) = default;
+    ~NcVlenType() = default;
 
     /*! 
       Constructor.
@@ -33,24 +36,14 @@ namespace netCDF
       \param ncType     A Nctype object.
     */
     NcVlenType(const NcType& ncType);
-
-    /*! assignment operator */
-    NcVlenType& operator=(const NcVlenType& rhs);
       
     /*! 
       Assignment operator.
       This assigns from the base type NcType object. Will throw an exception if the NcType is not the base of a Vlen type.
     */
     NcVlenType& operator=(const NcType& rhs);
-      
-    /*! The copy constructor. */
-    NcVlenType(const NcVlenType& rhs);
-      
-    ~NcVlenType(){;}
-      
     /*! Returns the base type. */
     NcType  getBaseType() const;
-      
   };
   
 }
