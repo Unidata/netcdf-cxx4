@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <type_traits>
 #include "test_utilities.h"
 using namespace std;
 using namespace netCDF;
@@ -553,6 +554,22 @@ try
     cout <<"    -----------   passed\n";
 
 
+    {
+      // Test for issue 30/32
+      cout<<left<<std::setw(57)<<"Testing NcType::getName() with two open files";
+      NcFile nc4_file("nc4_format.cdf", NcFile::replace, NcFile::nc4);
+      NcFile classic_file("classic_format.cdf", NcFile::replace, NcFile::classic);
+
+      nc4_file.addVar("int64", ncInt64);
+
+      struct struct11 {
+        int mem1;
+      };
+      const auto compound_type11 = nc4_file.addCompoundType("struct11", sizeof(struct11));
+      const auto name = compound_type11.getName();
+      if (name != "struct11") throw NcException("Wrong name for compound type", __FILE__, __LINE__);
+    }
+    cout <<"    -----------   passed\n";
 
 }
 catch (NcException& e)
