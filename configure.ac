@@ -175,6 +175,9 @@ AC_FUNC_MALLOC
 # Check to see if any macros must be set to enable large (>2GB) files.
 AC_SYS_LARGEFILE
 
+# Set the CXXFLAGSS
+CXXFLAGS="$CXXFLAGS --std=c++11"
+
 # User supplied nc-config
 AC_ARG_WITH([nc-config],
     [AS_HELP_STRING([--with-nc-config=DIR],

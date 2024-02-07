@@ -432,6 +432,8 @@ ENDIF()
 #
 # Also, set some other default compiler flags.
 ##
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unused-variable -Wno-unused-parameter")
