@@ -100,8 +100,8 @@ int main()
        for (int lat = 0; lat < NLAT; lat++)
 	 for (int lon = 0; lon < NLON; lon++)
 	   {
-	     if(pres_in[lvl][lat][lon] != (float) (SAMPLE_PRESSURE + i)) return NC_ERR;
-	     if(temp_in[lvl][lat][lon] != (float)(SAMPLE_TEMP + i++)) return NC_ERR;
+             if(pres_in[lvl][lat][lon] != SAMPLE_PRESSURE + static_cast<float>(i)) return NC_ERR;
+             if(temp_in[lvl][lat][lon] != SAMPLE_TEMP + static_cast<float>(i++)) return NC_ERR;
 	   }
      
    } // next record 
