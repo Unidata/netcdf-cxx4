@@ -15,8 +15,6 @@
 namespace netCDF
 {
 
-  static int file_id;
-
   class NcVar;          // forward declaration.
   class NcDim;          // forward declaration.
   class NcVlenType;     // forward declaration.
