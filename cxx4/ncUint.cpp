@@ -11,10 +11,6 @@ namespace netCDF {
 NcUint::NcUint() : NcType(NC_UINT){
 }
 
-NcUint::~NcUint() {
-}
-
-
 // equivalence operator
 bool NcUint::operator==(const NcUint & rhs)    {
   // simply check the netCDF id.

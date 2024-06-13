@@ -43,7 +43,13 @@ namespace netCDF
     };
 
     /*! Constructor generates a \ref isNull "null object". */
-    NcType();
+    NcType() = default;
+    NcType(const NcType& rhs) = default;
+    NcType(NcType&& rhs) = default;
+    NcType& operator=(const NcType& rhs) = default;
+    NcType& operator=(NcType&& rhs) = default;
+
+    virtual ~NcType() = default;
 
     /*!
       Constructor for a non-global type.
@@ -69,13 +75,7 @@ namespace netCDF
       This object describes the "essential" information for a netCDF global type.
       \param id     type id
     */
-    NcType(nc_type id);
-
-    /*! The copy constructor. */
-    NcType(const NcType& rhs);
-
-    /*! destructor  */
-    virtual ~NcType() {}
+    NcType(nc_type id) : nullObject(false), myId(id), groupId(0) {}
 
     /*! equivalence operator */
     bool operator==(const NcType&) const;
@@ -139,25 +139,13 @@ namespace netCDF
     friend bool operator>(const NcType& lhs,const NcType& rhs);
 
   protected:
-
-    /*! assignment operator  */
-    NcType& operator=(const NcType& rhs);
-
-    bool nullObject;
+    bool nullObject{true};
 
     /*! the type Id */
-    nc_type myId;
+    nc_type myId{-1};
 
     /*! the group Id */
-    int groupId;
-
-    /*! An ncid associated with a particular open file
-      (returned from nc_open).
-      This is required by many of the functions ncType uses,
-      such as nc_inq_type */
-    int g_fileId;
-
+    int groupId{-1};
   };
-
 }
 #endif

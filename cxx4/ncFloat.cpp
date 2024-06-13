@@ -11,10 +11,6 @@ namespace netCDF {
 NcFloat::NcFloat() : NcType(NC_FLOAT){
 }
 
-NcFloat::~NcFloat() {
-}
-
-
 // equivalence operator
 bool NcFloat::operator==(const NcFloat & rhs)    {
   // simply check the netCDF id.

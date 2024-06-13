@@ -14,9 +14,6 @@ namespace netCDF
     /*! equivalence operator */
     bool operator==(const NcInt & rhs);
     
-    /*!  destructor */
-    ~NcInt();
-    
     /*! Constructor */
     NcInt();
   };
