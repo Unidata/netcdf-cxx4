@@ -41,18 +41,18 @@ unsigned int idp = BZIP2_ID;
 size_t nparamsp = BZIP2_NPARAMS;
 
 // Names of things.
-#define LVL_NAME "level"
-#define LAT_NAME "latitude"
-#define LON_NAME "longitude"
-#define REC_NAME "time"
-#define PRES_NAME     "pressure"
-#define TEMP_NAME     "temperature"
-#define MAX_ATT_LEN  80
+constexpr auto LVL_NAME = "level";
+constexpr auto LAT_NAME = "latitude";
+constexpr auto LON_NAME = "longitude";
+constexpr auto REC_NAME = "time";
+constexpr auto PRES_NAME = "pressure";
+constexpr auto TEMP_NAME = "temperature";
+constexpr auto MAX_ATT_LEN = 80;
 // These are used to construct some example data.
-#define SAMPLE_PRESSURE 900
-#define SAMPLE_TEMP     9.0
-#define START_LAT       25.0
-#define START_LON       -125.0
+constexpr float SAMPLE_PRESSURE = 900;
+constexpr float SAMPLE_TEMP = 9.0;
+constexpr float START_LAT = 25.0;
+constexpr float START_LON = -125.0;
 
 
 string  UNITS = "units";
@@ -84,17 +84,19 @@ int main()
 
    // create some pretend data. If this wasn't an example program, we
    // would have some real data to write for example, model output.
-   for (int lat = 0; lat < NLAT; lat++)
-      lats[lat] = START_LAT + 5. * lat;
-   for (int lon = 0; lon < NLON; lon++)
-      lons[lon] = START_LON + 5. * lon;
+   for (int lat = 0; lat < NLAT; lat++) {
+     lats[lat] = START_LAT + 5.f * static_cast<float>(lat);
+   }
+   for (int lon = 0; lon < NLON; lon++) {
+     lons[lon] = START_LON + 5.f * static_cast<float>(lon);
+   }
 
    for (int lvl = 0; lvl < NLVL; lvl++)
      for (int lat = 0; lat < NLAT; lat++)
        for (int lon = 0; lon < NLON; lon++)
 	 {
-	   pres_out[lvl][lat][lon] =(float) (SAMPLE_PRESSURE + i);
-	   temp_out[lvl][lat][lon]  = (float)(SAMPLE_TEMP + i++);
+	   pres_out[lvl][lat][lon] = SAMPLE_PRESSURE + static_cast<float>(i);
+           temp_out[lvl][lat][lon] = SAMPLE_TEMP + static_cast<float>(i++);
 	 }
 
    try
