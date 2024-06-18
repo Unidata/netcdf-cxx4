@@ -1,7 +1,6 @@
 #include "ncFile.h"
 #include "ncCheck.h"
 #include "ncException.h"
-#include "ncByte.h"
 #include<iostream>
 #include<string>
 #include<sstream>
@@ -33,11 +32,6 @@ void NcFile::close()
 
   nullObject = true;
 }
-
-// Constructor generates a null object.
-NcFile::NcFile() :
-    NcGroup()  // invoke base class constructor
-{}
 
 // constructor
 NcFile::NcFile(const string& filePath, const FileMode fMode)

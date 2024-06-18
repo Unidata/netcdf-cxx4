@@ -25,38 +25,37 @@ int main()
       NcGroup groupB(groupA.addGroup("groupB"));
       NcGroup groupC(groupA.addGroup("groupC"));
 
-      NcDim dim1 = ncFile.addDim("dim1",10);
-      NcDim dim2 = ncFile.addDim("dim2");
-      NcDim dim3 = ncFile.addDim("dim3",13);
-      NcDim dim4 = groupB.addDim("dim4",14);
-      NcDim dim5 = groupB.addDim("dim5",15);
-      NcDim dim6 = groupB.addDim("dim6",16);
-      NcDim dim7 = groupB.addDim("dim7",17);
+      [[maybe_unused]] NcDim dim1 = ncFile.addDim("dim1",10);
+      [[maybe_unused]] NcDim dim2 = ncFile.addDim("dim2");
+      [[maybe_unused]] NcDim dim3 = ncFile.addDim("dim3",13);
+      [[maybe_unused]] NcDim dim4 = groupB.addDim("dim4",14);
+      [[maybe_unused]] NcDim dim5 = groupB.addDim("dim5",15);
+      [[maybe_unused]] NcDim dim6 = groupB.addDim("dim6",16);
+      [[maybe_unused]] NcDim dim7 = groupB.addDim("dim7",17);
 
-
-      NcVar var_1   = ncFile.addVar("var_1",   ncInt,dim1);
-      NcVar var_2   = ncFile.addVar("var_2",   ncInt,dim1);
-      NcVar var_3   = ncFile.addVar("var_3",   ncInt,dim1);
-      NcVar var_4   = ncFile.addVar("var_4",   ncInt,dim1);
-      NcVar var_5   = ncFile.addVar("var_5",   ncInt,dim1);
-      NcVar var_6   = ncFile.addVar("var_6",   ncInt,dim1);
-      NcVar var_7   = ncFile.addVar("var_7",   ncInt,dim1);
-      NcVar var_8   = ncFile.addVar("var_8",   ncInt,dim1);
-      NcVar var_9   = ncFile.addVar("var_9",   ncInt,dim1);
-      NcVar varA_1  = groupA.addVar("varA_1",  ncByte,dim1);
-      NcVar varA_2  = groupA.addVar("varA_2",  ncByte,dim1);
-      NcVar varA0_1 = groupA0.addVar("varA0_1",ncByte,dim1);
-      NcVar varA0_2 = groupA0.addVar("varA0_2",ncByte,dim1);
-      NcVar varA0_3 = groupA0.addVar("varA0_3",ncByte,dim1);
-      NcVar varB_1  = groupB.addVar("varB_1",  ncByte,dim1);
-      NcVar varB_2  = groupB.addVar("varB_2",  ncByte,dim1);
-      NcVar varB_3  = groupB.addVar("varB_3",  ncByte,dim1);
-      NcVar varB_4  = groupB.addVar("varB_4",  ncByte,dim1);
-      NcVar varC_1  = groupC.addVar("varC_1",  ncByte,dim1);
-      NcVar varC_2  = groupC.addVar("varC_2",  ncByte,dim1);
-      NcVar varC_3  = groupC.addVar("varC_3",  ncByte,dim1);
-      NcVar varC_4  = groupC.addVar("varC_4",  ncByte,dim1);
-      NcVar varC_5  = groupC.addVar("varC_5",  ncByte,dim1);
+      [[maybe_unused]] NcVar var_1   = ncFile.addVar("var_1",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_2   = ncFile.addVar("var_2",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_3   = ncFile.addVar("var_3",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_4   = ncFile.addVar("var_4",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_5   = ncFile.addVar("var_5",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_6   = ncFile.addVar("var_6",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_7   = ncFile.addVar("var_7",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_8   = ncFile.addVar("var_8",   ncInt,dim1);
+      [[maybe_unused]] NcVar var_9   = ncFile.addVar("var_9",   ncInt,dim1);
+      [[maybe_unused]] NcVar varA_1  = groupA.addVar("varA_1",  ncByte,dim1);
+      [[maybe_unused]] NcVar varA_2  = groupA.addVar("varA_2",  ncByte,dim1);
+      [[maybe_unused]] NcVar varA0_1 = groupA0.addVar("varA0_1",ncByte,dim1);
+      [[maybe_unused]] NcVar varA0_2 = groupA0.addVar("varA0_2",ncByte,dim1);
+      [[maybe_unused]] NcVar varA0_3 = groupA0.addVar("varA0_3",ncByte,dim1);
+      [[maybe_unused]] NcVar varB_1  = groupB.addVar("varB_1",  ncByte,dim1);
+      [[maybe_unused]] NcVar varB_2  = groupB.addVar("varB_2",  ncByte,dim1);
+      [[maybe_unused]] NcVar varB_3  = groupB.addVar("varB_3",  ncByte,dim1);
+      [[maybe_unused]] NcVar varB_4  = groupB.addVar("varB_4",  ncByte,dim1);
+      [[maybe_unused]] NcVar varC_1  = groupC.addVar("varC_1",  ncByte,dim1);
+      [[maybe_unused]] NcVar varC_2  = groupC.addVar("varC_2",  ncByte,dim1);
+      [[maybe_unused]] NcVar varC_3  = groupC.addVar("varC_3",  ncByte,dim1);
+      [[maybe_unused]] NcVar varC_4  = groupC.addVar("varC_4",  ncByte,dim1);
+      [[maybe_unused]] NcVar varC_5  = groupC.addVar("varC_5",  ncByte,dim1);
 
 
       vector<short>  a1(10),b1(10);
