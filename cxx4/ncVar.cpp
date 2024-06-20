@@ -116,10 +116,9 @@ NcType NcVar::getType() const {
   if(xtypep ==  ncDouble.getId()  ) return ncDouble;
   if(xtypep ==  ncString.getId()  ) return ncString;
 
-  multimap<string,NcType>::const_iterator it;
   multimap<string,NcType> types(NcGroup(groupId).getTypes(NcGroup::ParentsAndCurrent));
-  for(it=types.begin(); it!=types.end(); it++) {
-    if(it->second.getId() == xtypep) return it->second;
+  for (const auto& type : types) {
+    if(type.second.getId() == xtypep) return type.second;
   }
   // we will never reach here
   return true;
@@ -159,8 +158,8 @@ vector<NcDim> NcVar::getDims() const
     vector<int> dimids(dimCount);
     ncCheck(nc_inq_vardimid(groupId,myId, &dimids[0]),__FILE__,__LINE__);
     ncDims.reserve(dimCount);
-    for (std::size_t i = 0; i < dimCount; i++) {
-      NcDim tmpDim(getParentGroup(),dimids[i]);
+    for (auto dimid : dimids) {
+      NcDim tmpDim(getParentGroup(), dimid);
       ncDims.push_back(tmpDim);
     }
   }
@@ -202,7 +201,7 @@ map<string,NcVarAtt> NcVar::getAtts() const
   map<string,NcVarAtt> ncAtts;
   for (int i=0; i<attCount; i++){
     NcVarAtt tmpAtt(getParentGroup(),*this,i);
-    ncAtts.insert(pair<const string,NcVarAtt>(tmpAtt.getName(),tmpAtt));
+    ncAtts.emplace(tmpAtt.getName(), tmpAtt);
   }
   return ncAtts;
 }
@@ -212,8 +211,7 @@ map<string,NcVarAtt> NcVar::getAtts() const
 NcVarAtt NcVar::getAtt(const string& name) const
 {
   map<string,NcVarAtt> attributeList = getAtts();
-  map<string,NcVarAtt>::iterator myIter;
-  myIter = attributeList.find(name);
+  const auto myIter = attributeList.find(name);
   if(myIter == attributeList.end()){
     string msg("Attribute '"+name+"' not found");
     throw NcException(msg.c_str(),__FILE__,__LINE__);
