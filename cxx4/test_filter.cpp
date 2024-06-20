@@ -1,10 +1,12 @@
 // Purpose: Converts ida3 format xma data to netcdf4
 // Usage:   xma2netcdf <shot number>
 
+#include <cstdlib>
 #include <iostream>
 #include <ncFile.h>
 #include <ncVar.h>
 #include <ncException.h>
+#include <netcdf_filter.h>
 #include <string>
 #include <netcdf>
 #include "test_utilities.h"
@@ -16,14 +18,8 @@ using namespace netCDF::exceptions;
 #define NDIMS    4
 #define NLAT     6
 #define LAT_NAME "latitude"
-#define BZIP2_ID 307
-#define BZIP2_LEVEL 9
-#define BZIP2_NPARAMS 1
 string  UNITS = "units";
 string  DEGREES_NORTH = "degrees_north";
-unsigned int level = BZIP2_LEVEL;
-unsigned int idp = BZIP2_ID;
-size_t nparamsp = BZIP2_NPARAMS;
 
 int main()
 {
@@ -50,22 +46,42 @@ int main()
 
       latVar.setChunking(NcVar::nc_CHUNKED,chunks);
 
-      cout<<"Setting Filter....";
-      try{
-        latVar.setFilter(BZIP2_ID,BZIP2_NPARAMS,&level);
-        cout<<"Success."<<endl;
-      } catch (NcException &e){
-        cout<<"Caught unexpected exception." << endl;
-        return e.errorCode();
+      constexpr unsigned int set_filter_id = H5Z_FILTER_DEFLATE;
+      constexpr unsigned int set_filter_nparams = 1;
+      constexpr unsigned int set_filter_level = 9;
+
+      cout<<"Setting Filter... ";
+      latVar.setFilter(set_filter_id, set_filter_nparams, &set_filter_level);
+      cout<<"Success\n";
+
+      cout<<"Getting filter... ";
+      unsigned int level {};
+      unsigned int idp {};
+      size_t nparamsp {};
+      latVar.getFilter(&idp, &nparamsp, &level);
+
+      bool success = true;
+      if (idp != set_filter_id) {
+        cout << "got wrong filter ID (got " << set_filter_id
+             << ", expected " << set_filter_id << ")\n";
+        success &= false;
+      }
+      if (nparamsp != set_filter_nparams) {
+        cout << "got wrong number of filter parameters (got " << nparamsp
+             << ", expected " << set_filter_nparams << ")\n";
+        success &= false;
+      }
+      if (level != set_filter_level) {
+        cout << "got wrong filter level (got " << level
+             << ", expected " << set_filter_level << ")\n";
+        success &= false;
       }
 
-      cout<<"Getting filter...";
-      try{
-        latVar.getFilter(&idp,&nparamsp, &level);
-        cout<<"Success."<<endl;
-      } catch (NcException &e){
-        cout<<"Caught unexpected exception." << endl;
-        return e.errorCode();
+      if (success) {
+        cout<<"Success\n";
+      } else {
+        cout << "Failure\n";
+        return EXIT_FAILURE;
       }
     }
   catch (NcException& e)
