@@ -18,31 +18,22 @@ namespace netCDF {
   {
     return true;
   }
+
+  const NcByte ncByte{};
+  const NcUbyte ncUbyte{};
+  const NcChar ncChar{};
+  const NcShort ncShort{};
+  const NcUshort ncUshort{};
+  const NcInt ncInt{};
+  const NcUint ncUint{};
+  const NcInt64 ncInt64{};
+  const NcUint64 ncUint64{};
+  const NcFloat ncFloat{};
+  const NcDouble ncDouble{};
+  const NcString ncString{};
 }
 
 using namespace netCDF;
-
-// assignment operator
-NcType& NcType::operator=(const NcType & rhs)
-{
-  nullObject = rhs.nullObject;
-  myId= rhs.myId;
-  groupId = rhs.groupId;
-  return *this;
-}
-
-// The copy constructor.
-NcType::NcType(const NcType& rhs):
-  nullObject(rhs.nullObject),
-  myId(rhs.myId),
-  groupId(rhs.groupId)
-{}
-
-
-// Constructor generates a null object.
-NcType::NcType() :
-  nullObject(true)
-{}
 
 // constructor
 NcType::NcType(const NcGroup& grp, const string& name) :
@@ -51,14 +42,6 @@ NcType::NcType(const NcGroup& grp, const string& name) :
   groupId= grp.getId();
   NcType typTmp(grp.getType(name,NcGroup::ParentsAndCurrent));
   myId = typTmp.getId();
-}
-
-// constructor for a global type
-NcType::NcType(nc_type id) :
-  nullObject(false),
-  myId(id),
-  groupId(0)
-{
 }
 
 // Constructor for a non-global type

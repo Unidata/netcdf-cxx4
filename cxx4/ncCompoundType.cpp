@@ -1,18 +1,6 @@
 #include "ncGroup.h"
 #include "ncCheck.h"
 #include "ncCompoundType.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
 #include "ncException.h"
 
 using namespace std;
@@ -20,13 +8,6 @@ using namespace netCDF;
 using namespace netCDF::exceptions;
 
 // Class represents a netCDF variable.
-
-// assignment operator
-NcCompoundType& NcCompoundType::operator=(const NcCompoundType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
 
 // assignment operator
 NcCompoundType& NcCompoundType::operator=(const NcType& rhs)
@@ -40,13 +21,6 @@ NcCompoundType& NcCompoundType::operator=(const NcType& rhs)
   return *this;
 }
 
-// The copy constructor.
-NcCompoundType::NcCompoundType(const NcCompoundType& rhs): 
-  NcType(rhs)
-{
-}
-
-
 // equivalence operator
 bool NcCompoundType::operator==(const NcCompoundType& rhs)
 {
@@ -56,17 +30,6 @@ bool NcCompoundType::operator==(const NcCompoundType& rhs)
     return myId ==rhs.myId && groupId == rhs.groupId;
 }  
   
-// Constructor generates a null object.
-NcCompoundType::NcCompoundType() : 
-  NcType()   // invoke base class constructor
-{}
-  
-// constructor
-NcCompoundType::NcCompoundType(const NcGroup& grp, const string& name): 
-  NcType(grp,name)
-{
-}
-
 // constructor
 // The copy constructor.
 NcCompoundType::NcCompoundType(const NcType& rhs): 

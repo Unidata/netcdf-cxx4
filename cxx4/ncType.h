@@ -43,7 +43,13 @@ namespace netCDF
     };
 
     /*! Constructor generates a \ref isNull "null object". */
-    NcType();
+    NcType() = default;
+    NcType(const NcType& rhs) = default;
+    NcType(NcType&& rhs) = default;
+    NcType& operator=(const NcType& rhs) = default;
+    NcType& operator=(NcType&& rhs) = default;
+
+    virtual ~NcType() = default;
 
     /*!
       Constructor for a non-global type.
@@ -69,13 +75,7 @@ namespace netCDF
       This object describes the "essential" information for a netCDF global type.
       \param id     type id
     */
-    NcType(nc_type id);
-
-    /*! The copy constructor. */
-    NcType(const NcType& rhs);
-
-    /*! destructor  */
-    virtual ~NcType() {}
+    NcType(nc_type id) : nullObject(false), myId(id), groupId(0) {}
 
     /*! equivalence operator */
     bool operator==(const NcType&) const;
@@ -139,25 +139,119 @@ namespace netCDF
     friend bool operator>(const NcType& lhs,const NcType& rhs);
 
   protected:
-
-    /*! assignment operator  */
-    NcType& operator=(const NcType& rhs);
-
-    bool nullObject;
+    bool nullObject{true};
 
     /*! the type Id */
-    nc_type myId;
+    nc_type myId{-1};
 
     /*! the group Id */
-    int groupId;
-
-    /*! An ncid associated with a particular open file
-      (returned from nc_open).
-      This is required by many of the functions ncType uses,
-      such as nc_inq_type */
-    int g_fileId;
-
+    int groupId{-1};
   };
 
+  /// Intermediate base class for atomic types
+  class NcAtomicType : public NcType {
+  public:
+    using NcType::NcType;
+
+    bool operator==(const NcAtomicType& rhs) {
+      return myId == rhs.myId;
+    }
+  };
+
+  /// netCDF atomic byte type
+  class NcByte : public NcAtomicType {
+  public:
+    NcByte() : NcAtomicType(NC_BYTE) {}
+  };
+
+  extern const NcByte ncByte;
+
+  /// netCDF atomic unsigned byte type
+  class NcUbyte : public NcAtomicType {
+  public:
+    NcUbyte() : NcAtomicType(NC_UBYTE) {}
+  };
+
+  extern const NcUbyte ncUbyte;
+
+  /// netCDF atomic char type
+  class NcChar : public NcAtomicType {
+  public:
+    NcChar() : NcAtomicType(NC_CHAR) {}
+  };
+
+  extern const NcChar ncChar;
+
+  /// netCDF atomic short type
+  class NcShort : public NcAtomicType {
+  public:
+    NcShort() : NcAtomicType(NC_SHORT) {}
+  };
+
+  extern const NcShort ncShort;
+
+  /// netCDF atomic unsigned short type
+  class NcUshort : public NcAtomicType {
+  public:
+    NcUshort() : NcAtomicType(NC_USHORT) {}
+  };
+
+  extern const NcUshort ncUshort;
+
+  /// netCDF atomic int type
+  class NcInt : public NcAtomicType {
+  public:
+    NcInt() : NcAtomicType(NC_INT) {}
+  };
+
+  extern const NcInt ncInt;
+
+  /// netCDF atomic unsigned int type
+  class NcUint : public NcAtomicType {
+  public:
+    NcUint() : NcAtomicType(NC_UINT) {}
+  };
+
+  extern const NcUint ncUint;
+
+  /// netCDF atomic 64-bit int type
+  class NcInt64 : public NcAtomicType {
+  public:
+    NcInt64() : NcAtomicType(NC_INT64) {}
+  };
+
+  extern const NcInt64 ncInt64;
+
+  /// netCDF atomic unsigned 64-bit int type
+  class NcUint64 : public NcAtomicType {
+  public:
+    NcUint64() : NcAtomicType(NC_UINT64) {}
+  };
+
+  extern const NcUint64 ncUint64;
+
+  /// netCDF atomic float type
+  class NcFloat : public NcAtomicType {
+  public:
+    NcFloat() : NcAtomicType(NC_FLOAT) {}
+  };
+
+  extern const NcFloat ncFloat;
+
+  /// netCDF atomic double type
+  class NcDouble : public NcAtomicType {
+  public:
+    NcDouble() : NcAtomicType(NC_DOUBLE) {}
+  };
+
+  extern const NcDouble ncDouble;
+
+  /// netCDF atomic string type
+  class NcString : public NcAtomicType {
+  public:
+    NcString() : NcAtomicType(NC_STRING) {}
+  };
+
+  extern const NcString ncString;
 }
 #endif

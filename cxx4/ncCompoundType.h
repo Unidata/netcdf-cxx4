@@ -17,18 +17,7 @@ namespace netCDF
   class NcCompoundType : public NcType
   {
   public:
-
-    /*! Constructor generates a \ref isNull "null object". */
-    NcCompoundType();
-
-    /*! 
-      Constructor.
-      The compound Type must already exist in the netCDF file. New netCDF compound types can be 
-      added using NcGroup::addNcCompoundType();
-      \param grp        The parent group where this type is defined.
-      \param name       Name of new type.
-    */
-    NcCompoundType(const NcGroup& grp, const std::string& name);
+    using NcType::NcType;
 
     /*! 
       Constructor.
@@ -37,25 +26,15 @@ namespace netCDF
     */
     NcCompoundType(const NcType& ncType);
 
-    /*! assignment operator */
-    NcCompoundType& operator=(const NcCompoundType& rhs);
-      
     /*! 
       Assignment operator.
       This assigns from the base type NcType object. Will throw an exception if the NcType is not the base of a Compound type.
     */
     NcCompoundType& operator=(const NcType& rhs);
       
-    /*! The copy constructor. */
-    NcCompoundType(const NcCompoundType& rhs);
-      
     /*! equivalence operator */
     bool operator==(const NcCompoundType & rhs);
 
-    /*! destructor */
-    ~NcCompoundType(){;}
-      
-      
     /*!  
       Adds a named field.
       \param memName       Name of new field.
@@ -105,12 +84,6 @@ the offset of a member "mem4" in structure struct1 is: offsetof(struct1,mem4).
       \return The size of the dimensions of the field. Non-array fields have 0 dimensions.
     */
     std::vector<int> getMemberShape(int memberIndex) const;
-      
-      
-  private:
-      
-    int myOffset;
-      
   };
   
 }

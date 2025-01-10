@@ -26,22 +26,6 @@ namespace netCDF {
 
 using namespace netCDF;
 
-// assignment operator
-NcVar& NcVar::operator=(const NcVar & rhs)
-{
-  nullObject = rhs.nullObject;
-  myId = rhs.myId;
-  groupId = rhs.groupId;
-  return *this;
-}
-
-// The copy constructor.
-NcVar::NcVar(const NcVar& rhs) :
-  nullObject(rhs.nullObject),
-  myId(rhs.myId),
-  groupId(rhs.groupId)
-{}
-
 
 // equivalence operator
 bool NcVar::operator==(const NcVar & rhs) const
@@ -61,21 +45,6 @@ bool NcVar::operator!=(const NcVar & rhs) const
 // Constructors and intialization
 
 /////////////////
-
-// Constructor generates a null object.
-NcVar::NcVar() : nullObject(true),
-                 myId(-1),
-                 groupId(-1)
-{}
-
-// Constructor for a variable (must already exist in the netCDF file.)
-NcVar::NcVar (const NcGroup& grp, const int& varId) :
-  nullObject (false),
-  myId (varId),
-  groupId(grp.getId())
-{}
-
-
 
 // Gets parent group.
 NcGroup  NcVar::getParentGroup() const {

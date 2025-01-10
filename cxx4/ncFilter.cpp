@@ -9,11 +9,6 @@
 using namespace std;
 using namespace netCDF;
 
-// Constructor for filtering object
-NcFilter::~NcFilter() {
-
-};
-
 /* Define a new variable filter for either compression or decompression. The below
 method allows for setting of the filter which is to be used wen writing a variable. */
 void NcFilter::setFilter(unsigned int ncid, unsigned int varid, unsigned int filterId, size_t nparams, const unsigned int* parms)
