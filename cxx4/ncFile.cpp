@@ -34,11 +34,6 @@ void NcFile::close()
   nullObject = true;
 }
 
-// Constructor generates a null object.
-NcFile::NcFile() :
-    NcGroup()  // invoke base class constructor
-{}
-
 // constructor
 NcFile::NcFile(const string& filePath, const FileMode fMode)
 {

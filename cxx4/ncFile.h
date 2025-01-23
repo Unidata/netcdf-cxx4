@@ -37,9 +37,22 @@ namespace netCDF
 
 
       /*! Constructor generates a \ref isNull "null object". */
-      NcFile();
+      NcFile() = default;
+      /*! Closes file and releases all resources */
+      ~NcFile() override;
 
-      /*!
+      /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
+         Because the destructor closes the file and releases al resources such
+         an action could leave NcFile objects in an invalid state */
+      NcFile& operator =(const NcGroup & rhs) = delete;
+      NcFile& operator =(const NcFile & rhs) = delete;
+      NcFile(const NcGroup& rhs) = delete;
+      NcFile(const NcFile& rhs) = delete;
+
+      NcFile& operator =(NcFile&& rhs) = delete;
+      NcFile(NcFile&& rhs) = delete;
+
+     /*!
         Opens a netCDF file.
         \param filePath    Name of netCDF optional path.
         \aram ncFileFlags File flags from netcdf.h
@@ -105,9 +118,6 @@ namespace netCDF
       //! Close a file before destructor call
       void close();
 
-      /*! destructor */
-      virtual ~NcFile(); //closes file and releases all resources
-
       //! Synchronize an open netcdf dataset to disk
       void sync();
 
@@ -119,16 +129,6 @@ namespace netCDF
 
       //! Leave define mode, used for classic model
       void enddef();
-
-
-   private:
-	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
-		  Because the destructor closes the file and releases al resources such
-		  an action could leave NcFile objects in an invalid state */
-	   NcFile& operator =(const NcGroup & rhs);
-	   NcFile& operator =(const NcFile & rhs);
-	   NcFile(const NcGroup& rhs);
-	   NcFile(const NcFile& rhs);
    };
 
 }

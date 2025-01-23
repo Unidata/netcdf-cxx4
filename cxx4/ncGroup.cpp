@@ -42,38 +42,6 @@ using namespace netCDF;
 
 /////////////////////////////////////////////
 
-NcGroup::~NcGroup()
-{
-}
-
-// Constructor generates a null object.
-NcGroup::NcGroup() :
-  nullObject(true),
-  myId(-1)
-{}
-
-
-// constructor
-NcGroup::NcGroup(const int groupId) :
-  nullObject(false),
-  myId(groupId)
-{ }
-
-// assignment operator
-NcGroup& NcGroup::operator=(const NcGroup & rhs)
-{
-  nullObject = rhs.nullObject;
-  myId = rhs.myId;
-  return *this;
-}
-
-// The copy constructor.
-NcGroup::NcGroup(const NcGroup& rhs):
-  nullObject(rhs.nullObject),
-  myId(rhs.myId)
-{}
-
-
 // equivalence operator
 bool NcGroup::operator==(const NcGroup & rhs) const
 {

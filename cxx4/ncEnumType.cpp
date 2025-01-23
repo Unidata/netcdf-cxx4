@@ -21,13 +21,6 @@ using namespace netCDF::exceptions;
 // Class represents a netCDF variable.
 
 // assignment operator
-NcEnumType& NcEnumType::operator=(const NcEnumType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
-
-// assignment operator
 NcEnumType& NcEnumType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
@@ -38,24 +31,6 @@ NcEnumType& NcEnumType::operator=(const NcType& rhs)
   }
   return *this;
 }
-
-// The copy constructor.
-NcEnumType::NcEnumType(const NcEnumType& rhs): 
-  NcType(rhs)
-{
-}
-
-
-// Constructor generates a null object.
-NcEnumType::NcEnumType() :
-  NcType()   // invoke base class constructor
-{}
-  
-// constructor
-NcEnumType::NcEnumType(const NcGroup& grp, const string& name):
-  NcType(grp,name)
-{}
-  
 
 // constructor
 NcEnumType::NcEnumType(const NcType& ncType): 

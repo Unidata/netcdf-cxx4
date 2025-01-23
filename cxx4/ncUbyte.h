@@ -14,9 +14,6 @@ namespace netCDF
     /*! equivalence operator */
     bool operator==(const NcUbyte & rhs);
     
-    /*! destructor */
-    ~NcUbyte();
-    
     /*! Constructor */
     NcUbyte();
   };
