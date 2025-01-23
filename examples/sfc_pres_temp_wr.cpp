@@ -41,10 +41,10 @@ string LAT_NAME = "latitude";
 string LON_NAME ="longitude";
 
 // These are used to construct some example data. 
-#define SAMPLE_PRESSURE 900
-#define SAMPLE_TEMP     9.0
-#define START_LAT       25.0
-#define START_LON       -125.0
+constexpr float SAMPLE_PRESSURE = 900;
+constexpr float SAMPLE_TEMP = 9.0;
+constexpr float START_LAT = 25.0;
+constexpr float START_LON = -125.0;
 
 // Return this to OS if there is a failure.
 #define NC_ERR 2
@@ -62,11 +62,13 @@ int main(void)
    // hold the actual latitudes and longitudes. Since they hold data
    // about the coordinate system, the netCDF term for these is:
    // "coordinate variables."
-   for(int lat = 0;lat < NLAT; lat++)
-      lats[lat] = START_LAT + 5.*lat;
+   for(int lat = 0;lat < NLAT; lat++) {
+     lats[lat] = START_LAT + 5.f*static_cast<float>(lat);
+   }
    
-   for(int lon = 0; lon < NLON; lon++)
-      lons[lon] = START_LON + 5.*lon;
+   for(int lon = 0; lon < NLON; lon++) {
+     lons[lon] = START_LON + 5.f*static_cast<float>(lon);
+   }
 
    // Create some pretend data. If this wasn't an example program, we
    // would have some real data to write, for example, model
@@ -74,8 +76,8 @@ int main(void)
    for (int lat = 0; lat < NLAT; lat++)
       for(int lon = 0;lon < NLON; lon++)
       {
-	 presOut[lat][lon] = SAMPLE_PRESSURE + (lon * NLAT + lat);
-	 tempOut[lat][lon] = SAMPLE_TEMP + .25 * (lon * NLAT +lat);
+	 presOut[lat][lon] = SAMPLE_PRESSURE + static_cast<float>(lon * NLAT + lat);
+	 tempOut[lat][lon] = SAMPLE_TEMP + .25f * static_cast<float>(lon * NLAT +lat);
       }
   
    try
