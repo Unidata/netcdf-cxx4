@@ -71,7 +71,9 @@ string LON_UNITS = "degrees_east";
 
 int main()
 {
+#ifdef HAVE_NC_SET_LOG_LEVEL
   nc_set_log_level(5);
+#endif
   // We will write latitude and longitude fields.
    float lats[NLAT],lons[NLON];
 
@@ -103,7 +105,9 @@ int main()
 
       // Create the file.
       NcFile test(FILE_NAME, NcFile::replace);
+#ifdef HAVE_NC_SET_LOG_LEVEL
       nc_set_log_level(5);
+#endif
       // Define the dimensions. NetCDF will hand back an ncDim object for
       // each.
       NcDim lvlDim = test.addDim(LVL_NAME, NLVL);

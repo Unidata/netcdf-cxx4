@@ -30,7 +30,9 @@ int main()
   try
     {
       NcFile test("pres_temp_plugin_4D.nc", NcFile::replace);
+#ifdef HAVE_NC_SET_LOG_LEVEL
       nc_set_log_level(5);
+#endif
       // Define the dimensions. NetCDF will hand back an ncDim object for
       // each.
       NcDim latDim = test.addDim(LAT_NAME, NLAT);
