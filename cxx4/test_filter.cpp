@@ -62,7 +62,7 @@ int main()
 
       bool success = true;
       if (idp != set_filter_id) {
-        cout << "got wrong filter ID (got " << set_filter_id
+        cout << "got wrong filter ID (got " << idp
              << ", expected " << set_filter_id << ")\n";
         success &= false;
       }
