@@ -120,6 +120,8 @@ namespace netCDF
       //! Leave define mode, used for classic model
       void enddef();
 
+      std::string getPath() const;
+
 
    private:
 	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
