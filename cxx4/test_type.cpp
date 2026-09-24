@@ -410,17 +410,9 @@ try
       dummyFill.mem3[1]=97;
       dummyFill.mem3[2]=98;
 
-      struct3 dummyStruct2[2];
-      dummyStruct2[0].mem1=1;
-      dummyStruct2[0].mem2=-1.23456;
-      dummyStruct2[0].mem3[0]=1;
-      dummyStruct2[0].mem3[1]=-6;
-      dummyStruct2[0].mem3[2]=20;
-
       var_3.setFill(true,dummyFill);
 
       vector<size_t> index(1);index[0]=1;
-      //var_3.putVar(&dummyStruct2);
       var_3.putVar(index,&dummyStruct);
 
       NcVar var_4(ncFile.getVar("var_3"));
