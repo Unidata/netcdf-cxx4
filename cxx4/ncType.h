@@ -129,6 +129,9 @@ namespace netCDF
      */
     std::string getTypeClassName() const;
 
+    /*! Return true if this is not a primitive type */
+    bool isNonPrimitive() const;
+
     /*! Returns true if this object is null (i.e. it has no contents); otherwise returns false. */
     bool isNull() const  {return nullObject;}
 

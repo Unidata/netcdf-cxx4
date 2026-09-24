@@ -5,7 +5,18 @@
 ##################################
 
 #Minimum required CMake Version
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.21.0)
+
+# Only set the cxx_standard if it is not set by someone else
+if (NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+# strongly encouraged to enable this globally to avoid conflicts between
+# -Wpedantic being enabled and -std=c++20 and -std=gnu++20 for example
+# when compiling with PCH enabled
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 
 #Project Name
 PROJECT(NCXX C CXX)
@@ -37,7 +48,7 @@ SET(PACKAGE_VERSION ${VERSION})
 find_program(UNAME NAMES uname)
 IF(UNAME)
   macro(getuname name flag)
-    exec_program("${UNAME}" ARGS "${flag}" OUTPUT_VARIABLE "${name}")
+    execute_process(COMMAND "${UNAME}" "${flag}" OUTPUT_VARIABLE ${name} OUTPUT_STRIP_TRAILING_WHITESPACE)
   endmacro(getuname)
   getuname(osname -s)
   getuname(osrel  -r)
@@ -311,7 +322,7 @@ IF(NCXX_ENABLE_TESTS)
     SET(HOSTNAME_ARG "-s")
   ENDIF()
   IF(HOSTNAME_CMD)
-    EXEC_PROGRAM(${HOSTNAME_CMD} ARGS "${HOSTNAME_ARG}" OUTPUT_VARIABLE HOSTNAME)
+    EXECUTE_PROCESS(COMMAND ${HOSTNAME_CMD} ${HOSTNAME_ARG} OUTPUT_VARIABLE HOSTNAME OUTPUT_STRIP_TRAILING_WHITESPACE)
     SET(NCXX_CTEST_SITE "${HOSTNAME}" CACHE STRING "Hostname of test machine.")
   ENDIF()
 
@@ -432,6 +443,8 @@ ENDIF()
 #
 # Also, set some other default compiler flags.
 ##
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 IF(CMAKE_COMPILER_IS_GNUCC OR APPLE)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unused-variable -Wno-unused-parameter")
@@ -685,4 +698,6 @@ ENDIF()
 ##
 # CPack, CMakeInstallation.cmake file.
 ##
-INCLUDE(CMakeInstallation.cmake)
+if (PROJECT_IS_TOP_LEVEL)
+  include(CMakeInstallation.cmake)
+endif()

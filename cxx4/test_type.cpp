@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <type_traits>
 #include "test_utilities.h"
 using namespace std;
 using namespace netCDF;
@@ -409,17 +410,9 @@ try
       dummyFill.mem3[1]=97;
       dummyFill.mem3[2]=98;
 
-      struct3 dummyStruct2[2];
-      dummyStruct2[0].mem1=1;
-      dummyStruct2[0].mem2=-1.23456;
-      dummyStruct2[0].mem3[0]=1;
-      dummyStruct2[0].mem3[1]=-6;
-      dummyStruct2[0].mem3[2]=20;
-
       var_3.setFill(true,dummyFill);
 
       vector<size_t> index(1);index[0]=1;
-      //var_3.putVar(&dummyStruct2);
       var_3.putVar(index,&dummyStruct);
 
       NcVar var_4(ncFile.getVar("var_3"));
@@ -553,6 +546,22 @@ try
     cout <<"    -----------   passed\n";
 
 
+    {
+      // Test for issue 30/32
+      cout<<left<<std::setw(57)<<"Testing NcType::getName() with two open files";
+      NcFile nc4_file("nc4_format.cdf", NcFile::replace, NcFile::nc4);
+      NcFile classic_file("classic_format.cdf", NcFile::replace, NcFile::classic);
+
+      nc4_file.addVar("int64", ncInt64);
+
+      struct struct11 {
+        int mem1;
+      };
+      const auto compound_type11 = nc4_file.addCompoundType("struct11", sizeof(struct11));
+      const auto name = compound_type11.getName();
+      if (name != "struct11") throw NcException("Wrong name for compound type", __FILE__, __LINE__);
+    }
+    cout <<"    -----------   passed\n";
 
 }
 catch (NcException& e)

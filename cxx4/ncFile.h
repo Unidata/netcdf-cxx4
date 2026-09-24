@@ -129,6 +129,18 @@ namespace netCDF
 
       //! Leave define mode, used for classic model
       void enddef();
+
+      std::string getPath() const;
+
+
+   private:
+	   /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
+		  Because the destructor closes the file and releases al resources such
+		  an action could leave NcFile objects in an invalid state */
+	   NcFile& operator =(const NcGroup & rhs);
+	   NcFile& operator =(const NcFile & rhs);
+	   NcFile(const NcGroup& rhs);
+	   NcFile(const NcFile& rhs);
    };
 
 }

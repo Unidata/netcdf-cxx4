@@ -3,8 +3,67 @@
 # Set up headers and sources
 ###
 
-file(GLOB CXX_HEADERS *.h)
-file(GLOB CXX_SOURCES nc*.cpp)
+set(CXX_HEADERS
+  ncAtt.h
+  ncByte.h
+  ncChar.h
+  ncCheck.h
+  ncCompoundType.h
+  ncDim.h
+  ncDouble.h
+  ncEnumType.h
+  ncException.h
+  ncFile.h
+  ncFill.h
+  ncFilter.h
+  ncFloat.h
+  ncGroup.h
+  ncGroupAtt.h
+  ncInt.h
+  ncInt64.h
+  ncOpaqueType.h
+  ncShort.h
+  ncString.h
+  ncType.h
+  ncUbyte.h
+  ncUint.h
+  ncUint64.h
+  ncUshort.h
+  ncVar.h
+  ncVarAtt.h
+  ncVlenType.h
+)
+
+set(CXX_SOURCES
+  ncAtt.cpp
+  ncByte.cpp
+  ncChar.cpp
+  ncCheck.cpp
+  ncCompoundType.cpp
+  ncDim.cpp
+  ncDouble.cpp
+  ncEnumType.cpp
+  ncException.cpp
+  ncFile.cpp
+  ncFill.cpp
+  ncFilter.cpp
+  ncFloat.cpp
+  ncGroup.cpp
+  ncGroupAtt.cpp
+  ncInt.cpp
+  ncInt64.cpp
+  ncOpaqueType.cpp
+  ncShort.cpp
+  ncString.cpp
+  ncType.cpp
+  ncUbyte.cpp
+  ncUint.cpp
+  ncUint64.cpp
+  ncUshort.cpp
+  ncVar.cpp
+  ncVarAtt.cpp
+  ncVlenType.cpp
+)
 
 ###
 # Set up tests.

@@ -2,7 +2,7 @@
 # Copyright 2011, see the COPYRIGHT file for more information.
 
 # This file builds the new C++-4 interface.
-
+LDADD = libnetcdf_c++4.la -lnetcdf
 # This is our output library.
 lib_LTLIBRARIES = libnetcdf_c++4.la
 
