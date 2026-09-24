@@ -41,14 +41,6 @@ namespace netCDF
       /*! Closes file and releases all resources */
       ~NcFile() override;
 
-      /* Do not allow definition of NcFile involving copying any NcFile or NcGroup.
-         Because the destructor closes the file and releases al resources such
-         an action could leave NcFile objects in an invalid state */
-      NcFile& operator =(const NcGroup & rhs) = delete;
-      NcFile& operator =(const NcFile & rhs) = delete;
-      NcFile(const NcGroup& rhs) = delete;
-      NcFile(const NcFile& rhs) = delete;
-
       NcFile& operator =(NcFile&& rhs) = delete;
       NcFile(NcFile&& rhs) = delete;
 
