@@ -65,22 +65,19 @@ NcType  NcAtt::getType() const{
   // get the identifier for the netCDF type of this attribute.
   nc_type xtypep;
   ncCheck(nc_inq_atttype(groupId,varId,myName.c_str(),&xtypep),__FILE__,__LINE__);
-  if(xtypep <= 12)
+  if (xtypep <= 12) {
     // This is an atomic type
     return NcType(xtypep);
-  else
-    // this is a user-defined type
-    {
-      // now get the set of NcType objects in this file.
-      multimap<string,NcType> typeMap(getParentGroup().getTypes(NcGroup::ParentsAndCurrent));
-      multimap<string,NcType>::iterator iter;
-      // identify the Nctype object with the same id as this attribute.
-      for (iter=typeMap.begin(); iter!= typeMap.end();iter++) {
-	if(iter->second.getId() == xtypep) return iter->second;
-      }
-      // return a null object, as no type was identified.
-      return NcType();
-    }
+  }
+  // this is a user-defined type
+  // now get the set of NcType objects in this file.
+  multimap<string,NcType> typeMap(getParentGroup().getTypes(NcGroup::ParentsAndCurrent));
+  // identify the Nctype object with the same id as this attribute.
+  for (const auto& type: typeMap) {
+    if(type.second.getId() == xtypep) return type.second;
+  }
+  // return a null object, as no type was identified.
+  return NcType();
 }
 
 // Gets attribute length.
