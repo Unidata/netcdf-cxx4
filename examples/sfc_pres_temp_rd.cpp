@@ -93,8 +93,8 @@ int main(void)
    // Check the data. 
    for (int lat = 0; lat < NLAT; lat++)
       for (int lon = 0; lon < NLON; lon++)
-	 if (presIn[lat][lon] != SAMPLE_PRESSURE + (lon * NLAT + lat)
-	     || tempIn[lat][lon] != SAMPLE_TEMP + .25 * (lon * NLAT + lat))
+	 if (presIn[lat][lon] != SAMPLE_PRESSURE + static_cast<float>(lon * NLAT + lat)
+	     || tempIn[lat][lon] != SAMPLE_TEMP + .25f * static_cast<float>(lon * NLAT + lat))
 	    return NC_ERR;
    
    // Each of the netCDF variables has a "units" attribute. Let's read

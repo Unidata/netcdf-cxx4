@@ -31,18 +31,28 @@ int main() {
       cout << "Caught Expected Exception." << endl;
     }
 
+    const char *fileName = "firstFile.cdf";
     // Test opening a file that exists.
-    cout << "Opening file \"firstFile.cdf\"... ";
+    cout << "Opening file \"" << fileName << "\"... ";
     try {
-      file.open("firstFile.cdf",NcFile::replace);
+      file.open(fileName,NcFile::replace);
       cout << "Success." << endl;
     } catch(NcException &e) {
       cout << "Caught unexpected exception." << endl;
       return e.errorCode();
     }
 
+    // Test retrieving path from file object.
+    cout << "Retrieving path from file object... ";
+    if (file.getPath() == fileName) {
+      cout << "Success." << endl;
+    } else {
+      cout << "Retrieved file path did not match input filename." << endl;
+      return -1;
+    }
+
     // Test closing a valid file.
-    cout << "Closing file...";
+    cout << "Closing file... ";
     try {
       file.close();
       cout << "Success." << endl;

@@ -29,7 +29,7 @@ namespace netCDF
       NcException(const NcException& e) throw();
       NcException& operator=(const NcException& e) throw();
       virtual ~NcException() throw();
-      const char* what() const throw();
+      const char* what() const throw() override;
       int errorCode() const throw();
     private:
       std::string* what_msg;

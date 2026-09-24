@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <netcdf>
+#include "ncException.h"
 using namespace std;
 using namespace netCDF;
 using namespace netCDF::exceptions;

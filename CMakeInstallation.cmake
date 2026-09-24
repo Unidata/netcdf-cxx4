@@ -63,12 +63,7 @@ ENDIF()
 # This should be set using the output of dpkg --print-architecture.
 FIND_PROGRAM(NC_DPKG NAMES dpkg)
 IF(NC_DPKG)
-  # Define a macro for getting the dpkg architecture.
-  MACRO(getdpkg_arch arch)
-    exec_program("${NC_DPKG}" ARGS "--print-architecture" OUTPUT_VARIABLE "${arch}")
-  ENDMACRO(getdpkg_arch)
-  getdpkg_arch(dpkg_arch)
-
+  execute_process(COMMAND "${NC_DPKG}" "--print-architecture" OUTPUT_VARIABLE dpkg_arch OUTPUT_STRIP_TRAILING_WHITESPACE)
   SET(CPACK_DEBIAN_PACKAGE_NAME "netcdf4-cxx4-dev")
   SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${dpkg_arch}")
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "zlib1g (>= 1:1.2.3.4), libhdf5-7 (>= 1.8.11), libcurl4-openssl-dev (>= 7.22.0)")
