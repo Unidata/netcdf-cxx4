@@ -17,8 +17,6 @@ namespace netCDF
     /*! storage size */
     int sizeoff();
 
-    ~NcByte();
-    
     /*! Constructor */
     NcByte();
   };

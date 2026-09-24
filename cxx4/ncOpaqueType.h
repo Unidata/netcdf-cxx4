@@ -14,9 +14,12 @@ namespace netCDF
   class NcOpaqueType : public NcType
   {
   public:
-
-    /*! Constructor generates a \ref isNull "null object". */
-    NcOpaqueType();
+    NcOpaqueType() = default;
+    ~NcOpaqueType() = default;
+    NcOpaqueType(const NcOpaqueType& rhs) = default;
+    NcOpaqueType(NcOpaqueType&& rhs) = default;
+    NcOpaqueType& operator=(const NcOpaqueType& rhs) = default;
+    NcOpaqueType& operator=(NcOpaqueType&& rhs) = default;
 
     /*! 
       Constructor.
@@ -33,21 +36,12 @@ namespace netCDF
       \param ncType     A Nctype object.
     */
     NcOpaqueType(const NcType& ncType);
-
-    /*! assignment operator */
-    NcOpaqueType& operator=(const NcOpaqueType& rhs);
       
     /*! 
       Assignment operator.
       This assigns from the base type NcType object. Will throw an exception if the NcType is not the base of an Opaque type.
     */
     NcOpaqueType& operator=(const NcType& rhs);
-      
-    /*! The copy constructor.*/
-    NcOpaqueType(const NcOpaqueType& rhs);
-      
-    /*!  destructor */
-    ~NcOpaqueType(){;}
 
     /*! Returns the size of the opaque type in bytes. */
     size_t  getTypeSize() const;

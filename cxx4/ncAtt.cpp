@@ -6,39 +6,6 @@
 using namespace std;
 using namespace netCDF;
   
-
-// destructor  (defined even though it is virtual)
-NcAtt::~NcAtt() {}
-
-// assignment operator
-NcAtt& NcAtt::operator=(const NcAtt& rhs)
-{
-  nullObject = rhs.nullObject;
-  myName = rhs.myName;
-  groupId = rhs.groupId;
-  varId =rhs.varId;
-  return *this;
-}
-
-// Constructor generates a null object.
-NcAtt::NcAtt() : 
-  nullObject(true) 
-{}
-
-// Constructor for non-null instances.
-NcAtt::NcAtt(bool nullObject): 
-  nullObject(nullObject)
-{}
-
-// The copy constructor.
-NcAtt::NcAtt(const NcAtt& rhs) :
-  nullObject(rhs.nullObject),
-  myName(rhs.myName),
-  groupId(rhs.groupId),
-   varId(rhs.varId)
-{}
-
-
 // equivalence operator
 bool NcAtt::operator==(const NcAtt & rhs) const
 {

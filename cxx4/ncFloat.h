@@ -13,10 +13,6 @@ namespace netCDF
     
     /*! equivalence operator */
     bool operator==(const NcFloat & rhs);
-    
-    /*!  destructor */
-    ~NcFloat();
-    
     /*! Constructor */
     NcFloat();
   };

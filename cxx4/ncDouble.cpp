@@ -11,10 +11,6 @@ namespace netCDF {
 NcDouble::NcDouble() : NcType(NC_DOUBLE){
 }
 
-NcDouble::~NcDouble() {
-}
-
-
 // equivalence operator
 bool NcDouble::operator==(const NcDouble & rhs)    {
   // simply check the netCDF id.

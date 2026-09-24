@@ -11,10 +11,6 @@ namespace netCDF {
 NcInt64::NcInt64() : NcType(NC_INT64){
 }
 
-NcInt64::~NcInt64() {
-}
-
-
 // equivalence operator
 bool NcInt64::operator==(const NcInt64 & rhs)    {
   // simply check the netCDF id.

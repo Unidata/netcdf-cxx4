@@ -37,9 +37,14 @@ namespace netCDF
 
 
       /*! Constructor generates a \ref isNull "null object". */
-      NcFile();
+      NcFile() = default;
+      /*! Closes file and releases all resources */
+      ~NcFile() override;
 
-      /*!
+      NcFile& operator =(NcFile&& rhs) = delete;
+      NcFile(NcFile&& rhs) = delete;
+
+     /*!
         Opens a netCDF file.
         \param filePath    Name of netCDF optional path.
         \aram ncFileFlags File flags from netcdf.h
@@ -104,9 +109,6 @@ namespace netCDF
 
       //! Close a file before destructor call
       void close();
-
-      /*! destructor */
-      virtual ~NcFile(); //closes file and releases all resources
 
       //! Synchronize an open netcdf dataset to disk
       void sync();
