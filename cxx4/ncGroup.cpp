@@ -630,8 +630,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const string& dataValues) const {
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned char* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uchar(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -643,8 +642,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const signed char* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_schar(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -656,8 +654,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, short datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_short(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -669,8 +666,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, short datumVa
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, int datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_int(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -681,8 +677,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, int datumValu
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_long(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -693,8 +688,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long datumVal
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, float datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_float(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -706,8 +700,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, float datumVa
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, double datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_double(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -719,8 +712,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, double datumV
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned short datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ushort(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -731,8 +723,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned shor
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned int datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uint(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -743,8 +734,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned int 
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long long datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_longlong(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -756,8 +746,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, long long dat
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned long long datumValue) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ulonglong(myId,NC_GLOBAL,name.c_str(),type.getId(),1,&datumValue),__FILE__,__LINE__);
@@ -769,8 +758,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, unsigned long
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const short* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_short(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -782,8 +770,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const int* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_int(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -794,8 +781,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const long* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_long(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -806,8 +792,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const float* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_float(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -819,8 +804,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const double* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_double(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -832,8 +816,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned short* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ushort(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -844,8 +827,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned int* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_uint(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -856,8 +838,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const long long* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_longlong(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
@@ -869,8 +850,7 @@ NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, c
 //  Creates a new NetCDF group attribute or if already exisiting replaces it.
 NcGroupAtt NcGroup::putAtt(const string& name, const NcType& type, size_t len, const unsigned long long* dataValues) const {
   ncCheckDefineMode(myId);
-  NcType::ncType typeClass(type.getTypeClass());
-  if(typeClass == NcType::nc_VLEN || typeClass == NcType::nc_OPAQUE || typeClass == NcType::nc_ENUM || typeClass == NcType::nc_COMPOUND)
+  if (type.isNonPrimitive())
     ncCheck(nc_put_att(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
   else
     ncCheck(nc_put_att_ulonglong(myId,NC_GLOBAL,name.c_str(),type.getId(),len,dataValues),__FILE__,__LINE__);
