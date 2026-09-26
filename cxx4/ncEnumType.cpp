@@ -1,31 +1,12 @@
 #include "ncEnumType.h"
 #include "ncGroup.h"
 #include "ncCheck.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
 #include "ncException.h"
 using namespace std;
 using namespace netCDF;
 using namespace netCDF::exceptions;
 
 // Class represents a netCDF variable.
-
-// assignment operator
-NcEnumType& NcEnumType::operator=(const NcEnumType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
 
 // assignment operator
 NcEnumType& NcEnumType::operator=(const NcType& rhs)
@@ -38,24 +19,6 @@ NcEnumType& NcEnumType::operator=(const NcType& rhs)
   }
   return *this;
 }
-
-// The copy constructor.
-NcEnumType::NcEnumType(const NcEnumType& rhs): 
-  NcType(rhs)
-{
-}
-
-
-// Constructor generates a null object.
-NcEnumType::NcEnumType() :
-  NcType()   // invoke base class constructor
-{}
-  
-// constructor
-NcEnumType::NcEnumType(const NcGroup& grp, const string& name):
-  NcType(grp,name)
-{}
-  
 
 // constructor
 NcEnumType::NcEnumType(const NcType& ncType): 

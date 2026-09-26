@@ -16,9 +16,9 @@ int main()
       cout << "Test creation of classic format file" << endl;
       {
 	 NcFile ncFile("test_classic.nc", NcFile::replace, NcFile::classic);
-	 NcDim dim1 = ncFile.addDim("dim1",11);
-	 NcDim dim2 = ncFile.addDim("dim2");
-	 NcDim dim3 = ncFile.addDim("dim3",13);
+	 [[maybe_unused]] NcDim dim1 = ncFile.addDim("dim1",11);
+	 [[maybe_unused]] NcDim dim2 = ncFile.addDim("dim2");
+	 [[maybe_unused]] NcDim dim3 = ncFile.addDim("dim3",13);
 
 	 NcVar var_gw  = ncFile.addVar("George_Washington", ncInt, dim1);
 	 // The following fails, I don't know why...

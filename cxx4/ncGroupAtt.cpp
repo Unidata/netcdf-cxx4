@@ -23,24 +23,6 @@ namespace netCDF {
 
 using namespace netCDF;
 
-// assignment operator
-NcGroupAtt& NcGroupAtt::operator=(const NcGroupAtt & rhs)
-{
-  NcAtt::operator=(rhs);    // assign base class parts
-  return *this;
-}
-
-//! The copy constructor.
-NcGroupAtt::NcGroupAtt(const NcGroupAtt& rhs): 
-  NcAtt(rhs)   // invoke base class copy constructor
-{}
-
-
-// Constructor generates a null object.
-NcGroupAtt::NcGroupAtt() : 
-  NcAtt()  // invoke base class constructor
-{}
-
 // equivalence operator (doesn't bother compaing varid's of each object).
 bool NcGroupAtt::operator==(const NcGroupAtt & rhs)
 {

@@ -11,14 +11,6 @@ using namespace netCDF::exceptions;
 using namespace netCDF;
   
 // assignment operator
-NcOpaqueType& NcOpaqueType::operator=(const NcOpaqueType& rhs)
-{
-  // assign base class parts
-  NcType::operator=(rhs);    
-  return *this;
-}
-  
-// assignment operator
 NcOpaqueType& NcOpaqueType::operator=(const NcType& rhs)
 {
   if (&rhs != this) {
@@ -29,19 +21,6 @@ NcOpaqueType& NcOpaqueType::operator=(const NcType& rhs)
   }
   return *this;
 }
-
-// The copy constructor.
-NcOpaqueType::NcOpaqueType(const NcOpaqueType& rhs): 
-  NcType(rhs)
-{
-}
-
-
-// Constructor generates a null object.
-NcOpaqueType::NcOpaqueType() :
-  NcType()   // invoke base class constructor
-{}
-
 
 // constructor
 NcOpaqueType::NcOpaqueType(const NcGroup& grp, const string& name) :

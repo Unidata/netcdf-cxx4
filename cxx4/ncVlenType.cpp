@@ -2,18 +2,6 @@
 #include "ncGroup.h"
 #include "ncCheck.h"
 #include "ncException.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
 #include <netcdf.h>
 using namespace std;
 using namespace netCDF;
@@ -21,13 +9,6 @@ using namespace netCDF::exceptions;
 
 // Class represents a netCDF variable.
 using namespace netCDF;
-
-// assignment operator
-NcVlenType& NcVlenType::operator=(const NcVlenType& rhs)
-{
-  NcType::operator=(rhs);    // assign base class parts
-  return *this;
-}
 
 // assignment operator
 NcVlenType& NcVlenType::operator=(const NcType& rhs)
@@ -40,18 +21,6 @@ NcVlenType& NcVlenType::operator=(const NcType& rhs)
   }
   return *this;
 }
-
-// The copy constructor.
-NcVlenType::NcVlenType(const NcVlenType& rhs):   
-  NcType(rhs)
-{
-}
-
-
-// Constructor generates a null object.
-NcVlenType::NcVlenType() :
-  NcType()   // invoke base class constructor
-{}
 
 // constructor
 NcVlenType::NcVlenType(const NcGroup& grp, const string& name) :

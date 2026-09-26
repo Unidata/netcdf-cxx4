@@ -12,15 +12,11 @@ namespace netCDF
   class NcGroupAtt : public NcAtt
   {
   public:
-    
-    /*! assignment operator */
-    NcGroupAtt& operator= (const NcGroupAtt& rhs);
-   
-    /*! Constructor generates a \ref isNull "null object". */
-    NcGroupAtt ();
-    
-    /*! The copy constructor. */
-    NcGroupAtt(const NcGroupAtt& rhs) ;
+    NcGroupAtt () = default;
+    NcGroupAtt(const NcGroupAtt& rhs)  = default;
+    NcGroupAtt& operator= (const NcGroupAtt& rhs) = default;
+    NcGroupAtt(NcGroupAtt&& rhs)  = default;
+    NcGroupAtt& operator= (NcGroupAtt&& rhs) = default;
       
     /*! 
       Constructor for an existing global attribute.

@@ -6,18 +6,6 @@
 #include "netcdf.h"
 #include "ncVarAtt.h"
 #include "ncGroup.h"
-#include "ncByte.h"
-#include "ncUbyte.h"
-#include "ncChar.h"
-#include "ncShort.h"
-#include "ncUshort.h"
-#include "ncInt.h"
-#include "ncUint.h"
-#include "ncInt64.h"
-#include "ncUint64.h"
-#include "ncFloat.h"
-#include "ncDouble.h"
-#include "ncString.h"
 
 #ifndef NcVarClass
 #define NcVarClass
@@ -65,11 +53,8 @@ namespace netCDF
       nc_FLETCHER32 = NC_FLETCHER32  //!< Selects the Fletcher32 checksum filter.
       };
 
-    /*! destructor */
-    ~NcVar(){};
-
     /*! Constructor generates a \ref isNull "null object". */
-    NcVar ();
+    NcVar () = default;
 
     /*! Constructor for a variable .
 
@@ -77,19 +62,17 @@ namespace netCDF
       \param grp    Parent NcGroup object.
       \param varId  Id of the is NcVar object.
     */
-    NcVar (const NcGroup& grp, const int& varId);
-
-    /*! assignment operator  */
-    NcVar& operator =(const NcVar& rhs);
+    NcVar (const NcGroup& grp, const int& varId) :
+      nullObject (false),
+      myId (varId),
+      groupId(grp.getId()
+    ) {}
 
     /*! equivalence operator */
     bool operator==(const NcVar& rhs) const;
 
     /*!  != operator */
     bool operator!=(const NcVar& rhs) const;
-
-    /*! The copy constructor. */
-    NcVar(const NcVar& ncVar);
 
     /*! Name of this NcVar object.*/
     std::string getName() const;
@@ -99,7 +82,6 @@ namespace netCDF
 
     /*! Returns the variable type. */
     NcType getType() const;
-
 
     /*! Rename the variable. */
     void rename( const std::string& newname ) const;
@@ -1131,21 +1113,11 @@ namespace netCDF
 */
     void putVar(const std::vector<size_t>& startp, const std::vector<size_t>& countp, const std::vector<ptrdiff_t>& stridep, const std::vector<ptrdiff_t>& imapp, const long long* dataValues) const;
 
-
-
   private:
-
-    bool nullObject;
-
-    int myId;
-
-    int groupId;
-
+    bool nullObject {true};
+    int myId {-1};
+    int groupId {-1};
   };
-
-
 }
-
-
 
 #endif
