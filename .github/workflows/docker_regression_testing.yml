@@ -1,0 +1,45 @@
+###
+# Run a docker-based test of tests.
+#
+# See https://github.com/Unidata/docker-nctests
+# How    https://github.com/Unidata/netcdf-test-action
+name: Run Docker-Based Regression Testing
+on: [pull_request,workflow_dispatch]
+
+concurrency:  
+  group: ${{ github.workflow}}-${{ github.head_ref }}  
+  cancel-in-progress: true
+
+permissions: {} 
+
+
+####
+# Serial Testing
+###
+jobs:
+
+  netcdf-cxx4-test-matrix-serial:
+      name: Docker-Based NetCDF-CXX4 testing (serial)
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          repo-type: [ 'cxx4' ]
+          c-compiler: [ 'gcc', 'clang' ]
+          h5ver: [ '1.12.1', '1.14.6', '2.1.1' ]
+          c-branch: [ 'v4.10.1' ]
+          buildsystem: [ 'both' ]
+
+      steps:
+        - uses: actions/checkout@v7
+        - name: Pull and Run netCDF Regression Tests
+          uses: Unidata/netcdf-test-action@v3
+          with:
+            repo-type: '${{ matrix.repo-type }}'
+            run-c: 'FALSE'
+            c-branch: '${{ matrix.c-branch }}'
+            build-system: '${{ matrix.buildsystem }}'
+            hdf5-version: '${{ matrix.h5ver }}'
+            ctest-repeat: 3
+            c-compiler: '${{ matrix.c-compiler }}'
+            run-fortran: 'FALSE'
+            run-cxx4: 'TRUE'
