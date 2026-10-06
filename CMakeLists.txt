@@ -421,12 +421,6 @@ ELSE(MSVC)
   FIND_PACKAGE(HDF5 COMPONENTS C HL REQUIRED)
 ENDIF(MSVC)
 
-CHECK_LIBRARY_EXISTS(${HDF5_C_LIBRARIES} H5free_memory "" HAVE_H5FREE_MEMORY)
-IF(NOT HAVE_H5FREE_MEMORY)
-  MESSAGE(STATUS "Plugin support requires libhdf5 with H5Free support. Your libhdf5 install does not provide H5Free.  Please install a newer version of libhdf5 if you require plugin compression support.")
-  SET(NC_HAS_DEF_VAR_FILTER "")
-ENDIF()
-
 ################################
 # End 'seek out dependent libraries'
 ################################
