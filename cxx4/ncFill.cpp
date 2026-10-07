@@ -19,10 +19,6 @@ fill values are written when you create non-record variables or when you write a
 beyond data that has not yet been written. */
 
 
-//NcFill constructor
-NcFill::~NcFill() {
-
-};
 void NcFill::set_Fill( int ncid, int fillmode, int *old_modep ) {
 
   ncCheck(nc_set_fill(ncid, fillmode, old_modep ),__FILE__,__LINE__);

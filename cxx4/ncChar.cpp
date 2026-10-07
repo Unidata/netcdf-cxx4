@@ -11,10 +11,6 @@ namespace netCDF {
 NcChar::NcChar() : NcType(NC_CHAR){
 }
 
-NcChar::~NcChar() {
-}
-
-
 // equivalence operator
 bool NcChar::operator==(const NcChar & rhs)    {
   // simply check the netCDF id.

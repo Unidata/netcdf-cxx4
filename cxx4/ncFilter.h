@@ -12,11 +12,6 @@ namespace netCDF
   class NcFilter
     {
       public:
-        ~NcFilter();
-
-        //constructor
-        NcFilter ();
-
         /* Member functions:
         setFilter: allows for filter definition of a variable when writing
         getFilter: querys about a filter (if any) associated with the variable

@@ -13,10 +13,7 @@ namespace netCDF
     
     /*! equivalence operator */
     bool operator==(const NcChar & rhs);
-    
-    ~NcChar();
-    
-    /*! Constructor */
+
     NcChar();
   };
 

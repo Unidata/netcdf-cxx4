@@ -14,9 +14,6 @@ namespace netCDF
     /*! equivalence operator */
     bool operator==(const NcString & rhs);
     
-    /*! destructor */
-    ~NcString();
-    
     /*! Constructor */
     NcString();
   };
