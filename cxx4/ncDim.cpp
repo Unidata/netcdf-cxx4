@@ -22,23 +22,6 @@ namespace netCDF {
 
 using namespace netCDF;
 
-// assignment operator
-NcDim& NcDim::operator=(const NcDim & rhs)
-{
-  nullObject = rhs.nullObject;
-  myId = rhs.myId;
-  groupId = rhs.groupId;
-  return *this;
-}
-
-// The copy constructor.
-NcDim::NcDim(const NcDim& rhs):
-  nullObject(rhs.nullObject),
-  myId(rhs.myId),
-  groupId(rhs.groupId)
-{}
-
-
 // equivalence operator
 bool NcDim::operator==(const NcDim& rhs) const
 {
@@ -59,11 +42,6 @@ bool NcDim::operator!=(const NcDim & rhs) const
 NcGroup  NcDim::getParentGroup() const {
   return NcGroup(groupId);
 }
-
-// Constructor generates a null object.
-NcDim::NcDim() :
-  nullObject(true)
-{}
 
 // Constructor for a dimension (must already exist in the netCDF file.)
 NcDim::NcDim(const NcGroup& grp, int dimId) :

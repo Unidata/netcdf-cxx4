@@ -13,12 +13,7 @@ namespace netCDF
   class NcDim   {
 
   public:
-
-    /*! destructor*/
-    ~NcDim(){};
-
-    /*! Constructor generates a \ref isNull "null object". */
-    NcDim ();
+    NcDim () = default;
 
     /*!
       Constructor for a dimension .
@@ -28,17 +23,11 @@ namespace netCDF
     */
     NcDim(const NcGroup& grp, int dimId);
 
-    /*! assignment operator  */
-    NcDim& operator =(const NcDim &);
-
     /*! equivalence operator */
     bool operator==(const NcDim& rhs) const;
 
     /*!  != operator */
     bool operator!=(const NcDim& rhs) const;
-
-    /*! The copy constructor. */
-    NcDim(const NcDim& ncDim);
 
     /*! The name of this dimension.*/
     std::string getName() const;
@@ -68,15 +57,10 @@ namespace netCDF
     friend bool operator>(const NcDim& lhs,const NcDim& rhs);
 
   private:
-
-    bool nullObject;
-
-    int myId;
-
-    int groupId;
-
+    bool nullObject{true};
+    int myId{-1};
+    int groupId{-1};
   };
-  
 }
 
 
