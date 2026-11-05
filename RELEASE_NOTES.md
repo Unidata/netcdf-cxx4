@@ -6,8 +6,7 @@ This file contains a high-level description of this package's evolution. Release
 
 Note that this file was created and maintained starting with the `netcdf-cxx4 4.3.0 release`.
 
-## netCDF-CXX4 4.3.2 TBD
-
+## netCDF-CXX4 4.3.2 - 2026-11-06
 
 ## What's Changed
 * [Bug Fix][Compression] Fixed an issue where `plugins/` were not being properly built.  See [GitHub #82](https://github.com/Unidata/netcdf-cxx4/issues/82) for more information.
