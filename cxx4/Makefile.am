@@ -8,7 +8,7 @@ lib_LTLIBRARIES = libnetcdf_c++4.la
 
 # For rules updating the version info, see
 # http://www.gnu.org/s/libtool/manual/html_node/Updating-version-info.html
-libnetcdf_c__4_la_LDFLAGS = -version-info 2:0:1 -no-undefined
+libnetcdf_c__4_la_LDFLAGS = -version-info 3:0:0 -no-undefined
 libnetcdf_c__4_la_LIBADD = -lnetcdf
 
 # These headers will be installed in the users header directory.
