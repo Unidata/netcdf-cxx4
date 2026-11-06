@@ -35,12 +35,12 @@ set(PACKAGE "netcdf-cxx4" CACHE STRING "")
 
 SET(NCXX_VERSION_MAJOR 4)
 SET(NCXX_VERSION_MINOR 3)
-SET(NCXX_VERSION_PATCH 2)
+SET(NCXX_VERSION_PATCH 3)
 SET(NCXX_VERSION_NOTE "-developer")
 SET(NCXX_VERSION ${NCXX_VERSION_MAJOR}.${NCXX_VERSION_MINOR}.${NCXX_VERSION_PATCH}${NCXX_VERSION_NOTE})
 SET(VERSION ${NCXX_VERSION})
-SET(NCXX_LIB_VERSION 1.1.0)
-SET(NCXX_SO_VERSION 1)
+SET(NCXX_LIB_VERSION 3.0.0)
+SET(NCXX_SO_VERSION 3)
 SET(PACKAGE_VERSION ${VERSION})
 
 # Get system configuration, Use it to determine osname, os release, cpu. These
@@ -421,12 +421,6 @@ ELSE(MSVC)
   FIND_PACKAGE(HDF5 COMPONENTS C HL REQUIRED)
 ENDIF(MSVC)
 
-CHECK_LIBRARY_EXISTS(${HDF5_C_LIBRARIES} H5free_memory "" HAVE_H5FREE_MEMORY)
-IF(NOT HAVE_H5FREE_MEMORY)
-  MESSAGE(STATUS "Plugin support requires libhdf5 with H5Free support. Your libhdf5 install does not provide H5Free.  Please install a newer version of libhdf5 if you require plugin compression support.")
-  SET(NC_HAS_DEF_VAR_FILTER "")
-ENDIF()
-
 ################################
 # End 'seek out dependent libraries'
 ################################
@@ -690,10 +684,6 @@ IF(NC_HAS_DEF_VAR_FILTER)
 
   ADD_SUBDIRECTORY(plugins)
 ENDIF(NC_HAS_DEF_VAR_FILTER)
-
-IF(ENABLE_DOXYGEN)
-  ADD_SUBDIRECTORY(docs)
-ENDIF()
 
 ##
 # CPack, CMakeInstallation.cmake file.
