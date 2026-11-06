@@ -685,10 +685,6 @@ IF(NC_HAS_DEF_VAR_FILTER)
   ADD_SUBDIRECTORY(plugins)
 ENDIF(NC_HAS_DEF_VAR_FILTER)
 
-IF(ENABLE_DOXYGEN)
-  ADD_SUBDIRECTORY(docs)
-ENDIF()
-
 ##
 # CPack, CMakeInstallation.cmake file.
 ##
